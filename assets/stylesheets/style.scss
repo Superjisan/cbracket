@@ -1,0 +1,153 @@
+html, body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%;
+  
+}
+
+a {
+  color: #00B7FF;
+}
+
+@function exponent($base, $exponent) {
+  // reset value
+  $value: $base;
+  // positive intergers get multiplied
+  @if $exponent > 1 {
+    @for $i from 2 through $exponent {
+      $value: $value * $base; } }
+  // negitive intergers get divided. A number divided by itself is 1
+  @if $exponent < 1 {
+    @for $i from 0 through -$exponent {
+      $value: $value / $base; } }
+  // return the last value written
+  @return $value; 
+}
+
+@function pow($base, $exponent) {
+  @return exponent($base, $exponent);
+}
+
+#editor { 
+    width: 800px;
+    height: 240px;
+    margin: 0px auto 10px;
+    font-size: 14px;
+}
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px;
+}
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+$rounds: 5;
+$b_height: $rounds*190px;
+$font_size: 0.012*$b_height;
+$line_height: 0.015*$b_height;
+/*$font_size: 0.005*$b_height;
+$line_height: 0.005*$b_height;
+*/
+.container {
+  width: auto;
+  max-width: 2*$rounds*100px + 200px;
+  padding: 0 15px;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+#bracket {
+  width: 2*$rounds*100px + 200px;
+  height: $b_height;
+  border: 1px solid #aaa;
+  position: relative;
+  overflow: hidden;
+}
+
+.b {
+  position:absolute;
+  border: 1px solid black;
+  background: white;
+  width: $rounds*100px;
+  
+  .top {
+    position:absolute;
+    top: -1 * $line_height;
+    opacity: .5;
+  }
+  
+  .bottom {
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+  }
+  
+  .team {
+    font-size: $font_size;
+  }
+  
+  &:hover {
+    .team {
+      color: red;
+    }
+/*    background: yellow;*/
+  }
+}
+
+.bleft {
+  text-align: right;
+  .team {
+    padding-right: 3px;
+  }
+  .top {
+    right: 0;
+  }
+  .bottom{
+    right: 0;
+  }
+}
+
+.bright {
+  .team {
+    padding-left: 3px;
+  }
+}
+
+
+@for $i from 0 through ($rounds - 1) {
+  @for $j from 0 through (pow(2,$i) - 1) {
+    #b#{$i}-#{$j}-left {
+      left: $i*-100px;
+      top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
+    }
+    #b#{$i}-#{$j}-right {
+      right: $i*-100px;
+      top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
+    }
+  }
+  
+  .b#{$i} {
+    height: $b_height/pow(2,$i+1);
+    z-index: $i;
+  }
+}
+/*final four*/
+.b0 {
+  border-right: 0;
+  border-left: 0;
+}

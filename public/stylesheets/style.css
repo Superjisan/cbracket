@@ -1,0 +1,352 @@
+html, body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height: 100%; }
+
+a {
+  color: #00B7FF; }
+
+#editor {
+  width: 800px;
+  height: 240px;
+  margin: 0px auto 10px;
+  font-size: 14px; }
+
+/* Wrapper for page content to push down footer */
+#wrap {
+  min-height: 100%;
+  height: auto;
+  /* Negative indent footer by its height */
+  margin: 0 auto -60px;
+  /* Pad bottom by footer height */
+  padding: 0 0 60px; }
+
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5; }
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+/*$font_size: 0.005*$b_height;
+$line_height: 0.005*$b_height;
+*/
+.container {
+  width: auto;
+  max-width: 1200px;
+  padding: 0 15px; }
+
+.container .text-muted {
+  margin: 20px 0; }
+
+#bracket {
+  width: 1200px;
+  height: 950px;
+  border: 1px solid #aaa;
+  position: relative;
+  overflow: hidden; }
+
+.b {
+  position: absolute;
+  border: 1px solid black;
+  background: white;
+  width: 500px; }
+  .b .top {
+    position: absolute;
+    top: -14.25px;
+    opacity: 0.5; }
+  .b .bottom {
+    position: absolute;
+    bottom: 0;
+    opacity: 0; }
+  .b .team {
+    font-size: 11.4px; }
+  .b:hover {
+    /*    background: yellow;*/ }
+    .b:hover .team {
+      color: red; }
+
+.bleft {
+  text-align: right; }
+  .bleft .team {
+    padding-right: 3px; }
+  .bleft .top {
+    right: 0; }
+  .bleft .bottom {
+    right: 0; }
+
+.bright .team {
+  padding-left: 3px; }
+
+#b0-0-left {
+  left: -0px;
+  top: 237.5px; }
+
+#b0-0-right {
+  right: -0px;
+  top: 237.5px; }
+
+.b0 {
+  height: 475px;
+  z-index: 0; }
+
+#b1-0-left {
+  left: -100px;
+  top: 118.75px; }
+
+#b1-0-right {
+  right: -100px;
+  top: 118.75px; }
+
+#b1-1-left {
+  left: -100px;
+  top: 593.75px; }
+
+#b1-1-right {
+  right: -100px;
+  top: 593.75px; }
+
+.b1 {
+  height: 237.5px;
+  z-index: 1; }
+
+#b2-0-left {
+  left: -200px;
+  top: 59.375px; }
+
+#b2-0-right {
+  right: -200px;
+  top: 59.375px; }
+
+#b2-1-left {
+  left: -200px;
+  top: 296.875px; }
+
+#b2-1-right {
+  right: -200px;
+  top: 296.875px; }
+
+#b2-2-left {
+  left: -200px;
+  top: 534.375px; }
+
+#b2-2-right {
+  right: -200px;
+  top: 534.375px; }
+
+#b2-3-left {
+  left: -200px;
+  top: 771.875px; }
+
+#b2-3-right {
+  right: -200px;
+  top: 771.875px; }
+
+.b2 {
+  height: 118.75px;
+  z-index: 2; }
+
+#b3-0-left {
+  left: -300px;
+  top: 29.6875px; }
+
+#b3-0-right {
+  right: -300px;
+  top: 29.6875px; }
+
+#b3-1-left {
+  left: -300px;
+  top: 148.4375px; }
+
+#b3-1-right {
+  right: -300px;
+  top: 148.4375px; }
+
+#b3-2-left {
+  left: -300px;
+  top: 267.1875px; }
+
+#b3-2-right {
+  right: -300px;
+  top: 267.1875px; }
+
+#b3-3-left {
+  left: -300px;
+  top: 385.9375px; }
+
+#b3-3-right {
+  right: -300px;
+  top: 385.9375px; }
+
+#b3-4-left {
+  left: -300px;
+  top: 504.6875px; }
+
+#b3-4-right {
+  right: -300px;
+  top: 504.6875px; }
+
+#b3-5-left {
+  left: -300px;
+  top: 623.4375px; }
+
+#b3-5-right {
+  right: -300px;
+  top: 623.4375px; }
+
+#b3-6-left {
+  left: -300px;
+  top: 742.1875px; }
+
+#b3-6-right {
+  right: -300px;
+  top: 742.1875px; }
+
+#b3-7-left {
+  left: -300px;
+  top: 860.9375px; }
+
+#b3-7-right {
+  right: -300px;
+  top: 860.9375px; }
+
+.b3 {
+  height: 59.375px;
+  z-index: 3; }
+
+#b4-0-left {
+  left: -400px;
+  top: 14.84375px; }
+
+#b4-0-right {
+  right: -400px;
+  top: 14.84375px; }
+
+#b4-1-left {
+  left: -400px;
+  top: 74.21875px; }
+
+#b4-1-right {
+  right: -400px;
+  top: 74.21875px; }
+
+#b4-2-left {
+  left: -400px;
+  top: 133.59375px; }
+
+#b4-2-right {
+  right: -400px;
+  top: 133.59375px; }
+
+#b4-3-left {
+  left: -400px;
+  top: 192.96875px; }
+
+#b4-3-right {
+  right: -400px;
+  top: 192.96875px; }
+
+#b4-4-left {
+  left: -400px;
+  top: 252.34375px; }
+
+#b4-4-right {
+  right: -400px;
+  top: 252.34375px; }
+
+#b4-5-left {
+  left: -400px;
+  top: 311.71875px; }
+
+#b4-5-right {
+  right: -400px;
+  top: 311.71875px; }
+
+#b4-6-left {
+  left: -400px;
+  top: 371.09375px; }
+
+#b4-6-right {
+  right: -400px;
+  top: 371.09375px; }
+
+#b4-7-left {
+  left: -400px;
+  top: 430.46875px; }
+
+#b4-7-right {
+  right: -400px;
+  top: 430.46875px; }
+
+#b4-8-left {
+  left: -400px;
+  top: 489.84375px; }
+
+#b4-8-right {
+  right: -400px;
+  top: 489.84375px; }
+
+#b4-9-left {
+  left: -400px;
+  top: 549.21875px; }
+
+#b4-9-right {
+  right: -400px;
+  top: 549.21875px; }
+
+#b4-10-left {
+  left: -400px;
+  top: 608.59375px; }
+
+#b4-10-right {
+  right: -400px;
+  top: 608.59375px; }
+
+#b4-11-left {
+  left: -400px;
+  top: 667.96875px; }
+
+#b4-11-right {
+  right: -400px;
+  top: 667.96875px; }
+
+#b4-12-left {
+  left: -400px;
+  top: 727.34375px; }
+
+#b4-12-right {
+  right: -400px;
+  top: 727.34375px; }
+
+#b4-13-left {
+  left: -400px;
+  top: 786.71875px; }
+
+#b4-13-right {
+  right: -400px;
+  top: 786.71875px; }
+
+#b4-14-left {
+  left: -400px;
+  top: 846.09375px; }
+
+#b4-14-right {
+  right: -400px;
+  top: 846.09375px; }
+
+#b4-15-left {
+  left: -400px;
+  top: 905.46875px; }
+
+#b4-15-right {
+  right: -400px;
+  top: 905.46875px; }
+
+.b4 {
+  height: 29.6875px;
+  z-index: 4; }
+
+/*final four*/
+.b0 {
+  border-right: 0;
+  border-left: 0; }
