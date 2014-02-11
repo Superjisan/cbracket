@@ -57,8 +57,8 @@ a {
 
 $rounds: 5;
 $b_height: $rounds*190px;
-$font_size: 0.012*$b_height;
-$line_height: 0.015*$b_height;
+$font_size: 0.013*$b_height;
+$line_height: 0.016*$b_height;
 /*$font_size: 0.005*$b_height;
 $line_height: 0.005*$b_height;
 */
@@ -88,13 +88,13 @@ $line_height: 0.005*$b_height;
   .top {
     position:absolute;
     top: -1 * $line_height;
-    opacity: .5;
+    opacity: 0.0;
   }
   
   .bottom {
     position: absolute;
     bottom: 0;
-    opacity: 0;
+    opacity: 0.0;
   }
   
   .team {
@@ -109,6 +109,15 @@ $line_height: 0.005*$b_height;
   }
 }
 
+.first_round {
+  .top {
+    opacity:1;
+  }
+  .bottom {
+    opacity:1;
+  }
+  
+}
 .bleft {
   text-align: right;
   .team {
