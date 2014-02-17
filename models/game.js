@@ -1,4 +1,5 @@
-module.exports = function(mongoose) {
+module.exports = function(m) {
+  var mongoose = m || require('mongoose');
   var Schema = mongoose.Schema;
 
   var gameSchema = new Schema({
@@ -16,5 +17,5 @@ module.exports = function(mongoose) {
   });
 
   var Game = mongoose.model('Game', gameSchema);
-  return Game;
+  return {model: Game};
 };

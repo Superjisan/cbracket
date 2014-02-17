@@ -5,14 +5,20 @@
 
 var express = require('express');
 var swig = require('swig');
+require('./filters')(swig);
 var routes = require('./routes');
 var user = require('./routes/user');
+var auth = require('./routes/auth');
 var http = require('http');
+var flash = require('connect-flash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
-var app = express();
+app = express();
 app.engine('html', swig.renderFile);
+
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
@@ -22,6 +28,13 @@ app.use(express.logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
+app.use(express.cookieParser('fullstackrox!!'));
+app.use(express.session());
+
+app.use(flash());
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(app.router);
 app.use(
     sass.middleware({
@@ -35,11 +48,30 @@ app.use(express.static(path.join(__dirname, 'public')));
 // development only
 if ('development' == app.get('env')) {
   swig.setDefaults({ cache: false });
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+}
+
+if ('production' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
+// passport config
+models = require('./models/connect');
+// passport.use(new LocalStrategy(models.User.authenticate()));
+passport.use(models.User.createStrategy());
+passport.serializeUser(models.User.serializeUser());
+passport.deserializeUser(models.User.deserializeUser());
+
+
 app.get('/', routes.index);
 app.get('/users', user.list);
+app.get('/verify/:token', auth.verify_email);
+app.get('/verify/resend', auth.verify_email);
+app.get('/register', auth.register_page);
+app.post('/register', auth.register);
+app.get('/login', auth.login_page);
+app.post('/login', auth.login);
+app.get('/logout', auth.logout);
 
 global.allteams = [];
 

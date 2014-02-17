@@ -29,7 +29,7 @@ Bracket.prototype.generateBracketHtml = function (teams) {
   var id=0;
   var teamIndex;
   var getDbIndexFromSeed = function(seed, subseed) {
-    console.log('seed:'+seed+" subseed:"+subseed);
+    // console.log('seed:'+seed+" subseed:"+subseed);
     return (seed-1)*4+subseed;
   };
   

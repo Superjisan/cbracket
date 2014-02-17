@@ -5,8 +5,16 @@ db.on('error', console.error.bind(console, 'connection error:'));
 
 // db.once('open', function callback () {
 // console.log('database connected');
-var Team = require('./team')(mongoose);
-var Game = require('./game')(mongoose);
+var TeamModule = require('./team')(mongoose);
+var GameModule = require('./game')(mongoose);
+var UserModule = require('./user')(mongoose);
+var VerifyTokenModule = require('./verifyToken')(mongoose);
 // });
 
-module.exports = {connection: db, "Team": Team, "Game": Game}
+module.exports = {
+  connection: db,
+  "Team": TeamModule.model,
+  "User": UserModule.model,
+  "Game": GameModule.model,
+  "VerifyToken": VerifyTokenModule.model
+};

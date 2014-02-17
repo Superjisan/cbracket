@@ -5,11 +5,28 @@ html, body {
 a {
   color: #00B7FF; }
 
+#footer {
+  margin-top: 20px; }
+
 #editor {
-  width: 800px;
-  height: 240px;
-  margin: 0px auto 10px;
-  font-size: 14px; }
+  width: 600px;
+  height: 180px;
+  margin: 0px auto;
+  background: #E0EFFF;
+  /*    background: #0D1E3C;*/
+  font-size: 18px;
+  line-height: 150%;
+  overflow: hidden; }
+
+#editor_container {
+  padding: 20px;
+  background: #fff;
+  width: 660px;
+  margin: 0 auto 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background: #E0EFFF;
+  /*  background: #0D1E3C;*/ }
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -28,9 +45,6 @@ a {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
-/*$font_size: 0.005*$b_height;
-$line_height: 0.005*$b_height;
-*/
 .container {
   width: auto;
   max-width: 1200px;
@@ -42,7 +56,7 @@ $line_height: 0.005*$b_height;
 #bracket {
   width: 1200px;
   height: 950px;
-  border: 1px solid #aaa;
+  /*  border: 1px solid #ccc;*/
   position: relative;
   overflow: hidden; }
 
@@ -355,3 +369,32 @@ $line_height: 0.005*$b_height;
 .b0 {
   border-right: 0;
   border-left: 0; }
+
+#bracket-wrap {
+  position: relative; }
+
+#matrix {
+  background: url(http://emergenceearth.com/wp-content/uploads/2013/12/matrix.gif);
+  border-radius: 20px;
+  opacity: 0.3;
+  width: 700px;
+  height: 300px;
+  z-index: 10;
+  position: absolute;
+  top: 280px;
+  left: 250px;
+  display: none; }
+
+#matrix_titles {
+  display: none;
+  color: #fff;
+  text-shadow: black 1px 1px 0.2em;
+  font: bold 36px arial, sans-serif;
+  text-align: center;
+  padding-top: 380px;
+  width: 1200px;
+  height: 950px;
+  z-index: 11;
+  position: absolute;
+  top: 0;
+  left: 0; }
