@@ -76,15 +76,16 @@ a {
   text-align: center;
   width: 800px;
   border-radius: 20px;
-  margin: 30px auto 0; }
+  margin: 25px auto 15px; }
   #front_message h2 {
     font-family: Satisfy;
     margin-bottom: 20px;
     color: #000; }
   #front_message p {
-    line-height: 140%;
-    font-size: 18px;
-    font-family: "Open Sans", sans-serif; }
+    line-height: 150%;
+    font-size: 19px;
+    font-family: "Open Sans", sans-serif;
+    margin: 20px 0 0; }
 
 #front_page_container {
   z-index: 2;
