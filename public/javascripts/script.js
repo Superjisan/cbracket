@@ -273,6 +273,26 @@ var setupAceEditor = function () {
 };
 
 var setupEvents = function () {
+  
+  $(function () {
+    var getImgBottom = function () {
+      var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
+      var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 80;
+      return image_bottom;
+    };
+    
+    var image_bottom = getImgBottom();
+    $('#text-editor-animate').animate({
+      bottom: image_bottom + "px"
+    }, 1000);
+      
+    $(window).resize(function () {
+      var image_bottom = getImgBottom()+15;
+      $('#text-editor-animate').css('bottom', image_bottom + "px");
+    })
+  });
+  
+  
   $('#waitlist_form').submit(function(e){
     var email = $('#email').val();
     if (!!email) {
@@ -286,5 +306,19 @@ var setupEvents = function () {
     }
     e.preventDefault();
     return false;
+  });
+};
+
+var setupLayoutEvents = function() {
+  $('#fssig').hover(function(e) {
+    $('#sig_start_message').animate({
+      left: "-204px"
+    }, 400);
+  }, function(e){
+    $('#sig_start_message').animate({
+      left: "10px"
+    }, 400, function () {
+      // $('#sig_start_message').css('left', "10px");
+    });
   });
 };
