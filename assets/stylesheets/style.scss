@@ -1,11 +1,99 @@
+@import url(http://fonts.googleapis.com/css?family=Satisfy);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+
 html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   height: 100%;
-  
+  /*  background: url(/images/basketball-on-court-wallpaper-50.jpg); */
+    background: #f34c0f; /* Old browsers */
+    background: -moz-linear-gradient(top, #f34c0f 50%, #e23710 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #f34c0f 50%,#e23710 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f34c0f', endColorstr='#e23710',GradientType=0 ); /* IE6-9 */
+    overflow: hidden;
 }
 
+@font-face {font-family: 'Nexa Black';src: url('webfonts/2A0305_0_0.eot');src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2A0305_0_0.woff') format('woff'),url('webfonts/2A0305_0_0.ttf') format('truetype');}
+
 a {
-  color: #00B7FF;
+  color: #FFF;
+  
+  &:hover{
+    color: #FF9600;
+    text-decoration: underline;
+  }
+}
+
+.cb_input {
+  width: 300px;
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: 25px;
+  height: 60px;
+  border-radius: 0;
+}
+
+.heading {
+  margin-top: 60px;
+  font: normal 80px "Nexa Black", Arial;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0px 8px #C3440D;
+  text-align: center;
+  text-transform: uppercase;
+  z-index: 2;
+  position:relative;
+}
+
+#front_buttons {
+  text-align: center;
+  margin-top: 0px;
+  input[type='submit'] {
+    margin-top: -10px;
+  }
+  a {
+    margin: 0 14px;
+    margin-top: -10px;
+    box-shadow: 1px 1px 15px rgba(20,20,20,.4);
+  }
+}
+
+#thanks {
+   font: normal 24px "Open Sans", Arial;
+   text-align: center;
+   padding: 30px 0 10px;
+   display:none;
+}
+
+#front_message {
+/*  background: rgba(0,0,0,.5);*/
+  color: #6C160B;
+  padding: 1px 20px 20px;
+/*  color: #fff;*/
+  text-align: center;
+  width: 800px;
+  border-radius: 20px;
+  margin: 30px auto 0;
+  
+  h2 {
+    font-family: Satisfy;
+    margin-bottom: 20px;
+    color: #000;
+  }
+  
+  p {
+    line-height: 140%;
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif;
+  }
+}
+
+#front_page_container {
+  z-index: 2;
+  position: relative;
 }
 
 @function exponent($base, $exponent) {
@@ -27,29 +115,86 @@ a {
   @return exponent($base, $exponent);
 }
 
+$rounds: 5;
+$b_height: $rounds*190px;
+$font_size: 0.013*$b_height;
+$line_height: 0.016*$b_height;
 #footer {
   margin-top: 20px;
 }
 #editor { 
-    width: 600px;
-    height: 180px;
+    width: 500px;
+    height: 100%;
     margin: 0px auto;
     background: #E0EFFF;
 /*    background: #0D1E3C;*/
     font-size: 18px;
     line-height: 150%;
     overflow:hidden;
+    z-index: 45;
 }
 
 #editor_container {
   padding: 20px;
   background: #fff;
-  width: 660px;
+  width: 560px;
+  height: 800px;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
-  border-radius: 20px;
+/*  border-radius: 20px;*/
   background: #E0EFFF;
+/*  position: absolute;*/
+  
 /*  background: #0D1E3C;*/
+}
+
+#editor_screen {
+  background: rgba(255,255,255,.7);
+  width: 100%;
+  height: 100%;
+  z-index: 46;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  padding-top: 10px;
+  
+  h1{
+    font-weight: bold;
+    text-shadow: -3px 0 white, 0 3px white, 3px 0 white, 0 -3px white;
+  }
+  
+  a.btn {
+    i {
+      float: left;
+      font-size: 30px;
+      display: block;
+      margin-right: 10px;
+    }
+    .subtitle {
+      font-size: 12px;
+      font-weight: normal;
+    }
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 10px;
+    width: 220px;
+    margin-right: 15px;
+  }
+}
+
+#editor_w_buttons {
+  position:absolute;
+  top: 20px;
+/*  left: (2*$rounds*100px + 200px)/2 - 330px;*/
+  z-index: 300;
+}
+
+#generate_button {
+  text-align:center;
+  margin-bottom:10px;
+  display: none;
 }
 
 /* Wrapper for page content to push down footer */
@@ -65,7 +210,7 @@ a {
 /* Set the fixed height of the footer here */
 #footer {
   height: 60px;
-  background-color: #f5f5f5;
+/*  background-color: #f5f5f5;*/
 }
 
 
@@ -73,18 +218,28 @@ a {
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 
-$rounds: 5;
-$b_height: $rounds*190px;
-$font_size: 0.013*$b_height;
-$line_height: 0.016*$b_height;
 
 .container {
   width: auto;
-  max-width: 2*$rounds*100px + 200px;
+/*  max-width: 2*$rounds*100px + 200px;*/
   padding: 0 15px;
 }
 .container .text-muted {
   margin: 20px 0;
+}
+
+#content_container {
+  position:relative;
+/*  max-width: 2*$rounds*100px + 200px;*/
+  margin: 0 auto;
+}
+
+#bracket-wrap {
+  position: absolute;
+  top: 0;
+  background-color: #fff;
+  padding: 20px;
+/*  display:none;*/
 }
 
 #bracket {
@@ -95,11 +250,20 @@ $line_height: 0.016*$b_height;
   overflow: hidden;
 }
 
+.bracket_blur {
+  -webkit-filter: blur(5px);
+   -moz-filter: blur(5px);
+   -o-filter: blur(5px);
+   -ms-filter: blur(5px);
+   filter: blur(5px);
+}
+
 .b {
   position:absolute;
   border: 1px solid black;
-  background: white;
+  background: #fff;
   width: $rounds*100px;
+  z-index: 1;
   
   .top {
     position:absolute;
@@ -177,10 +341,7 @@ $line_height: 0.016*$b_height;
   border-left: 0;
 }
 
-#bracket-wrap {
-  position: relative;
-}
-#matrix {
+/*#matrix {
   background: url(http://emergenceearth.com/wp-content/uploads/2013/12/matrix.gif);
   border-radius: 20px;
   opacity: .3;
@@ -193,7 +354,7 @@ $line_height: 0.016*$b_height;
   display:none;
 }
 
-#matrix_titles {
+*/#matrix_titles {
   display:none;
   color: #fff;
   text-shadow: black 1px 1px 0.2em;
@@ -207,3 +368,74 @@ $line_height: 0.016*$b_height;
   top: 0;
   left: 0;
 }
+
+#pagetitle {
+  h1 {
+    text-align: center;
+    font-weight: bold;
+    font-family: "Press Start 2P";
+    span {
+      font-family: Satisfy,arial,sans-serif;
+      font-weight: normal;
+      display: block;
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  a {
+    color: #FF6B0A;
+    text-decoration: none;
+    padding: 10px;
+    display:inline-block;
+    font-size: 18px;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* ANIMATION */
+#text-editor-animate {
+/*    margin-top: 150px;*/
+		width: 100%;
+		text-align:center;
+    position: absolute;
+    bottom: 0px;
+    height: 250px;
+    overflow: hidden;
+    z-index: 0;
+    -webkit-animation: floatBubble 1s normal ease-out;
+    animation: floatBubble 1s normal ease-out;
+}
+
+#text-editor-animate img {
+  z-index: 0;
+}
+
+#text-editor-animate:hover {
+  z-index: 0;
+}
+
+@-webkit-keyframes floatBubble {
+    0% {
+        bottom: -400px;
+    }
+    100% {
+        bottom: 0px;
+    }
+}
+
+@keyframes floatBubble {
+    0% {
+        bottom: -400px;
+    }
+    100% {
+        bottom: 0px;
+    }
+}
+/*END ANIMATION*/
+
+

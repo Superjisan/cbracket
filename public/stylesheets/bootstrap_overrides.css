@@ -1,3 +1,48 @@
 .navbar-brand {
   /*  font-weight: bold;*/
   color: blue; }
+
+.navbar {
+  background: #C3440D;
+  border-color: #C3440D;
+  border-radius: 0;
+  min-height: 10px; }
+
+.navbar-nav > li > a, .navbar-inverse .navbar-nav > li > a {
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px "Nexa Black", Arial;
+  text-transform: uppercase;
+  color: #fff;
+  letter-spacing: 0px;
+  padding: 20px 18px;
+  padding-top: 23px; }
+  .navbar-nav > li > a:hover, .navbar-inverse .navbar-nav > li > a:hover {
+    color: #000; }
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-nav .navbar-nav > .active > a {
+  -webkit-font-smoothing: antialiased;
+  background-color: inherit;
+  text-transform: uppercase;
+  color: black; }
+  .navbar-inverse .navbar-nav > .active > a:hover, .navbar-nav .navbar-nav > .active > a:hover {
+    color: #000;
+    background-color: inherit; }
+
+.text-muted {
+  color: #8F1307;
+  text-transform: uppercase;
+  font-size: 12px; }
+
+.btn-codersbracket {
+  background-color: #FFCE62;
+  color: #000;
+  -webkit-font-smoothing: antialiased;
+  font-family: "Nexa Black", Arial;
+  font-weight: normal;
+  border: 0;
+  border-radius: 0;
+  padding: 15px 34px;
+  padding-top: 23px;
+  text-transform: uppercase; }
+  .btn-codersbracket:hover {
+    background-color: #d2a950; }

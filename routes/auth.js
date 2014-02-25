@@ -37,7 +37,7 @@ exports.register = function(req, res) {
       createTokenAndSendVerifyEmail(req, user);
     }
     
-    req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link.");
+    req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
     passport.authenticate('local')(req, res, function () {
       res.redirect('/');
     });
@@ -79,6 +79,7 @@ exports.login = function(req, res, next) {
     if (!user) { return res.redirect('/login'); }
     if (!user.verified) { 
       req.flash('error', "Your account is not verified yet. Check your email for the verification link. <a href='/verify/resend'>Resend Verification Email</a>");
+      res.redirect('/');
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }

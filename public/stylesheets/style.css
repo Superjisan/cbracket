@@ -1,32 +1,160 @@
+@import url(http://fonts.googleapis.com/css?family=Satisfy);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 html, body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  height: 100%; }
+  height: 100%;
+  /*  background: url(/images/basketball-on-court-wallpaper-50.jpg); */
+  background: #f34c0f;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #f34c0f 50%, #e23710 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(50%, #f34c0f), color-stop(100%, #e23710));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #f34c0f 50%, #e23710 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #f34c0f 50%, #e23710 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #f34c0f 50%, #e23710 100%);
+  /* IE10+ */
+  background: linear-gradient(to bottom, #f34c0f 50%, #e23710 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f34c0f', endColorstr='#e23710',GradientType=0 );
+  /* IE6-9 */
+  overflow: hidden; }
+
+@font-face {
+  font-family: 'Nexa Black';
+  src: url('webfonts/2A0305_0_0.eot');
+  src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'), url('webfonts/2A0305_0_0.woff') format('woff'), url('webfonts/2A0305_0_0.ttf') format('truetype'); }
 
 a {
-  color: #00B7FF; }
+  color: #FFF; }
+  a:hover {
+    color: #FF9600;
+    text-decoration: underline; }
+
+.cb_input {
+  width: 300px;
+  display: inline-block;
+  padding: 5px 15px;
+  font-size: 25px;
+  height: 60px;
+  border-radius: 0; }
+
+.heading {
+  margin-top: 60px;
+  font: normal 80px "Nexa Black", Arial;
+  letter-spacing: 3px;
+  color: #fff;
+  text-shadow: 0px 8px #C3440D;
+  text-align: center;
+  text-transform: uppercase;
+  z-index: 2;
+  position: relative; }
+
+#front_buttons {
+  text-align: center;
+  margin-top: 0px; }
+  #front_buttons input[type='submit'] {
+    margin-top: -10px; }
+  #front_buttons a {
+    margin: 0 14px;
+    margin-top: -10px;
+    box-shadow: 1px 1px 15px rgba(20, 20, 20, 0.4); }
+
+#thanks {
+  font: normal 24px "Open Sans", Arial;
+  text-align: center;
+  padding: 30px 0 10px;
+  display: none; }
+
+#front_message {
+  /*  background: rgba(0,0,0,.5);*/
+  color: #6C160B;
+  padding: 1px 20px 20px;
+  /*  color: #fff;*/
+  text-align: center;
+  width: 800px;
+  border-radius: 20px;
+  margin: 30px auto 0; }
+  #front_message h2 {
+    font-family: Satisfy;
+    margin-bottom: 20px;
+    color: #000; }
+  #front_message p {
+    line-height: 140%;
+    font-size: 18px;
+    font-family: "Open Sans", sans-serif; }
+
+#front_page_container {
+  z-index: 2;
+  position: relative; }
 
 #footer {
   margin-top: 20px; }
 
 #editor {
-  width: 600px;
-  height: 180px;
+  width: 500px;
+  height: 100%;
   margin: 0px auto;
   background: #E0EFFF;
   /*    background: #0D1E3C;*/
   font-size: 18px;
   line-height: 150%;
-  overflow: hidden; }
+  overflow: hidden;
+  z-index: 45; }
 
 #editor_container {
   padding: 20px;
   background: #fff;
-  width: 660px;
+  width: 560px;
+  height: 800px;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
-  border-radius: 20px;
+  /*  border-radius: 20px;*/
   background: #E0EFFF;
+  /*  position: absolute;*/
   /*  background: #0D1E3C;*/ }
+
+#editor_screen {
+  background: rgba(255, 255, 255, 0.7);
+  width: 100%;
+  height: 100%;
+  z-index: 46;
+  border-radius: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  padding-top: 10px; }
+  #editor_screen h1 {
+    font-weight: bold;
+    text-shadow: -3px 0 white, 0 3px white, 3px 0 white, 0 -3px white; }
+  #editor_screen a.btn {
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 10px;
+    width: 220px;
+    margin-right: 15px; }
+    #editor_screen a.btn i {
+      float: left;
+      font-size: 30px;
+      display: block;
+      margin-right: 10px; }
+    #editor_screen a.btn .subtitle {
+      font-size: 12px;
+      font-weight: normal; }
+
+#editor_w_buttons {
+  position: absolute;
+  top: 20px;
+  /*  left: (2*$rounds*100px + 200px)/2 - 330px;*/
+  z-index: 300; }
+
+#generate_button {
+  text-align: center;
+  margin-bottom: 10px;
+  display: none; }
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -40,18 +168,30 @@ a {
 /* Set the fixed height of the footer here */
 #footer {
   height: 60px;
-  background-color: #f5f5f5; }
+  /*  background-color: #f5f5f5;*/ }
 
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 .container {
   width: auto;
-  max-width: 1200px;
+  /*  max-width: 2*$rounds*100px + 200px;*/
   padding: 0 15px; }
 
 .container .text-muted {
   margin: 20px 0; }
+
+#content_container {
+  position: relative;
+  /*  max-width: 2*$rounds*100px + 200px;*/
+  margin: 0 auto; }
+
+#bracket-wrap {
+  position: absolute;
+  top: 0;
+  background-color: #fff;
+  padding: 20px;
+  /*  display:none;*/ }
 
 #bracket {
   width: 1200px;
@@ -60,11 +200,19 @@ a {
   position: relative;
   overflow: hidden; }
 
+.bracket_blur {
+  -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); }
+
 .b {
   position: absolute;
   border: 1px solid black;
-  background: white;
-  width: 500px; }
+  background: #fff;
+  width: 500px;
+  z-index: 1; }
   .b .top {
     position: absolute;
     top: -15.2px;
@@ -370,21 +518,20 @@ a {
   border-right: 0;
   border-left: 0; }
 
-#bracket-wrap {
-  position: relative; }
-
-#matrix {
+/*#matrix {
   background: url(http://emergenceearth.com/wp-content/uploads/2013/12/matrix.gif);
   border-radius: 20px;
-  opacity: 0.3;
+  opacity: .3;
   width: 700px;
-  height: 300px;
+  height: 300px;;
   z-index: 10;
   position: absolute;
   top: 280px;
   left: 250px;
-  display: none; }
+  display:none;
+}
 
+*/
 #matrix_titles {
   display: none;
   color: #fff;
@@ -398,3 +545,60 @@ a {
   position: absolute;
   top: 0;
   left: 0; }
+
+#pagetitle {
+  text-align: center;
+  margin-bottom: 30px; }
+  #pagetitle h1 {
+    text-align: center;
+    font-weight: bold;
+    font-family: "Press Start 2P"; }
+    #pagetitle h1 span {
+      font-family: Satisfy, arial, sans-serif;
+      font-weight: normal;
+      display: block;
+      font-size: 40px;
+      margin-bottom: 20px; }
+  #pagetitle a {
+    color: #FF6B0A;
+    text-decoration: none;
+    padding: 10px;
+    display: inline-block;
+    font-size: 18px; }
+  #pagetitle a:hover {
+    text-decoration: underline; }
+
+/* ANIMATION */
+#text-editor-animate {
+  /*    margin-top: 150px;*/
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 0px;
+  height: 250px;
+  overflow: hidden;
+  z-index: 0;
+  -webkit-animation: floatBubble 1s normal ease-out;
+  animation: floatBubble 1s normal ease-out; }
+
+#text-editor-animate img {
+  z-index: 0; }
+
+#text-editor-animate:hover {
+  z-index: 0; }
+
+@-webkit-keyframes floatBubble {
+  0% {
+    bottom: -400px; }
+
+  100% {
+    bottom: 0px; } }
+
+@keyframes floatBubble {
+  0% {
+    bottom: -400px; }
+
+  100% {
+    bottom: 0px; } }
+
+/*END ANIMATION*/

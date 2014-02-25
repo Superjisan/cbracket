@@ -1,65 +1,38 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-        {% include "./partials/show_flash.html" %}
-
-        <div id='editor_container'>
-          <div id='editor'>function(game, team1, team2){
-  if (team1.seed < team2.seed) {
-    team1.wins();
-  }
-}</div>
-        </div>
-        <div style='text-align:center;margin-bottom:10px;'><a href='#' class='btn btn-info' id='startbutton'>Generate Bracket</a></div>
-        <br>
-        <div id='bracket-wrap'>
-          <div id='matrix_titles'>Running your code,<br>Generating your bracket...</div>
-          <div id='matrix'></div>
-          <div id='bracket'></div>
-        </div>
+  <div class='heading'>[code your bracket]</div>
+  
+  {% include "./partials/show_flash.html" %}
+  <div class='container' id='front_page_container'>
+    <div class='row'>
+      <div id='front_message'>
+        <h2>Still using a mouse to fill out your bracket?</h2>
+        <p>Learn to Code while making a killer bracket. All while benefiting great non-profits advancing STEM education. All in about <strong>two minutes</strong>. Sound good?</p>
       </div>
+      <div id='front_buttons'>
+        <form id='waitlist_form'>
+        <input type='text' class='form-control cb_input' id='email' placeholder='email here'>
+        <input type='submit' class='btn btn-primary btn-lg btn-codersbracket' value="I want in">
+        </form>
+        <div id='thanks'>Thanks! You'll be the first to know when Coder's Bracket is live.</div>
+      </div>
+      <div id='front_buttons' class='hide'>
+        <a href='' class='btn btn-primary btn-lg btn-codersbracket'>Code your bracket</a>
+        <a href='' class='btn btn-primary btn-lg btn-codersbracket'>Watch 2-min tutorial</a>
+      </div>
+    </div> <!-- end row -->
+  </div> <!-- end content_container -->
+  <div id="text-editor-animate">
+		<img src="/images/text-editor3.png" />
+	</div>
 
-      {% raw %}
-      <script id="bracket-box" type="text/x-handlebars-template">
-        <div class='b b{{side}} b{{round}}{% if round==4 %} first_round{%endif%}' id='b{{round}}-{{spot}}-{{side}}'>
-            <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
-            <div class='team bottom'>{% if team2 %}{{team2.seed}} {{team2.name}}{%endif%}</div>
-        </div>
-      </script>
-      {% endraw %}
-      
 {% endblock %}
 
 {% block bottomscripts %}
-<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
-<script>
-  var editor = setupAceEditor();
-</script>
-
-<script>
-  var teams = {{teams_json()}};
   
-  var bracket = new Bracket(teams);
-  var html = bracket.generateBracketHtml();
-  
-  $('#bracket').html(html);
-  $('#startbutton').click(function(e) {
-    e.preventDefault();
-    $('#bracket').html(html);
-
-    bracket.toggleSpinner(true);
-    var f = eval("("+editor.getValue()+")");
-    if (_.isFunction(f)) {
-      bracket.play(f, function () {
-        bracket.toggleSpinner(false);
-      });
-    } else {
-      alert("It seems like your function has an error in it.")
-    }
-    
-    window.scrollTo(0,360);
-  });
-</script>
-
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
+  <script>
+    setupEvents();
+  </script>
 {% endblock %}

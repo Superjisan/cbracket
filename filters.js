@@ -19,7 +19,7 @@ module.exports = function (swig) {
       return "Logged in as "+full_name(user);
     } else {
       // return "<a href='/login'>Log In</a> or <a href='/register'>Sign Up</a>";
-      return "Welcome! Log in or Register";
+      return "Log in or Register";
     }
   };
   login_or_user.safe = true;

@@ -17,32 +17,39 @@ var teamSchema = new Schema({
 });
 
 */
-models.connection.db.dropCollection('teams');
-global.allteams = [];
-
-teams.eachRow(function(row,index){
-  if (index>0) {
-    var obj = {
-      name: row[2],
-      total_games: row[3],
-      wins: row[4],
-      losses: row[5],
-      seed: Math.ceil(row[1]/4),
-      win_pct: row[6].slice(0,row[6].length-1)*1/100,
-      pts_for: row[7],
-      pts_against: row[8],
-      pts_game: row[9],
-      pts_allowed: row[10],
-      score_margin: row[11]
-    };
-    global.allteams.push(obj);
-    var team = new models.Team(obj);
-    team.save();
-  }
-}, function () {
-  console.log("length: "+global.allteams.length);
-  global.allteams.forEach(function(team) {
-    console.log(team);
+models.connection.once('open', function() {
+  models.connection.db.dropCollection('teams', function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log('Dropped teams, now re-adding Teams');
+    }
+    global.allteams = [];
+    teams.eachRow(function(row,index){
+      if (index>0) {
+        var obj = {
+          sid: index,
+          year: 2013,
+          name: row[2],
+          total_games: row[3],
+          wins: row[4],
+          losses: row[5],
+          seed: Math.ceil(row[1]/4),
+          win_pct: row[6].slice(0,row[6].length-1)*1/100,
+          pts_for: row[7],
+          pts_against: row[8],
+          pts_game: row[9],
+          pts_allowed: row[10],
+          score_margin: row[11]
+        };
+        global.allteams.push(obj);
+        var team = new models.Team(obj);
+        team.save();
+      }
+    }, function () {
+      console.log("Teams added: "+global.allteams.length);
+      process.exit()
+    });
   });
-});
+})
 

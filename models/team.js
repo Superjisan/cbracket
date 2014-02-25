@@ -3,6 +3,8 @@ module.exports = function(m) {
   var Schema = mongoose.Schema;
 
   var teamSchema = new Schema({
+    sid: Number,
+    year: Number,
     name: String,
     total_games: Number,
     wins: Number,

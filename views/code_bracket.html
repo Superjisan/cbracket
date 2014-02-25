@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  {% include "./partials/show_flash.html" %}
+        <div class='row'>
+          <div class='col-lg-3 col-md-4'>
+            <div id='content_container'>
+                  <div id='editor_w_buttons'>
+                    <div id='editor_container'>
+    {#                  
+                      <div id='editor_screen'>
+                        <h1>Want to try it out?</h1><br>
+                        <a href="/code_bracket" class='btn btn-warning' id='icancode_button'><i class="icon-thumbs-up"></i>I can code<div class='subtitle'>Let's go</div></a>
+                        <a href="#" class='btn btn-warning' id="icanlearn_button"><i class="icon-youtube-play"></i>I can learn<div class='subtitle'>The 2 minute crash course</div></a><br>
+                        <br>
+                        <p>Or, <a href='#'>learn more</a> about Coder's Bracket.</p>
+                      </div>
+    #}
+                      <div id='editor'>function(game, team1, team2){
+  if (team1.seed > team2.seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+}</div>
+                    </div> <!-- end editor_container -->
+                    <div id='generate_button'><a href='#' class='btn btn-info' id="startbutton">Generate Bracket</a></div>
+                  </div> <!-- end editor_w_buttons -->
+                    <br>
+            </div> <!-- end content_container -->
+          </div> <!-- end left column -->
+          <div class='col-lg-9 col-md-8'>
+            <div id='bracket-wrap'>
+              <div id='matrix_titles'>Generating your bracket...</div>
+              <div id='matrix'></div>
+              <div id='bracket' class='bracket_blur'></div>
+            </div><!-- end bracket-wrap -->
+            
+            {% raw %}
+            <script id="bracket-box" type="text/x-handlebars-template">
+              <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
+                  <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
+                  <div class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
+              </div>
+            </script>
+            {% endraw %}
+          </div>
+{% endblock %}
+
+{% block bottomscripts %}
+<script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
+<script>
+  var editor = setupAceEditor();
+</script>
+
+<script>
+  var teams = {{teams_json()}};
+  var bracket = new Bracket(teams);
+  var html = bracket.generateBracketHtml();
+  
+  var start_coding = function(e) {
+    $('#bracket').fadeIn(400,function() {});
+    $('#editor_w_buttons').animate({
+      top: "0px"
+    }, {
+      duration: 500,
+      complete: function() {
+        $('#editor_screen').fadeOut(500);
+      }
+    });
+    $('#pagetitle').fadeOut();
+    $('#bracket').removeClass('bracket_blur');
+    $('#bracket-wrap').fadeIn();
+    $('#bracket-wrap').animate({top: '300px'});
+    $('#generate_button').show();
+  };
+
+
+  $('#bracket').html(html);
+  $('#icancode_button').click(start_coding);
+  $('#startbutton').click(function(e) {
+    e.preventDefault();
+    $('#bracket').html(html);
+
+    bracket.toggleSpinner(true);
+    var f = eval("("+editor.getValue()+")");
+    if (_.isFunction(f)) {
+      bracket.play(f, function () {
+        bracket.toggleSpinner(false);
+      });
+    } else {
+      alert("It seems like your function has an error in it.")
+    }
+    
+    window.scrollTo(0,360);
+  });
+</script>
+
+{% endblock %}
