@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>{% block title%}{% endblock%}</title>
+    <title>{% block title%}Coder's Bracket - A Project by Fullstack Academy{% endblock%}</title>
 
     <!-- Bootstrap core CSS -->
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
@@ -30,7 +30,7 @@
     <![endif]-->
   </head>
 
-  <body>
+  <body{% if homepage %} class="home"{% endif %}>
 
     <!-- Wrap all page content here -->
       <nav class="navbar navbar-inverse navbar-default" role="navigation">
@@ -49,12 +49,12 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#">Build a Bracket</a></li>
-              <!-- <li><a href="#">My Brackets</a></li> -->
-              <li><a href="#">Standings</a></li>
-              <li><a href="#">Timeline</a></li>
-              <li><a href="#">About Us</a></li>
+              <li class="active"><a href="/">Home</a></li>
+              <!-- <li><a href="#">Build a Bracket</a></li>
+              <li><a href="#">About Us</a></li> 
+              <li><a href="#">Standings</a></li> -->
+              <li><a href="/timeline">Timeline</a></li>
+              <li><a href="/contact">Contact</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <li id='fssig'> <span id='sig_start_message'>A product of Love by </span><div id='sig_img_cont'><a href="http://www.fullstackacademy.com"><img src='/images/FullStack-Logo-white.png' id='fslogo'><img src='/images/FullStack-Name-Only.png'></a></div></li>

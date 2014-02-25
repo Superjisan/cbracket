@@ -4,11 +4,34 @@
  */
 
 var mailer = require('../modules/mailer');
+var fs = require('fs');
+var path = require('path');
 
 exports.index = function(req, res){
-  res.render('index');
+  res.render('index', {homepage: true});
 };
 
+// exports.contact = function(req, res){
+//   res.render('contact', {homepage: true});
+// };
+// 
+// exports.timeline = function (req,res) {
+//   res.render('timeline');
+// };
+
+exports.show_page = function (req,res) {
+  var name = req.params.catch_all;
+  // console.log(path.relative(__dirname, "views/"+name+'.html'));
+  // console.log(__dirname);
+  // 
+  fs.exists(path.resolve(__dirname, "../views/"+name+'.html'), function(exists) {
+    if (exists) {
+      res.render(name);
+    } else {
+      res.render('error');
+    }
+  });
+};
 
 exports.code_bracket = function(req,res) {
   var Bracket = require('../modules/bracket');
@@ -46,3 +69,4 @@ exports.subscribe = function (req,res) {
     res.end('{"response": "'+err.message+'"}');
   }
 };
+

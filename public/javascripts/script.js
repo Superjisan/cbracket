@@ -277,7 +277,7 @@ var setupEvents = function () {
   $(function () {
     var getImgBottom = function () {
       var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
-      var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 80;
+      var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
       return image_bottom;
     };
     

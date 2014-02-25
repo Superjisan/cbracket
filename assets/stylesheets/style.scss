@@ -2,9 +2,14 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
 html, body {
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Open Sans", Helvetica, Arial, sans-serif;
   height: 100%;
-  /*  background: url(/images/basketball-on-court-wallpaper-50.jpg); */
+  background: white;
+}
+
+@font-face {font-family: 'Nexa Black';src: url('webfonts/2A0305_0_0.eot');src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2A0305_0_0.woff') format('woff'),url('webfonts/2A0305_0_0.ttf') format('truetype');}
+
+body.home {
     background: #f34c0f; /* Old browsers */
     background: -moz-linear-gradient(top, #f34c0f 50%, #e23710 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710)); /* Chrome,Safari4+ */
@@ -15,8 +20,6 @@ html, body {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f34c0f', endColorstr='#e23710',GradientType=0 ); /* IE6-9 */
     overflow: hidden;
 }
-
-@font-face {font-family: 'Nexa Black';src: url('webfonts/2A0305_0_0.eot');src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2A0305_0_0.woff') format('woff'),url('webfonts/2A0305_0_0.ttf') format('truetype');}
 
 a {
   color: #FFF;
@@ -471,4 +474,15 @@ $line_height: 0.016*$b_height;
 }
 /*END ANIMATION*/
 
+#dates_table {
+  width: 80%;
+  margin: 0 auto;
+  &:first-child {
+    border: 0;
+  }
+  
+  .date {
+    width: 160px;
+  }
+}
 

@@ -64,16 +64,16 @@ passport.deserializeUser(models.User.deserializeUser());
 
 
 app.get('/', routes.index);
-app.get('/users', user.list);
 app.get('/code_bracket', routes.code_bracket);
+app.post('/waitlist', routes.subscribe);
 app.get('/verify/:token', auth.verify_email);
 app.get('/verify/resend', auth.verify_email);
 app.get('/register', auth.register_page);
 app.post('/register', auth.register);
 app.get('/login', auth.login_page);
 app.post('/login', auth.login);
-app.post('/waitlist', routes.subscribe);
 app.get('/logout', auth.logout);
+app.get('/:catch_all', routes.show_page)
 
 global.allteams = [];
 
