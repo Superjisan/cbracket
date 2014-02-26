@@ -11,13 +11,13 @@ exports.index = function(req, res){
   res.render('index', {homepage: true});
 };
 
-// exports.contact = function(req, res){
-//   res.render('contact', {homepage: true});
-// };
-// 
-// exports.timeline = function (req,res) {
-//   res.render('timeline');
-// };
+exports.contact = function(req, res){
+  res.render('contact');
+};
+
+exports.timeline = function (req,res) {
+  res.render('timeline');
+};
 
 exports.show_page = function (req,res) {
   var name = req.params.catch_all;

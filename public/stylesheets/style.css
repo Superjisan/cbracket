@@ -631,10 +631,7 @@ a {
     bottom: 0px; } }
 
 /*END ANIMATION*/
-#dates_table {
-  width: 80%;
-  margin: 0 auto; }
-  #dates_table:first-child {
-    border: 0; }
-  #dates_table .date {
-    width: 160px; }
+#dates_table:first-child {
+  border: 0; }
+#dates_table .date {
+  width: 160px; }
