@@ -1,11 +1,12 @@
 var fs = require('fs');
 var csv = require('csv');
+var path = require('path');
 
 
 module.exports = {
     eachRow: function (callback, finallycall) {
       csv()
-      .from.path('/Users/nimit/Work/codeyourbracket/random/2013-NCAA-Regular-Season-Game-Results.csv', { delimiter: ',', escape: '"' })
+      .from.path(path.resolve(__dirname, '../data/2013-NCAA-Regular-Season-Game-Results.csv'), { delimiter: ',', escape: '"' })
       // .to.stream(fs.createWriteStream(__dirname+'/sample.out'))
       .transform( function(row){
         row.unshift(row.pop());
