@@ -10,11 +10,11 @@
     <title>{% block title%}Coder's Bracket - A Project by Fullstack Academy{% endblock%}</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
     
     <!-- Custom styles for this template -->
     <!-- <link href="/stylesheets/bootstrap.min.css" rel="stylesheet"> -->
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
     <!-- <link href="//netdna.bootstrapcdn.com/bootswatch/3.1.0/spacelab/bootstrap.min.css" rel="stylesheet"> -->
     <link href="/stylesheets/bootstrap_overrides.css" rel="stylesheet">
     <link href="/stylesheets/style.css" rel="stylesheet">
@@ -31,7 +31,7 @@
   </head>
 
   <body{% if homepage %} class="home"{% endif %}>
-
+  
     <!-- Wrap all page content here -->
       <nav class="navbar navbar-inverse navbar-default" role="navigation">
         <div class="container-fluid">
@@ -49,10 +49,11 @@
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="/">Home</a></li>
+              <li><a href="/">Home</a></li>
               <!-- <li><a href="#">Build a Bracket</a></li>
               <li><a href="#">About Us</a></li> 
               <li><a href="#">Standings</a></li> -->
+              <li><a href="/code_bracket">Code Bracket</a></li>
               <li><a href="/timeline">Timeline</a></li>
               <li><a href="/contact">Contact</a></li>
             </ul>
@@ -87,14 +88,11 @@
         {% block content %} {% endblock %}
     </div> <!-- end container -->
 
-    <div id="footer">
-      <div class="container">
-        <!-- <p class="text-muted">© Copyright 2014, <a href="http://www.fullstackacademy.com">Fullstack Academy</a></p> -->
-      </div>
-    </div>
-
+    <!-- <div id="footer">
+        <p class="text-muted">© Copyright 2014, <a href="http://www.fullstackacademy.com">Fullstack Academy</a></p>
+    </div> -->
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="/javascripts/async.js"></script>
     <script src="/javascripts/swig.min.js"></script>

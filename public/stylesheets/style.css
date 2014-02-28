@@ -30,7 +30,7 @@ body.home {
   overflow: hidden; }
 
 a {
-  color: #FFF; }
+  color: #C43410; }
   a:hover {
     color: #FF9600;
     text-decoration: underline; }
@@ -108,7 +108,7 @@ a {
     padding: 5px 0; }
   #fssig span {
     position: absolute;
-    left: 10px;
+    left: 0px;
     width: 220px;
     z-index: 0;
     color: #fff;
@@ -124,25 +124,47 @@ a {
   margin-top: 20px; }
 
 #editor {
-  width: 500px;
-  height: 100%;
+  width: 100%;
+  height: 400px;
   margin: 0px auto;
-  background: #E0EFFF;
+  background: #FFF7DB;
   /*    background: #0D1E3C;*/
-  font-size: 18px;
+  font-size: 14px;
   line-height: 150%;
   overflow: hidden;
   z-index: 45; }
 
+@media (max-width: 750px) {
+  #editor {
+    height: 300px; } }
+
+@media (min-width: 750px) and (max-width: 970px) {
+  #editor {
+    height: 500px; } }
+
+@media (min-width: 970px) and (max-width: 1170px) {
+  #editor {
+    height: 600px; } }
+
+@media (min-width: 1170px) {
+  #editor {
+    height: 700px; } }
+
+.ace_scrollbar {
+  display: none !important; }
+
+.ace_scroller {
+  overflow-x: hidden !important; }
+
 #editor_container {
-  padding: 20px;
+  padding: 20px 10px;
   background: #fff;
-  width: 560px;
-  height: 800px;
+  width: 100%;
+  height: 100%;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
   /*  border-radius: 20px;*/
-  background: #E0EFFF;
+  background: #FFF7DB;
   /*  position: absolute;*/
   /*  background: #0D1E3C;*/ }
 
@@ -183,8 +205,7 @@ a {
 
 #generate_button {
   text-align: center;
-  margin-bottom: 10px;
-  display: none; }
+  margin-bottom: 10px; }
 
 /* Wrapper for page content to push down footer */
 #wrap {
@@ -217,31 +238,62 @@ a {
   margin: 0 auto; }
 
 #bracket-wrap {
-  position: absolute;
+  /*  position: absolute;
   top: 0;
+*/
   background-color: #fff;
-  padding: 20px;
+  margin-right: 10px;
+  width: 100%;
   /*  display:none;*/ }
 
 #bracket {
-  width: 1200px;
+  /*  width: 2*$rounds*100px + 200px;*/
+  width: 100%;
+  min-width: 700px;
   height: 950px;
   /*  border: 1px solid #ccc;*/
   position: relative;
   overflow: hidden; }
 
+/*
 .bracket_blur {
   -webkit-filter: blur(5px);
-  -moz-filter: blur(5px);
-  -o-filter: blur(5px);
-  -ms-filter: blur(5px);
-  filter: blur(5px); }
+   -moz-filter: blur(5px);
+   -o-filter: blur(5px);
+   -ms-filter: blur(5px);
+   filter: blur(15px);
+}
+*/
+.bracket_blur {
+  -webkit-filter: blur(3px);
+  -moz-filter: blur(3px);
+  -ms-filter: blur(3px);
+  -o-filter: blur(3px);
+  filter: blur(3px);
+  filter: url(#blur);
+  filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius='3'); }
+
+#bracket_blur_image {
+  position: absolute;
+  top: 0;
+  left: 0; }
+  #bracket_blur_image img {
+    width: 100%;
+    height: 100%; }
+
+#bracket_status {
+  margin-bottom: 10px;
+  font: bold 18px "open sans", arial, sans-serif;
+  display: none; }
+  #bracket_status div {
+    margin-top: 4px; }
 
 .b {
   position: absolute;
   border: 1px solid black;
   background: #fff;
-  width: 500px;
+  /*  width: $rounds*100px;*/
+  width: 45%;
   z-index: 1; }
   .b .top {
     position: absolute;
@@ -252,7 +304,7 @@ a {
     bottom: 0;
     opacity: 0; }
   .b .team {
-    font-size: 12.35px; }
+    font-size: 11.4px; }
   .b:hover {
     /*    background: yellow;*/ }
     .b:hover .team {
@@ -276,11 +328,11 @@ a {
   padding-left: 3px; }
 
 #b0-0-left {
-  left: -0px;
+  left: -0%;
   top: 237.5px; }
 
 #b0-0-right {
-  right: -0px;
+  right: -0%;
   top: 237.5px; }
 
 .b0 {
@@ -288,19 +340,19 @@ a {
   z-index: 0; }
 
 #b1-0-left {
-  left: -100px;
+  left: -9%;
   top: 118.75px; }
 
 #b1-0-right {
-  right: -100px;
+  right: -9%;
   top: 118.75px; }
 
 #b1-1-left {
-  left: -100px;
+  left: -9%;
   top: 593.75px; }
 
 #b1-1-right {
-  right: -100px;
+  right: -9%;
   top: 593.75px; }
 
 .b1 {
@@ -308,35 +360,35 @@ a {
   z-index: 1; }
 
 #b2-0-left {
-  left: -200px;
+  left: -18%;
   top: 59.375px; }
 
 #b2-0-right {
-  right: -200px;
+  right: -18%;
   top: 59.375px; }
 
 #b2-1-left {
-  left: -200px;
+  left: -18%;
   top: 296.875px; }
 
 #b2-1-right {
-  right: -200px;
+  right: -18%;
   top: 296.875px; }
 
 #b2-2-left {
-  left: -200px;
+  left: -18%;
   top: 534.375px; }
 
 #b2-2-right {
-  right: -200px;
+  right: -18%;
   top: 534.375px; }
 
 #b2-3-left {
-  left: -200px;
+  left: -18%;
   top: 771.875px; }
 
 #b2-3-right {
-  right: -200px;
+  right: -18%;
   top: 771.875px; }
 
 .b2 {
@@ -344,67 +396,67 @@ a {
   z-index: 2; }
 
 #b3-0-left {
-  left: -300px;
+  left: -27%;
   top: 29.6875px; }
 
 #b3-0-right {
-  right: -300px;
+  right: -27%;
   top: 29.6875px; }
 
 #b3-1-left {
-  left: -300px;
+  left: -27%;
   top: 148.4375px; }
 
 #b3-1-right {
-  right: -300px;
+  right: -27%;
   top: 148.4375px; }
 
 #b3-2-left {
-  left: -300px;
+  left: -27%;
   top: 267.1875px; }
 
 #b3-2-right {
-  right: -300px;
+  right: -27%;
   top: 267.1875px; }
 
 #b3-3-left {
-  left: -300px;
+  left: -27%;
   top: 385.9375px; }
 
 #b3-3-right {
-  right: -300px;
+  right: -27%;
   top: 385.9375px; }
 
 #b3-4-left {
-  left: -300px;
+  left: -27%;
   top: 504.6875px; }
 
 #b3-4-right {
-  right: -300px;
+  right: -27%;
   top: 504.6875px; }
 
 #b3-5-left {
-  left: -300px;
+  left: -27%;
   top: 623.4375px; }
 
 #b3-5-right {
-  right: -300px;
+  right: -27%;
   top: 623.4375px; }
 
 #b3-6-left {
-  left: -300px;
+  left: -27%;
   top: 742.1875px; }
 
 #b3-6-right {
-  right: -300px;
+  right: -27%;
   top: 742.1875px; }
 
 #b3-7-left {
-  left: -300px;
+  left: -27%;
   top: 860.9375px; }
 
 #b3-7-right {
-  right: -300px;
+  right: -27%;
   top: 860.9375px; }
 
 .b3 {
@@ -412,131 +464,131 @@ a {
   z-index: 3; }
 
 #b4-0-left {
-  left: -400px;
+  left: -36%;
   top: 14.84375px; }
 
 #b4-0-right {
-  right: -400px;
+  right: -36%;
   top: 14.84375px; }
 
 #b4-1-left {
-  left: -400px;
+  left: -36%;
   top: 74.21875px; }
 
 #b4-1-right {
-  right: -400px;
+  right: -36%;
   top: 74.21875px; }
 
 #b4-2-left {
-  left: -400px;
+  left: -36%;
   top: 133.59375px; }
 
 #b4-2-right {
-  right: -400px;
+  right: -36%;
   top: 133.59375px; }
 
 #b4-3-left {
-  left: -400px;
+  left: -36%;
   top: 192.96875px; }
 
 #b4-3-right {
-  right: -400px;
+  right: -36%;
   top: 192.96875px; }
 
 #b4-4-left {
-  left: -400px;
+  left: -36%;
   top: 252.34375px; }
 
 #b4-4-right {
-  right: -400px;
+  right: -36%;
   top: 252.34375px; }
 
 #b4-5-left {
-  left: -400px;
+  left: -36%;
   top: 311.71875px; }
 
 #b4-5-right {
-  right: -400px;
+  right: -36%;
   top: 311.71875px; }
 
 #b4-6-left {
-  left: -400px;
+  left: -36%;
   top: 371.09375px; }
 
 #b4-6-right {
-  right: -400px;
+  right: -36%;
   top: 371.09375px; }
 
 #b4-7-left {
-  left: -400px;
+  left: -36%;
   top: 430.46875px; }
 
 #b4-7-right {
-  right: -400px;
+  right: -36%;
   top: 430.46875px; }
 
 #b4-8-left {
-  left: -400px;
+  left: -36%;
   top: 489.84375px; }
 
 #b4-8-right {
-  right: -400px;
+  right: -36%;
   top: 489.84375px; }
 
 #b4-9-left {
-  left: -400px;
+  left: -36%;
   top: 549.21875px; }
 
 #b4-9-right {
-  right: -400px;
+  right: -36%;
   top: 549.21875px; }
 
 #b4-10-left {
-  left: -400px;
+  left: -36%;
   top: 608.59375px; }
 
 #b4-10-right {
-  right: -400px;
+  right: -36%;
   top: 608.59375px; }
 
 #b4-11-left {
-  left: -400px;
+  left: -36%;
   top: 667.96875px; }
 
 #b4-11-right {
-  right: -400px;
+  right: -36%;
   top: 667.96875px; }
 
 #b4-12-left {
-  left: -400px;
+  left: -36%;
   top: 727.34375px; }
 
 #b4-12-right {
-  right: -400px;
+  right: -36%;
   top: 727.34375px; }
 
 #b4-13-left {
-  left: -400px;
+  left: -36%;
   top: 786.71875px; }
 
 #b4-13-right {
-  right: -400px;
+  right: -36%;
   top: 786.71875px; }
 
 #b4-14-left {
-  left: -400px;
+  left: -36%;
   top: 846.09375px; }
 
 #b4-14-right {
-  right: -400px;
+  right: -36%;
   top: 846.09375px; }
 
 #b4-15-left {
-  left: -400px;
+  left: -36%;
   top: 905.46875px; }
 
 #b4-15-right {
-  right: -400px;
+  right: -36%;
   top: 905.46875px; }
 
 .b4 {
@@ -548,20 +600,14 @@ a {
   border-right: 0;
   border-left: 0; }
 
-/*#matrix {
-  background: url(http://emergenceearth.com/wp-content/uploads/2013/12/matrix.gif);
+#matrix {
   border-radius: 20px;
-  opacity: .3;
-  width: 700px;
-  height: 300px;;
+  opacity: 0.6;
   z-index: 10;
   position: absolute;
-  top: 280px;
-  left: 250px;
-  display:none;
-}
+  text-align: center;
+  font: normal 24px "open sans", arial, sans-serif; }
 
-*/
 #matrix_titles {
   display: none;
   color: #fff;
