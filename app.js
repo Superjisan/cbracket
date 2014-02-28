@@ -62,7 +62,6 @@ passport.use(models.User.createStrategy());
 passport.serializeUser(models.User.serializeUser());
 passport.deserializeUser(models.User.deserializeUser());
 
-
 app.get('/', routes.index);
 app.get('/timeline', routes.timeline);
 app.get('/contact', routes.contact);
