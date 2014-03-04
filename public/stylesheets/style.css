@@ -144,11 +144,11 @@ a {
 
 @media (min-width: 970px) and (max-width: 1170px) {
   #editor {
-    height: 600px; } }
+    height: 500px; } }
 
 @media (min-width: 1170px) {
   #editor {
-    height: 700px; } }
+    height: 600px; } }
 
 .ace_scrollbar {
   display: none !important; }
@@ -681,3 +681,13 @@ a {
   border: 0; }
 #dates_table .date {
   width: 160px; }
+
+.modal-content {
+  padding: 20px; }
+
+.inline {
+  display: inline-block;
+  width: 49%; }
+
+.inline.second {
+  margin-left: 2%; }

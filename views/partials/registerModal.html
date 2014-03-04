@@ -1,0 +1,50 @@
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title" id="myModalLabel">Introduce Yourself</h3>
+      </div>
+      <form id='saveBracketNewUser' action="/register" method='post'>
+      <div class="modal-body">
+        <p>Looks like you haven't saved a bracket on <strong>Coder's Bracket</strong> before. Tell us a little more about yourself below.</p>
+        <br>
+        <!-- <h3>Who's bracket is this?</h3> -->
+          <div class='form-group'>
+            <div class="form-group inline">
+              <label for="regform_firstname">First Name</label>
+              <input type="text" class="form-control input-lg" name='first_name' id="regform_firstname">
+            </div><div class="form-group inline second">
+              <label for="regform_lastname">Last Name</label>
+              <input type="text" class="form-control input-lg" name='last_name' id="regform_lastname">
+            </div>
+            <div class="form-group">
+              <label for="regform_nickname">Public Nickname</label>
+              <input type="text" class="form-control input-lg" name='nickname' id="regform_nickname">
+            </div>
+            <div class="form-group">
+              <label for="regform_email">Email address</label>
+              <input type="email" class="form-control input-lg" name='email' id="regform_email" placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+              <label for="regform_password">Choose Password</label>
+              <input type="password" class="form-control input-lg" name='password' id="regform_password" placeholder="Password">
+            </div>
+            <div class="form-group">
+              <label for="regform_favteam">Your Favorite Team</label>
+              <select class='form-control input-lg' name='fav_team' id="regform_favteam">
+              {% for team in sorted_teams %}
+                <option value='{{team.sid}}'>{{team.name}}</option>
+              {% endfor %}
+              </select>
+            </div>
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
+        <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Continue...">
+      </div>
+      </form>
+    </div>
+  </div>
+</div>

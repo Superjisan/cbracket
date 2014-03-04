@@ -1,6 +1,7 @@
 var passport = require('passport');
 var models = require('../models/connect');
 var mailer = require('../modules/mailer');
+var url = require('url');
 
 exports.register_page = function(req, res) {
     res.render('register', { });
@@ -24,6 +25,12 @@ var createTokenAndSendVerifyEmail = function(req, user) {
 };
 
 exports.register = function(req, res) {
+  var retjson = false;
+  var url_parts = url.parse(req.url);
+  if (url_parts.path.indexOf('json')>=0) {
+    retjson = true;
+  }
+  
   models.User.register(new models.User({ 
     name: {first: req.body.first_name, last: req.body.last_name}, 
     nickname: req.body.nickname,
@@ -36,10 +43,17 @@ exports.register = function(req, res) {
     } else {
       createTokenAndSendVerifyEmail(req, user);
     }
-    
+    var theuser = user;
     req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
     passport.authenticate('local')(req, res, function () {
-      res.redirect('/');
+      if (retjson) {
+        res.setHeader('Content-Type', 'application/json');
+        delete theuser['salt'];
+        delete theuser['hash'];
+        res.end(JSON.stringify({user:theuser}));
+      } else {
+        res.redirect('/');
+      }
     });
   });
 };
@@ -83,10 +97,11 @@ exports.login = function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
-      return res.redirect('/users/' + user.username);
+      // return res.redirect('/users/' + user.username);
+      res.redirect('/');
     });
   })(req, res, next);
-  res.redirect('/');
+  // res.redirect('/');
 };
 
 exports.logout = function(req, res) {

@@ -1,6 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  
+  <!-- Modals -->
+  {% include "./partials/registerModal.html" %}
+  {% include "./partials/saveBracketModal.html" %}
+  
   {% include "./partials/show_flash.html" %}
         <div class='row'>
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
@@ -32,7 +37,7 @@
             <div id='bracket_status' class='alert alert-success clearfix'>
               <div>Done! Check out your newly generated code-bracket below.</div>
               <div style='text-align: center; margin-top: 14px;'>
-                <a href='#' id='save_bracket_btn' class='btn btn-success btn-lg'>Save My Bracket</a>
+                <a href='#' id='save_bracket_btn' class='btn btn-success btn-lg'>Save Your Bracket</a>
                 <a href='#' id='modify_code_btn' class='btn btn-warning btn-lg' style='margin-right: 10px;'>Modify the Code</a>
               </div>
             </div>
@@ -70,10 +75,15 @@
 </script>
 
 <script>
-  var teams = {{teams_json()}};
+  var teams = {{teams|json|safe}};
   var bracket = new Bracket(teams);
   var html = bracket.generateBracketHtml();
-
+  
+  {% if user %}
+    var logged_in_user = {{user|json}};
+  {% else %}
+    var logged_in_user = false;
+  {% endif %}
 /*  
   var start_coding = function(e) {
     $('#bracket').fadeIn(400,function() {});

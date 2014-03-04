@@ -50,9 +50,10 @@ Game.prototype.render = function (callback) {
   $("#"+this.domId+" .bottom").html(this.team2.seed + ". " + this.team2.name);
   
   var self = this;
+  var animation_duration = 0;
   if($("#"+self.domId).length) {
-    $("#"+self.domId+" .top").fadeTo(70,1,function() {
-      $("#"+self.domId+" .bottom").fadeTo(70, 1,function() {
+    $("#"+self.domId+" .top").fadeTo(animation_duration,1,function() {
+      $("#"+self.domId+" .bottom").fadeTo(animation_duration, 1,function() {
         callback();
       });
     });
@@ -74,9 +75,15 @@ function Bracket(teams) {
     4: [],
     5: []
   };
-  this.data = [{},{},{},{},{},{}];
-  
+  this.resetData();
 }
+
+Bracket.prototype.resetData = function () {
+  this.data = [];
+  for (var i=0; i < 6; i++) {
+    this.data.push([[],[]]);
+  }
+};
 
 Bracket.prototype.getHtml = function () {
   return this.html;
@@ -85,14 +92,16 @@ Bracket.prototype.getHtml = function () {
 Bracket.prototype.recordWin = function(game, winner) {
   var winning_team = (winner === 1) ? game.team1 : game.team2;
 
-  this.data[game.round][game.division+'-'+game.spot] = winning_team.sid;
+  // this.data[game.round][game.division+'-'+game.spot] = winning_team.sid;
+  var leftRight = (game.division <= 2)?0:1; // left is 0, right is 1
+  this.data[game.round][leftRight][game.spot] = winning_team.sid;
   
   var bracket_serial = $('#serialized_bracket');
   bracket_serial.val( bracket_serial.val() + winning_team.sid + "," );
 };
 
 Bracket.prototype.play = function(playFunc, finishFunc) {
-  this.data = [{},{},{},{},{},{}];
+  this.resetData();
   this.games[0] = [];
   this.games[1] = [];
   this.games[2] = [];
@@ -342,6 +351,12 @@ var expandBracket = function () {
   }, 400);
 };
 
+var showSaveBracketNewUser = function() {
+  $('#registerModal').modal();
+  // $('#saveBracketModal').modal();
+  
+};
+
 var setupBracketEvents = function (bracket) {
   $('#startbutton').click(function(e) {
     e.preventDefault();
@@ -389,17 +404,63 @@ var setupBracketEvents = function (bracket) {
     init_bracket_msg.css('left', newleft + "px");
     init_bracket_msg.css('top', newtop + "px");
   };
-  
-  var save_clicked = function(e) {
-    if (!logged_in_user){
-      
-    }
-  };
-  
   $(center_msg);
   $(window).resize(center_msg);
   
-  
+  var save_clicked = function(e) {
+    if (!logged_in_user){
+      showSaveBracketNewUser();
+    }
+    e.preventDefault();
+  };
+
+  $("#saveBracketNewUser").on("submit", function(event) {
+    event.preventDefault();
+    // $(this).serialize();
+    var first_name = this.first_name.value;
+    var last_name = this.last_name.value;
+    var email = this.email.value;
+    var nickname = this.nickname.value;
+    var password = this.password.value;
+    
+    var params = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      nickname: nickname,
+      password: password
+    };
+
+    $.post('/register.json', params, function(data, textStatus, xhr) {
+      $('#registerModal').modal('hide');
+      $('#saveBracketModal').modal();
+      // bracket: JSON.stringify(bracket.data);
+      
+    });
+  });
+    
+  $('#save_bracket_btn').click(save_clicked);
+  $('#save_new_user_btn').click(function(e) {
+    
+  });
+
+  $("#saveBracketForm").on("submit", function(event) {
+    event.preventDefault();
+    // $(this).serialize();
+    var bracket_name = this.bracket_name.value;
+    var bracket_data = JSON.stringify(bracket.data);
+    
+    var params = {
+      bracket_data: bracket_data,
+      bracket_name: bracket_name
+    };
+
+    $.post('/save_bracket', params, function(data, textStatus, xhr) {
+      $('#saveBracketModal').modal('hide');
+      window.location = "/code_bracket/"+data._id;
+    });
+  });
+
 };
 // var expandEditor = function () {
 //   $('#code_editor_col').animate({

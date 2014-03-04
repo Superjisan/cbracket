@@ -54,14 +54,26 @@
               <li><a href="#">About Us</a></li> 
               <li><a href="#">Standings</a></li> -->
               <li><a href="/code_bracket">Code Bracket</a></li>
-              <li><a href="/timeline">Timeline</a></li>
-              <li><a href="/contact">Contact</a></li>
+              {% if user %}
+              <li><a href="/mybrackets">My Brackets</a></li>
+              <li><a href="/pools">Bracket Pools</a></li>
+              <li><a href="/standings">Standings</a></li>
+              {% endif %}
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contest Info <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/contest/timeline">Timeline</a></li>
+                  <li><a href="/contest/rules">Rules</a></li>
+                  <li><a href="/contest/sponsors">Sponsors</a></li>
+                </ul>
+              </li>
+              
+              <!-- <li><a href="/contact">Help</a></li> -->
             </ul>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right hide">
               <li id='fssig'> <span id='sig_start_message'>A product of Love by </span><div id='sig_img_cont'><a href="http://www.fullstackacademy.com"><img src='/images/FullStack-Logo-white.png' id='fslogo'><img src='/images/FullStack-Name-Only.png'></a></div></li>
               <!-- <li><a href="http://www.fullstackacademy.com" style='text-align: center;'><span style='font-family:georgia; text-transform: none;font-style: italic;'>A Project by </span> Fullstack Academy</a> </li> -->
             </ul>
-            {#
             <ul class="nav navbar-nav navbar-right">
               <!-- <li><a href="#">Link</a></li> -->
               <li class="dropdown">
@@ -78,7 +90,6 @@
                 </ul>
               </li>
             </ul>
-            #}
           </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
       </nav>
