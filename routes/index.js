@@ -3,6 +3,7 @@
  * GET home page.
  */
 
+var mongoose = require('mongoose');
 var mailer = require('../modules/mailer');
 var fs = require('fs');
 var path = require('path');
@@ -57,12 +58,51 @@ exports.code_bracket = function(req,res) {
   });
 };
 exports.view_code_bracket = function(req,res) {
+  
+  var isValidObjectID = function (str) {
+    // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver
+    str = str + '';
+    var len = str.length, valid = false;
+    if (len == 12 || len == 24) {
+      valid = /^[0-9a-fA-F]+$/.test(str);
+    }
+    return valid;
+  };
+  
+  var theuser;
+  if (req.user) {
+    theuser = req.user
+  }
   var id = req.params.id;
-  console.log('view code bracket: ',id);
+  if (!!id && isValidObjectID(id)) {
+    models.Bracket.find({_id: new mongoose.Types.ObjectId(id)}, function (err, data) {
+      if (data.length === 0) {
+        res.render('error', {title: "Bracket Not Found", message: "Are you sure this is a valid bracket? Please visit the <a href='/code_bracket'>create bracket page</a> to build a new one.<br><br>You can always <a href='/contact'>contact us</a> if you'd like help."});
+      } else {
+        var Bracket = require('../modules/bracket');
+        var bracket = new Bracket();
+        bracket.getTeams().addBack(function(err,teams) {
+          var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
+            return t1.name.localeCompare(t2.name);
+          });
+          var selectedteams = teams.slice(0,128);
+          res.render('view_code_bracket', {
+            bracket: data[0], 
+            user: theuser,
+            teams: selectedteams,
+            sorted_teams: sorted_teams
+          });
+        });
+      }
+    });
+  } else {
+    res.render('error');
+  }
 };
 
 exports.save_bracket = function(req,res) {
   console.log(req.body);
+  console.log(req.user);
   
   if (!!req.body.bracket_data) {
     var bracket_data = req.body.bracket_data;
@@ -116,5 +156,18 @@ exports.subscribe = function (req,res) {
     res.writeHead(400, {'Content-type': 'application/json'});
     res.end('{"response": "'+err.message+'"}');
   }
+};
+
+exports.teamsbysid = function(req,res) {
+  models.Team.find(function(err,teams) {
+    var teamsBySid = {};
+    
+    teams.forEach(function(team) {
+      teamsBySid[team.sid] = team;
+    });
+    
+    res.writeHead(200, {'Content-type': 'application/json'});
+    res.end(JSON.stringify(teamsBySid));
+  });
 };
 

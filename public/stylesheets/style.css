@@ -310,6 +310,11 @@ a {
     .b:hover .team {
       color: red; }
 
+.view_page .top {
+  opacity: 1; }
+.view_page .bottom {
+  opacity: 1; }
+
 .first_round .top {
   opacity: 1; }
 .first_round .bottom {

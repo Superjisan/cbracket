@@ -63,7 +63,8 @@ Game.prototype.render = function (callback) {
 
 };
 
-function Bracket(teams) {
+function Bracket(bracketData,teams) {
+  this.bracketData = bracketData;
   this.teams = teams;
   this.html = "";
   this.teamOrder = [1,16,8,9,5,12,4,13,6,11,3,14,7,10,2,15];
@@ -209,11 +210,27 @@ Bracket.prototype.getTeam = function (division, spot, firstOrSecondTeam) {
   
   var sub_seed = Math.ceil((spot+1)/8)-1+addTwo;
   var dbIndexForTeamObj = getDbIndexFromSeed(team_bracket_seed, sub_seed);
-  return this.teams[dbIndexForTeamObj];
+  var theteam = this.teams[dbIndexForTeamObj];
+  
+  if (typeof teamsbysid !== "undefined") {
+    retteam = teamsbysid[theteam.sid];
+  } else {
+    retteam = theteam;
+  }
+  return retteam;
   
 };
 
-Bracket.prototype.generateBracketHtml = function () {
+Bracket.prototype.getTeamFromData = function (round, division, spot, firstOrSecondTeam) {
+  var bracket = this.bracketData;
+  var leftOrRight = (division <= 2) ? 0:1;
+  var offset = (typeof firstOrSecondTeam != "undefined") ? firstOrSecondTeam:0;
+  var prevspot = Math.max((spot*2 + offset/2),0);
+  var sid = bracket[round+1][leftOrRight][prevspot];
+  return teamsbysid[sid];
+};
+
+Bracket.prototype.generateBracketHtml = function (bracket) {
   var teams = this.teams;
   var html="";
   var rounds = 5;
@@ -228,15 +245,27 @@ Bracket.prototype.generateBracketHtml = function () {
     for (var spot=0; spot<Math.pow(2,blevel); spot++) {
       division = Math.ceil((spot+1)/8);
       round = blevel+1;
+      
       if(blevel===4) {
+        // the initial first round
         teamleft1 = this.getTeam(division, spot);
-        teamleft1.seed = this.getSeed(spot);
-        
+        if (teamleft1) {
+          teamleft1.seed = this.getSeed(spot);
+        }
         teamleft2 = this.getTeam(division, spot, 2);
-        teamleft2.seed = this.getSeed(spot, 2);
+        if (teamleft2) {
+          teamleft2.seed = this.getSeed(spot, 2);
+        }
         var game = new Game(round, spot, division, blevel, teamleft1, teamleft2, "b"+blevel+"-"+spot+"-left");
-        // this.data[round][division+'-'+teamleft1.seed+'-'+teamleft2.seed] = 0;
         this.games[round].push(game);
+      } else if (blevel < 4){
+        if (this.bracketData) {
+          // all rounds after the first round
+          teamleft1 = this.getTeamFromData(round, division, spot);
+          teamleft2 = this.getTeamFromData(round, division, spot, 2);
+          var game = new Game(round, spot, division, blevel, teamleft1, teamleft2, "b"+blevel+"-"+spot+"-left");
+          this.games[round].push(game);
+        }
       }
       
       html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
@@ -244,14 +273,27 @@ Bracket.prototype.generateBracketHtml = function () {
     for (var spot=0; spot<Math.pow(2,blevel); spot++) {
       round = blevel+1;
       if(blevel===4) {
+        // the initial first round
         division = Math.ceil((spot+1)/8)+2;
         teamright1 = this.getTeam(division, spot);
-        teamright1.seed = this.getSeed(spot);
+        if (teamright1) {
+          teamright1.seed = this.getSeed(spot);
+        }
         teamright2 = this.getTeam(division, spot, 2);
-        teamright2.seed = this.getSeed(spot, 2);
+        if (teamright2) {
+          teamright2.seed = this.getSeed(spot, 2);
+        }
         var game = new Game(round, spot, division, blevel, teamright1, teamright2, "b"+blevel+"-"+spot+"-right");
-        // this.data[round][division+'-'+teamright1.seed+'-'+teamright2.seed] = 0;
         this.games[round].push(game);
+      } else if (blevel < 4) {
+        if (this.bracketData) {
+          // all rounds after the first round
+          division = Math.ceil((spot+1)/8)+2;
+          teamright1 = this.getTeamFromData(round, division, spot);
+          teamright2 = this.getTeamFromData(round, division, spot, 2);
+          var game = new Game(round, spot, division, blevel, teamright1, teamright2, "b"+blevel+"-"+spot+"-right");
+          this.games[round].push(game);
+        }
       }
       html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "right", team1:teamright1, team2:teamright2 }});
     }
@@ -410,6 +452,8 @@ var setupBracketEvents = function (bracket) {
   var save_clicked = function(e) {
     if (!logged_in_user){
       showSaveBracketNewUser();
+    } else {
+      $('#saveBracketModal').modal();
     }
     e.preventDefault();
   };
@@ -434,6 +478,7 @@ var setupBracketEvents = function (bracket) {
     $.post('/register.json', params, function(data, textStatus, xhr) {
       $('#registerModal').modal('hide');
       $('#saveBracketModal').modal();
+      $('#bracket_name').focus();
       // bracket: JSON.stringify(bracket.data);
       
     });
@@ -457,7 +502,10 @@ var setupBracketEvents = function (bracket) {
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {
       $('#saveBracketModal').modal('hide');
-      window.location = "/code_bracket/"+data._id;
+      console.log(data);
+      if (!!data.bracket) {
+        window.location = "/code_bracket/"+data.bracket._id;
+      }
     });
   });
 
