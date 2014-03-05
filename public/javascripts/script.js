@@ -114,6 +114,8 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
   var startRound=5;
   var game1, game2, winner1, winnerteam1, winner2, winnerteam2, nextGame;
   
+  // TODO: Implement this using document fragments
+  
   // define queue for game rendering and worker.
   var q = async.queue(function(obj,callback) {
     if(!_.isUndefined(obj.game)) {
