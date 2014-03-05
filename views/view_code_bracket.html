@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    {% include "./partials/show_flash.html" %}
+
+    <h1>Your code bracket</h1>
+    <div class='row'>
+      <div id='bracket-wrap'>
+        <div id='bracket' class='view_page'></div>
+      </div> <!-- end bracket-wrap -->
+      
+      {% raw %}
+      <script id="bracket-box" type="text/x-handlebars-template">
+        <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
+            <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
+            <div class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
+        </div>
+      </script>
+      {% endraw %}
+      <div class='clearfix'></div>
+      
+    </div>
+{% endblock %}
+
+{% block bottomscripts %}
+  <script src='/javascripts/teamsbysid2013.js'></script>
+  
+  <script>
+  var teamsbysid = getTeamsBySid();
+  var bracketObj = {{bracket|json|safe}};
+  var bracketData = eval(bracketObj.data[0]);
+  
+  var teams = {{teams|json|safe}};
+  var bracket = new Bracket(bracketData,teams);
+  var html = bracket.generateBracketHtml();
+  $('#bracket').html(html);
+  </script>
+{% endblock %}

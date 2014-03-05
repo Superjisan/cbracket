@@ -50,9 +50,10 @@ Game.prototype.render = function (callback) {
   $("#"+this.domId+" .bottom").html(this.team2.seed + ". " + this.team2.name);
   
   var self = this;
+  var animation_duration = 0;
   if($("#"+self.domId).length) {
-    $("#"+self.domId+" .top").fadeTo(70,1,function() {
-      $("#"+self.domId+" .bottom").fadeTo(70, 1,function() {
+    $("#"+self.domId+" .top").fadeTo(animation_duration,1,function() {
+      $("#"+self.domId+" .bottom").fadeTo(animation_duration, 1,function() {
         callback();
       });
     });
@@ -62,7 +63,8 @@ Game.prototype.render = function (callback) {
 
 };
 
-function Bracket(teams) {
+function Bracket(bracketData,teams) {
+  this.bracketData = bracketData;
   this.teams = teams;
   this.html = "";
   this.teamOrder = [1,16,8,9,5,12,4,13,6,11,3,14,7,10,2,15];
@@ -74,9 +76,15 @@ function Bracket(teams) {
     4: [],
     5: []
   };
-  this.data = [{},{},{},{},{},{}];
-  
+  this.resetData();
 }
+
+Bracket.prototype.resetData = function () {
+  this.data = [];
+  for (var i=0; i < 6; i++) {
+    this.data.push([[],[]]);
+  }
+};
 
 Bracket.prototype.getHtml = function () {
   return this.html;
@@ -85,14 +93,16 @@ Bracket.prototype.getHtml = function () {
 Bracket.prototype.recordWin = function(game, winner) {
   var winning_team = (winner === 1) ? game.team1 : game.team2;
 
-  this.data[game.round][game.division+'-'+game.spot] = winning_team.sid;
+  // this.data[game.round][game.division+'-'+game.spot] = winning_team.sid;
+  var leftRight = (game.division <= 2)?0:1; // left is 0, right is 1
+  this.data[game.round][leftRight][game.spot] = winning_team.sid;
   
   var bracket_serial = $('#serialized_bracket');
   bracket_serial.val( bracket_serial.val() + winning_team.sid + "," );
 };
 
 Bracket.prototype.play = function(playFunc, finishFunc) {
-  this.data = [{},{},{},{},{},{}];
+  this.resetData();
   this.games[0] = [];
   this.games[1] = [];
   this.games[2] = [];
@@ -103,6 +113,8 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
   
   var startRound=5;
   var game1, game2, winner1, winnerteam1, winner2, winnerteam2, nextGame;
+  
+  // TODO: Implement this using document fragments
   
   // define queue for game rendering and worker.
   var q = async.queue(function(obj,callback) {
@@ -157,13 +169,13 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
 
 Bracket.prototype.toggleSpinner = function(toShow) {
   if (toShow) {
-    // $('#matrix').fadeIn();
-    $('#matrix_titles').fadeIn();
-    $('#editor_w_buttons').addClass('hide');
+    $('#matrix').fadeOut();
+    // $('#matrix_titles').fadeIn();
+    // $('#editor_w_buttons').addClass('hide');
     $('#bracket').removeClass('bracket_blur');
   }else {
     // $('#matrix').fadeOut();
-    $('#matrix_titles').fadeOut();
+    // $('#matrix_titles').fadeOut();
     // $('#editor_w_buttons').removeClass('hide');
   }
 };
@@ -200,11 +212,27 @@ Bracket.prototype.getTeam = function (division, spot, firstOrSecondTeam) {
   
   var sub_seed = Math.ceil((spot+1)/8)-1+addTwo;
   var dbIndexForTeamObj = getDbIndexFromSeed(team_bracket_seed, sub_seed);
-  return this.teams[dbIndexForTeamObj];
+  var theteam = this.teams[dbIndexForTeamObj];
+  
+  if (typeof teamsbysid !== "undefined") {
+    retteam = teamsbysid[theteam.sid];
+  } else {
+    retteam = theteam;
+  }
+  return retteam;
   
 };
 
-Bracket.prototype.generateBracketHtml = function () {
+Bracket.prototype.getTeamFromData = function (round, division, spot, firstOrSecondTeam) {
+  var bracket = this.bracketData;
+  var leftOrRight = (division <= 2) ? 0:1;
+  var offset = (typeof firstOrSecondTeam != "undefined") ? firstOrSecondTeam:0;
+  var prevspot = Math.max((spot*2 + offset/2),0);
+  var sid = bracket[round+1][leftOrRight][prevspot];
+  return teamsbysid[sid];
+};
+
+Bracket.prototype.generateBracketHtml = function (bracket) {
   var teams = this.teams;
   var html="";
   var rounds = 5;
@@ -219,15 +247,27 @@ Bracket.prototype.generateBracketHtml = function () {
     for (var spot=0; spot<Math.pow(2,blevel); spot++) {
       division = Math.ceil((spot+1)/8);
       round = blevel+1;
+      
       if(blevel===4) {
+        // the initial first round
         teamleft1 = this.getTeam(division, spot);
-        teamleft1.seed = this.getSeed(spot);
-        
+        if (teamleft1) {
+          teamleft1.seed = this.getSeed(spot);
+        }
         teamleft2 = this.getTeam(division, spot, 2);
-        teamleft2.seed = this.getSeed(spot, 2);
+        if (teamleft2) {
+          teamleft2.seed = this.getSeed(spot, 2);
+        }
         var game = new Game(round, spot, division, blevel, teamleft1, teamleft2, "b"+blevel+"-"+spot+"-left");
-        // this.data[round][division+'-'+teamleft1.seed+'-'+teamleft2.seed] = 0;
         this.games[round].push(game);
+      } else if (blevel < 4){
+        if (this.bracketData) {
+          // all rounds after the first round
+          teamleft1 = this.getTeamFromData(round, division, spot);
+          teamleft2 = this.getTeamFromData(round, division, spot, 2);
+          var game = new Game(round, spot, division, blevel, teamleft1, teamleft2, "b"+blevel+"-"+spot+"-left");
+          this.games[round].push(game);
+        }
       }
       
       html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
@@ -235,14 +275,27 @@ Bracket.prototype.generateBracketHtml = function () {
     for (var spot=0; spot<Math.pow(2,blevel); spot++) {
       round = blevel+1;
       if(blevel===4) {
+        // the initial first round
         division = Math.ceil((spot+1)/8)+2;
         teamright1 = this.getTeam(division, spot);
-        teamright1.seed = this.getSeed(spot);
+        if (teamright1) {
+          teamright1.seed = this.getSeed(spot);
+        }
         teamright2 = this.getTeam(division, spot, 2);
-        teamright2.seed = this.getSeed(spot, 2);
+        if (teamright2) {
+          teamright2.seed = this.getSeed(spot, 2);
+        }
         var game = new Game(round, spot, division, blevel, teamright1, teamright2, "b"+blevel+"-"+spot+"-right");
-        // this.data[round][division+'-'+teamright1.seed+'-'+teamright2.seed] = 0;
         this.games[round].push(game);
+      } else if (blevel < 4) {
+        if (this.bracketData) {
+          // all rounds after the first round
+          division = Math.ceil((spot+1)/8)+2;
+          teamright1 = this.getTeamFromData(round, division, spot);
+          teamright2 = this.getTeamFromData(round, division, spot, 2);
+          var game = new Game(round, spot, division, blevel, teamright1, teamright2, "b"+blevel+"-"+spot+"-right");
+          this.games[round].push(game);
+        }
       }
       html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "right", team1:teamright1, team2:teamright2 }});
     }
@@ -252,8 +305,8 @@ Bracket.prototype.generateBracketHtml = function () {
 
 var setupAceEditor = function () {
   var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/clouds");
-  editor.setTheme("ace/theme/monokai");
+  editor.setTheme("ace/theme/textmate");
+  // editor.setTheme("ace/theme/monokai");
   editor.getSession().setMode("ace/mode/javascript");
   editor.setHighlightActiveLine(false);
   editor.setShowPrintMargin(false);
@@ -316,9 +369,165 @@ var setupLayoutEvents = function() {
     }, 400);
   }, function(e){
     $('#sig_start_message').animate({
-      left: "10px"
+      left: "0px"
     }, 400, function () {
       // $('#sig_start_message').css('left', "10px");
     });
   });
+  
+  $(function(){
+    var path = window.location.pathname;
+    $('nav li a[href="'+path+'"]').parents('li').addClass('active');
+  });
 };
+
+var expandBracket = function () {
+  $('#code_editor_col').animate({
+    width: "5%"
+  }, 600);
+  window.setTimeout(function() {
+    $('#bracket_col').animate({
+      width: "95%"
+    }, 600, function() {
+      $('.team').css('font-size', '12px');
+      $('.b .top').css('top', '-17px');
+    });
+  }, 400);
+};
+
+var showSaveBracketNewUser = function() {
+  $('#registerModal').modal();
+  // $('#saveBracketModal').modal();
+  
+};
+
+var setupBracketEvents = function (bracket) {
+  $('#startbutton').click(function(e) {
+    e.preventDefault();
+    
+    // clear bracket with default HTML
+    $('#bracket').html(html);
+    
+    var btn = $(this);
+    btn.button('loading');
+    bracket.toggleSpinner(true);
+    
+    $('#bracket_blur_image').fadeOut();
+    
+    var f = eval("("+editor.getValue()+")");
+    if (_.isFunction(f)) {
+      bracket.play(f, function () {
+        bracket.toggleSpinner(false);
+        btn.button('reset')
+        $('#bracket_status').slideDown();
+      });
+    } else {
+      alert("It seems like your function has an error in it.")
+    }
+  });
+  
+  $('#modify_code_btn').click(function(e) {
+      var expandEditor = function () {
+        $('#bracket_col').animate({
+          width: "60%"
+        }, 600);
+        window.setTimeout(function() {
+          $('#code_editor_col').animate({
+            width: "40%"
+          }, 600, function() {
+            $('#editor textarea').focus();
+          });
+        }, 500);
+      };
+      expandEditor();
+    $('#bracket_status').slideUp(function() {});
+  });
+  
+  var center_msg = function () {
+    var bracket_height = $('#bracket').height();
+    var bracket_width = $('#bracket').width();
+    var init_bracket_msg = $('#matrix');
+    var newtop = Math.floor(bracket_height/2 - init_bracket_msg.height()/2);
+    var newleft = Math.floor(bracket_width/2 - init_bracket_msg.width()/2);
+    
+    init_bracket_msg.css('left', newleft + "px");
+    init_bracket_msg.css('top', newtop + "px");
+  };
+  $(center_msg);
+  $(window).resize(center_msg);
+  
+  var save_clicked = function(e) {
+    if (!logged_in_user){
+      showSaveBracketNewUser();
+    } else {
+      $('#saveBracketModal').modal();
+    }
+    e.preventDefault();
+  };
+
+  $("#saveBracketNewUser").on("submit", function(event) {
+    event.preventDefault();
+    // $(this).serialize();
+    var first_name = this.first_name.value;
+    var last_name = this.last_name.value;
+    var email = this.email.value;
+    var nickname = this.nickname.value;
+    var password = this.password.value;
+    
+    var params = {
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      nickname: nickname,
+      password: password
+    };
+
+    $.post('/register.json', params, function(data, textStatus, xhr) {
+      $('#registerModal').modal('hide');
+      $('#saveBracketModal').modal();
+      $('#bracket_name').focus();
+      // bracket: JSON.stringify(bracket.data);
+      
+    });
+  });
+    
+  $('#save_bracket_btn').click(save_clicked);
+  $('#save_new_user_btn').click(function(e) {
+    
+  });
+
+  $("#saveBracketForm").on("submit", function(event) {
+    event.preventDefault();
+    // $(this).serialize();
+    var bracket_name = this.bracket_name.value;
+    var bracket_data = JSON.stringify(bracket.data);
+    var bracket_code = editor.getValue();
+    
+    var params = {
+      bracket_data: bracket_data,
+      bracket_name: bracket_name,
+      bracket_code: bracket_code
+    };
+
+    $.post('/save_bracket', params, function(data, textStatus, xhr) {
+      $('#saveBracketModal').modal('hide');
+      if (!!data.bracket) {
+        window.location = "/code_bracket/"+data.bracket._id;
+      }
+    });
+  });
+
+};
+// var expandEditor = function () {
+//   $('#code_editor_col').animate({
+//     width: "5%"
+//   }, 600);
+//   window.setTimeout(function() {
+//     $('#bracket_col').animate({
+//       width: "95%"
+//     }, 600, function() {
+//       $('.team').css('font-size', '12px');
+//       $('.b .top').css('top', '-17px');
+//     });
+//   }, 400);
+// };

@@ -12,6 +12,7 @@ db.on('error', console.error.bind(console, 'connection error:'));
 var TeamModule = require('./team')(mongoose);
 var GameModule = require('./game')(mongoose);
 var UserModule = require('./user')(mongoose);
+var BracketModule = require('./bracket')(mongoose);
 var SubModule = require('./subscription')(mongoose);
 var VerifyTokenModule = require('./verifyToken')(mongoose);
 // });
@@ -21,6 +22,7 @@ module.exports = {
   "Team": TeamModule.model,
   "User": UserModule.model,
   "Subscription": SubModule.model,
+  "Bracket": BracketModule.model,
   "Game": GameModule.model,
   "VerifyToken": VerifyTokenModule.model
 };

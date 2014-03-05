@@ -22,7 +22,7 @@ body.home {
 }
 
 a {
-  color: #FFF;
+  color: #C43410;
   
   &:hover{
     color: #FF9600;
@@ -119,7 +119,7 @@ a {
   }
   span {
     position: absolute;
-    left: 10px;
+    left: 0px;
     width: 220px;
     z-index: 0;
     color: #fff; font: normal 24px Satisfy,georgia,"open sans",sans-serif; 
@@ -154,34 +154,69 @@ a {
 
 $rounds: 5;
 $b_height: $rounds*190px;
-$font_size: 0.013*$b_height;
+$font_size: 0.012*$b_height;
 $line_height: 0.016*$b_height;
+$each_round_pct: 0.09;
+$editor_background: #FFF7DB;
+
 #footer {
   margin-top: 20px;
 }
+
 #editor { 
-    width: 500px;
-    height: 100%;
+    width: 100%;
+    height: 400px;
     margin: 0px auto;
-    background: #E0EFFF;
+    background: $editor_background;
 /*    background: #0D1E3C;*/
-    font-size: 18px;
+    font-size: 14px;
     line-height: 150%;
     overflow:hidden;
     z-index: 45;
 }
 
+@media (max-width: 750px) {
+  #editor {
+    height: 300px;
+  }
+}
+
+@media (min-width:750px) and (max-width: 970px) {
+  #editor {
+    height: 500px;
+  }
+}
+
+@media (min-width:970px) and (max-width: 1170px) {
+  #editor {
+    height: 500px;
+  }
+}
+
+@media (min-width:1170px) {
+  #editor {
+    height: 600px;
+  }
+}
+
+.ace_scrollbar {
+    display: none !important;
+}
+
+.ace_scroller {
+  overflow-x: hidden !important;
+}
+
 #editor_container {
-  padding: 20px;
+  padding: 20px 10px;
   background: #fff;
-  width: 560px;
-  height: 800px;
+  width: 100%;
+  height: 100%;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
 /*  border-radius: 20px;*/
-  background: #E0EFFF;
+  background: $editor_background;
 /*  position: absolute;*/
-  
 /*  background: #0D1E3C;*/
 }
 
@@ -231,7 +266,6 @@ $line_height: 0.016*$b_height;
 #generate_button {
   text-align:center;
   margin-bottom:10px;
-  display: none;
 }
 
 /* Wrapper for page content to push down footer */
@@ -272,34 +306,66 @@ $line_height: 0.016*$b_height;
 }
 
 #bracket-wrap {
-  position: absolute;
+/*  position: absolute;
   top: 0;
-  background-color: #fff;
-  padding: 20px;
+*/  background-color: #fff;
+  margin-right: 10px;
+  width: 100%;
 /*  display:none;*/
 }
 
 #bracket {
-  width: 2*$rounds*100px + 200px;
+/*  width: 2*$rounds*100px + 200px;*/
+  width: 100%;
+  min-width: 700px;
   height: $b_height;
 /*  border: 1px solid #ccc;*/
   position: relative;
   overflow: hidden;
 }
-
+/*
 .bracket_blur {
   -webkit-filter: blur(5px);
    -moz-filter: blur(5px);
    -o-filter: blur(5px);
    -ms-filter: blur(5px);
-   filter: blur(5px);
+   filter: blur(15px);
+}
+*/
+.bracket_blur {
+  -webkit-filter: blur(3px); 
+  -moz-filter: blur(3px);
+  -ms-filter: blur(3px);
+  -o-filter: blur(3px);
+  filter: blur(3px);
+  filter: url(#blur);   
+  filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
+}
+
+#bracket_blur_image {
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  position:absolute;
+  top: 0;
+  left: 0;
+}
+#bracket_status {
+  margin-bottom: 10px;
+  font: bold 18px "open sans", arial, sans-serif;
+  display:none;
+  div {
+    margin-top: 4px;
+  }
 }
 
 .b {
   position:absolute;
   border: 1px solid black;
   background: #fff;
-  width: $rounds*100px;
+/*  width: $rounds*100px;*/
+  width: percentage($rounds*$each_round_pct);
   z-index: 1;
   
   .top {
@@ -323,6 +389,15 @@ $line_height: 0.016*$b_height;
       color: red;
     }
 /*    background: yellow;*/
+  }
+}
+
+.view_page {
+  .top {
+    opacity: 1;
+  }
+  .bottom {
+    opacity: 1;
   }
 }
 
@@ -357,12 +432,16 @@ $line_height: 0.016*$b_height;
 
 @for $i from 0 through ($rounds - 1) {
   @for $j from 0 through (pow(2,$i) - 1) {
+    
     #b#{$i}-#{$j}-left {
-      left: $i*-100px;
+      //left: $i*-100px;
+      left: $i*percentage(-1 * $each_round_pct);
       top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
     }
+    
     #b#{$i}-#{$j}-right {
-      right: $i*-100px;
+      //right: $i*-100px;
+      right: $i*percentage(-1 * $each_round_pct);
       top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
     }
   }
@@ -378,20 +457,16 @@ $line_height: 0.016*$b_height;
   border-left: 0;
 }
 
-/*#matrix {
-  background: url(http://emergenceearth.com/wp-content/uploads/2013/12/matrix.gif);
+#matrix {
   border-radius: 20px;
-  opacity: .3;
-  width: 700px;
-  height: 300px;;
+  opacity: .6;
   z-index: 10;
   position: absolute;
-  top: 280px;
-  left: 250px;
-  display:none;
+  text-align: center;
+  font: normal 24px "open sans", arial, sans-serif;
 }
 
-*/#matrix_titles {
+#matrix_titles {
   display:none;
   color: #fff;
   text-shadow: black 1px 1px 0.2em;
@@ -484,3 +559,14 @@ $line_height: 0.016*$b_height;
   }
 }
 
+.modal-content {
+  padding: 20px;
+}
+
+.inline {
+  display: inline-block;
+  width: 49%;
+}
+.inline.second {
+  margin-left: 2%;
+}

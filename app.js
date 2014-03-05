@@ -62,22 +62,26 @@ passport.use(models.User.createStrategy());
 passport.serializeUser(models.User.serializeUser());
 passport.deserializeUser(models.User.deserializeUser());
 
-
 app.get('/', routes.index);
 app.get('/timeline', routes.timeline);
 app.get('/contact', routes.contact);
 app.get('/code_bracket', routes.code_bracket);
+app.get('/code_bracket/:id', routes.view_code_bracket);
+app.post('/save_bracket', routes.save_bracket);
 app.post('/waitlist', routes.subscribe);
+app.get('/teamsbysid.js', routes.teamsbysid);
+
+//authentication routes
 app.get('/verify/:token', auth.verify_email);
 app.get('/verify/resend', auth.verify_email);
 app.get('/register', auth.register_page);
 app.post('/register', auth.register);
+app.post('/register.json', auth.register);
 app.get('/login', auth.login_page);
 app.post('/login', auth.login);
 app.get('/logout', auth.logout);
-// app.get('/:catch_all', routes.show_page)
 
-global.allteams = [];
+// global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

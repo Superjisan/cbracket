@@ -15,8 +15,8 @@ module.exports = function (swig) {
   };
 
   var login_or_user = function (user) {
-    if(user) {
-      return "Logged in as "+full_name(user);
+    if(u = user) {
+      return "Logged in as "+full_name(u);
     } else {
       // return "<a href='/login'>Log In</a> or <a href='/register'>Sign Up</a>";
       return "Log in or Register";
