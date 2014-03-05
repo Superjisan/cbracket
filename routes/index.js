@@ -101,9 +101,9 @@ exports.view_code_bracket = function(req,res) {
 };
 
 exports.save_bracket = function(req,res) {
-  console.log(req.body);
-  console.log(req.user);
-  
+  if (!!req.body.bracket_code) {
+    var bracket_code = req.body.bracket_code;
+  }
   if (!!req.body.bracket_data) {
     var bracket_data = req.body.bracket_data;
   }
@@ -117,6 +117,7 @@ exports.save_bracket = function(req,res) {
     models.Bracket.create({
       name: bracket_name,
       data: bracket_data,
+      code: bracket_code,
       user_id: req.user._id
     }, function(err,obj) {
       if (err) {

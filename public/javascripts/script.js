@@ -402,11 +402,16 @@ var showSaveBracketNewUser = function() {
 var setupBracketEvents = function (bracket) {
   $('#startbutton').click(function(e) {
     e.preventDefault();
+    
+    // clear bracket with default HTML
     $('#bracket').html(html);
+    
     var btn = $(this);
-    btn.button('loading')
+    btn.button('loading');
     bracket.toggleSpinner(true);
+    
     $('#bracket_blur_image').fadeOut();
+    
     var f = eval("("+editor.getValue()+")");
     if (_.isFunction(f)) {
       bracket.play(f, function () {
@@ -494,15 +499,16 @@ var setupBracketEvents = function (bracket) {
     // $(this).serialize();
     var bracket_name = this.bracket_name.value;
     var bracket_data = JSON.stringify(bracket.data);
+    var bracket_code = editor.getValue();
     
     var params = {
       bracket_data: bracket_data,
-      bracket_name: bracket_name
+      bracket_name: bracket_name,
+      bracket_code: bracket_code
     };
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {
       $('#saveBracketModal').modal('hide');
-      console.log(data);
       if (!!data.bracket) {
         window.location = "/code_bracket/"+data.bracket._id;
       }
