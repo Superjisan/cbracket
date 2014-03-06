@@ -38,7 +38,7 @@ app.use(passport.session());
 app.use(app.router);
 app.use(
     sass.middleware({
-        src: __dirname + '/assets', //where the sass files are 
+        src: __dirname + '/assets', //where the sass files are
         dest: __dirname + '/public', //where css should go
         debug: true // obvious
     })
@@ -80,10 +80,12 @@ app.post('/register.json', auth.register);
 app.get('/login', auth.login_page);
 app.post('/login', auth.login);
 app.get('/logout', auth.logout);
-
+app.get('/forgot-password', auth.forgotPassword);
+app.post('/forgot-password', auth.sendForgotPasswordEmail);
+app.get('/reset-password/:token', auth.resetPassword);
 // global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
-  
+
 });
