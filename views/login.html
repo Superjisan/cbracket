@@ -12,7 +12,7 @@ Login at CodersBracket
   {% if error_flash %}
     <div class='alert alert-danger'>{{error_flash}}</div>
   {% endif %}
-  
+
   <form role="form" action="/login" method="post" style="max-width: 300px;"><br>
     <div class="form-group">
       <label for='email'>Your Email</label>
@@ -25,7 +25,7 @@ Login at CodersBracket
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href='/' class="btn btn-default">Cancel</a>
   </form>
-  <p style='margin-top: 20px;'><a href='#'>Forgot your password?</a></p>
+  <p style='margin-top: 20px;'><a href='/forgot-password'>Forgot your password?</a></p>
   </div>
 </div>
 

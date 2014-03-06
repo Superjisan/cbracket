@@ -11,7 +11,7 @@ var email = function (options, done) {
          pass: "MBpcfZTtpPSa_s6DIL7MGw"
      }
   });
-  
+
   if (!done) {
     var done = function () {};
   }
@@ -29,7 +29,7 @@ var email = function (options, done) {
          done(null, response);
      }
   });
-  
+
 };
 
 var sendTemplateMail = function (emailTemplate, emailData, done) {
@@ -51,8 +51,16 @@ var sendVerifyEmail = function(user, verify_url, done) {
   }, done);
 };
 
+var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
+  sendTemplateMail("forgot_password", {
+    to: email,
+    link: resetPasswordLink
+  }, done);
+}
+
 module.exports = {
   email: email,
   sendVerifyEmail: sendVerifyEmail,
-  sendTemplateMail: sendTemplateMail
+  sendTemplateMail: sendTemplateMail,
+  sendForgotPasswordEmail: sendForgotPasswordEmail
 };

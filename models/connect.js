@@ -15,6 +15,7 @@ var UserModule = require('./user')(mongoose);
 var BracketModule = require('./bracket')(mongoose);
 var SubModule = require('./subscription')(mongoose);
 var VerifyTokenModule = require('./verifyToken')(mongoose);
+var ResetTokenModule = require('./resetToken')(mongoose);
 // });
 
 module.exports = {
@@ -24,5 +25,6 @@ module.exports = {
   "Subscription": SubModule.model,
   "Bracket": BracketModule.model,
   "Game": GameModule.model,
-  "VerifyToken": VerifyTokenModule.model
+  "VerifyToken": VerifyTokenModule.model,
+  "ResetToken": ResetTokenModule.model
 };
