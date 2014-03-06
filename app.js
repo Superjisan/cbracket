@@ -63,17 +63,28 @@ passport.serializeUser(models.User.serializeUser());
 passport.deserializeUser(models.User.deserializeUser());
 
 app.get('/', routes.index);
-app.get('/timeline', routes.timeline);
-app.get('/contact', routes.contact);
 app.get('/code_bracket', routes.code_bracket);
 app.get('/code_bracket/:id', routes.view_code_bracket);
 app.post('/save_bracket', routes.save_bracket);
 app.post('/waitlist', routes.subscribe);
 app.get('/teamsbysid.js', routes.teamsbysid);
 
+//static pages
+app.get('/timeline', routes.timeline);
+app.get('/contact', routes.contact);
+
+
+function ensureAuthenticated(req, res, next) {
+ if (req.isAuthenticated()) { return next(); }
+ res.redirect('/login')  //Or whatever your main page is 
+};
+
+//logged in pages
+app.get('/mybrackets', ensureAuthenticated, routes.mybrackets);
+
 //authentication routes
+app.get('/verify/resend', ensureAuthenticated, auth.resend_verify);
 app.get('/verify/:token', auth.verify_email);
-app.get('/verify/resend', auth.verify_email);
 app.get('/register', auth.register_page);
 app.post('/register', auth.register);
 app.post('/register.json', auth.register);

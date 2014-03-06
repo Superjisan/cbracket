@@ -158,6 +158,7 @@ $font_size: 0.012*$b_height;
 $line_height: 0.016*$b_height;
 $each_round_pct: 0.09;
 $editor_background: #FFF7DB;
+$view_editor_background: #FFFFFF;
 
 #footer {
   margin-top: 20px;
@@ -167,8 +168,6 @@ $editor_background: #FFF7DB;
     width: 100%;
     height: 400px;
     margin: 0px auto;
-    background: $editor_background;
-/*    background: #0D1E3C;*/
     font-size: 14px;
     line-height: 150%;
     overflow:hidden;
@@ -209,13 +208,12 @@ $editor_background: #FFF7DB;
 
 #editor_container {
   padding: 20px 10px;
-  background: #fff;
+/*  background: #fff;*/
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
 /*  border-radius: 20px;*/
-  background: $editor_background;
 /*  position: absolute;*/
 /*  background: #0D1E3C;*/
 }
@@ -261,6 +259,14 @@ $editor_background: #FFF7DB;
   top: 20px;
 /*  left: (2*$rounds*100px + 200px)/2 - 330px;*/
   z-index: 300;
+}
+
+.view_page {
+  background-color: $view_editor_background !important;
+}
+
+.edit_page {
+  background-color: $editor_background !important;
 }
 
 #generate_button {

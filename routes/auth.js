@@ -66,8 +66,8 @@ exports.verify_email = function(req,res) {
         req.flash('error', err.message);
         return res.render('index', { error_flash: req.flash('error')});
       } else {
-        req.flash('success', "Your email is verified. Welcome " + user.display_name + "!");
-        return res.render('index', { success_flash: req.flash('success')});
+        req.flash('success', "Your email is verified. Welcome " + user.display_name + ". You can <a href='/login'>login now</a>.");
+        return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
     })
   }
@@ -75,12 +75,16 @@ exports.verify_email = function(req,res) {
 
 exports.resend_verify = function(req,res) {
   if (!req.user) {
+    console.log('not logged in while resending')
     req.flash('error', "There is an error with re-sending verification email. Please us send a <a href='bugs@codersbracket.com'>bug report</a> with more info and we will try to help you.")
     res.redirect('/');
   }
   
   models.VerifyToken.findOneAndRemove({_userId: req.user._id});
   createTokenAndSendVerifyEmail(req, req.user);
+  req.flash('success', "Verification email was re-sent. Please check your email!");
+  res.redirect('/');
+  
 };
 
 exports.login_page = function(req, res) {

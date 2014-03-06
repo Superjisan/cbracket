@@ -9,7 +9,12 @@ var fs = require('fs');
 var path = require('path');
 
 exports.index = function(req, res){
-  res.render('index', {homepage: true, user: req.user});
+  res.render('index', {
+    homepage: true, 
+    user: req.user,
+    error_flash: req.flash('error'),
+    success_flash: req.flash('success')
+  });
 };
 
 exports.contact = function(req, res){
@@ -90,7 +95,9 @@ exports.view_code_bracket = function(req,res) {
             bracket: data[0], 
             user: theuser,
             teams: selectedteams,
-            sorted_teams: sorted_teams
+            sorted_teams: sorted_teams,
+            error_flash: req.flash('error'),
+            success_flash: req.flash('success')
           });
         });
       }
@@ -106,6 +113,10 @@ exports.save_bracket = function(req,res) {
   }
   if (!!req.body.bracket_data) {
     var bracket_data = req.body.bracket_data;
+  }
+  if (!!req.body.bracket_winner) {
+    console.log(req.body.bracket_winner);
+    var bracket_winner = req.body.bracket_winner;
   }
   if (!!req.body.bracket_name) {
     var bracket_name = req.body.bracket_name;
@@ -171,4 +182,18 @@ exports.teamsbysid = function(req,res) {
     res.end(JSON.stringify(teamsBySid));
   });
 };
+
+exports.mybrackets = function(req,res) {
+  var user = req.user;
+  models.Bracket.find({user_id: user._id}, function (err, brackets) {
+    if (err) {
+      res.render('error', {title:"There was an error finding your brackets"});
+    } else {
+      res.render('mybrackets', {brackets:brackets, user: user});
+    }
+  });
+  
+};
+
+
 
