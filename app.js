@@ -16,6 +16,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
+var env = process.env;
+
 app = express();
 app.engine('html', swig.renderFile);
 
@@ -47,8 +49,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
+  env.APP_HOST = '127.0.0.1:3000';
   swig.setDefaults({ cache: false });
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+} else {
+  env.APP_HOST = 'codersbracket.com';
 }
 
 if ('production' == app.get('env')) {
@@ -82,7 +87,9 @@ app.post('/login', auth.login);
 app.get('/logout', auth.logout);
 app.get('/forgot-password', auth.forgotPassword);
 app.post('/forgot-password', auth.sendForgotPasswordEmail);
-app.get('/reset-password/:token', auth.resetPassword);
+app.get('/reset-password', auth.resetPasswordPage);
+app.get('/reset-password/:token', auth.resetPasswordPage);
+app.post('/reset-password', auth.resetPassword);
 // global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){

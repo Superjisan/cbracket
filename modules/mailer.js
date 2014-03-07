@@ -53,7 +53,7 @@ var sendVerifyEmail = function(user, verify_url, done) {
 
 var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
   sendTemplateMail("forgot_password", {
-    to: email,
+    to: to,
     link: resetPasswordLink
   }, done);
 }
