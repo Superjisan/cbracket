@@ -94,7 +94,6 @@ app.get('/logout', auth.logout);
 app.get('/forgot-password', auth.forgotPassword);
 app.post('/forgot-password', auth.sendForgotPasswordEmail);
 app.get('/reset-password/:token', auth.resetPassword);
-// global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

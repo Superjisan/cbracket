@@ -230,6 +230,17 @@ var setupBracketEvents = function (bracket) {
     editor.setValue("function (game, team1, team2) {\n  \n}", 1);
     editor.focus();
   });
+  
+  function setEditorCode(c) {
+    var code = "";
+    code += "function (game, team1, team2) {\n";
+    code += c + "\n";
+    code += "}";
+    editor.setValue(code,1);
+  }
+  $('.dropdown-menu a').click( function () {
+    setEditorCode($('#'+this.id+'-code').text());
+  });
 };
 // var expandEditor = function () {
 //   $('#code_editor_col').animate({

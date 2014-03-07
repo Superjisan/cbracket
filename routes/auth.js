@@ -139,7 +139,7 @@ exports.logout = function(req, res) {
 
 exports.forgotPassword = function(req, res) {
   res.render('forgot_password');
-}
+};
 
 exports.sendForgotPasswordEmail = function(req, res) {
   if (!req.body.email) {
@@ -179,7 +179,7 @@ exports.sendForgotPasswordEmail = function(req, res) {
 
     res.send(200);
   });
-}
+};
 
 exports.resetPasswordPage = function() {
   if (!req.params.token) {
@@ -187,7 +187,7 @@ exports.resetPasswordPage = function() {
   }
 
   res.render('reset_password');
-}
+};
 
 exports.resetPassword = function(req, res) {
   if (!req.body.token) {
@@ -212,4 +212,4 @@ exports.resetPassword = function(req, res) {
     });
 
   });
-}
+};

@@ -49,3 +49,6 @@
 
 .noround {
   border-radius: 0 !important; }
+
+.noright {
+  border-right: 0 !important; }

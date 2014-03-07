@@ -16,19 +16,21 @@
               
               <div class="btn-group btn-group-justified" style='margin-bottom: 8px;'>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle noround" data-toggle="dropdown">
+                  <button type="button" class="btn btn-default noround noright" id='btn-savebracket'><i class="fa fa-heart"></i> &nbsp;Save</button>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle noround noright" data-toggle="dropdown">
                     <i class="fa fa-code"></i> Examples <span class="caret"></span>
                   </button>
                   <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else here</a></li>
-                    <li class="divider"></li>
-                    <li><a href="#">Separated link</a></li>
+                    <li><a href="#" id='byseed'>By the Seed</a></li>
+                    <li><a href="#" id='leastlosses'>Least Losses</a></li>
+                    <li><a href="#" id='randombracket'>Random Bracket</a></li>
+                    <li><a href="#" id='halfnhalf'>Half-n-Half (Seed & Random)</a></li>
                   </ul>
                 </div>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default noround" id='btn-resetcode'><i class="fa fa-refresh"></i> &nbsp; Reset</button>
+                  <button type="button" class="btn btn-default noround" id='btn-resetcode'><i class="fa fa-refresh"></i> &nbsp;Reset</button>
                 </div>
               </div>
               <div id='editor_container' class='edit_page'>
@@ -70,7 +72,40 @@
               </div>
               <div id='bracket' class='bracket_blur'></div>
             </div><!-- end bracket-wrap -->
-            
+
+            <div id='byseed-code'>  
+  if (team1.seed < team2.seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div id='leastlosses-code'>  
+  if (team1.losses < team2.losses) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div id='randombracket-code'>  
+  if (Math.random() <= 0.5) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div id='halfnhalf-code'>  
+  var rand1 = Math.random();
+  var rand2 = Math.random();
+  var log_t1_seed = Math.log(team1.seed+1);
+  var log_t2_seed = Math.log(team2.seed+1);
+  
+  if (rand1*log_t1_seed < rand2*log_t2_seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
             {% raw %}
             <script id="bracket-box" type="text/x-handlebars-template">
               <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
