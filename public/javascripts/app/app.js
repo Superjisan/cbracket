@@ -43,7 +43,7 @@
     }).
     controller('ResetPasswordCtrl', function($scope, $http){
       $scope.submit = function(){
-        $http.post("/reset-password", { token: $scope.token, password: $scope.password }).
+        $http.post("/reset-password", { token: bootstrapData.token, password: $scope.password }).
           success(function(data, status, headers, config){
             $scope.responseText = data.msg;
           }).

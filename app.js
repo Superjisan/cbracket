@@ -38,13 +38,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(app.router);
-app.use(
-    sass.middleware({
-        src: __dirname + '/assets', //where the sass files are
-        dest: __dirname + '/public', //where css should go
-        debug: true // obvious
-    })
-);
+// app.use(
+//     sass.middleware({
+//         src: __dirname + '/assets', //where the sass files are
+//         dest: __dirname + '/public', //where css should go
+//         debug: true // obvious
+//     })
+// );
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only

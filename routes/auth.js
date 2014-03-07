@@ -133,12 +133,14 @@ exports.sendForgotPasswordEmail = function(req, res) {
 }
 
 exports.resetPasswordPage = function(req, res) {
-  var locals = {};
+  var locals = {
+    bootstrapData: {}
+  };
 
   if (!req.params.token) {
     locals.error_flash = 'No token given.';
   } else {
-    locals.token = req.params.token;
+    locals.bootstrapData.token = req.params.token;
   }
 
   res.render('reset_password', locals);
