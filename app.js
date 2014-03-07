@@ -70,13 +70,13 @@ app.post('/waitlist', routes.subscribe);
 app.get('/teamsbysid.js', routes.teamsbysid);
 
 //static pages
-app.get('/timeline', routes.timeline);
+app.get('/contest/timeline', routes.timeline);
 app.get('/contact', routes.contact);
 
 
 function ensureAuthenticated(req, res, next) {
  if (req.isAuthenticated()) { return next(); }
- res.redirect('/login')  //Or whatever your main page is 
+ res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is 
 };
 
 //logged in pages

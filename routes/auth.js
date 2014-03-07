@@ -29,6 +29,8 @@ exports.register = function(req, res) {
   var retjson = false;
   var url_parts = url.parse(req.url);
   if (url_parts.path.indexOf('json')>=0) {
+    // request came in for register.json
+    // probably from the register modal while saving a code bracket
     retjson = true;
   }
 
@@ -39,8 +41,17 @@ exports.register = function(req, res) {
   }), req.body.password, function(err, user) {
     if (err) {
       console.log(err);
-      req.flash('error', err.message);
-      return res.render('register', { user : user,  err: err, error_flash: req.flash('error')});
+      if (retjson) {
+        if (err.message.indexOf("User already exists") >= 0) {
+          res.setHeader('Content-Type', 'application/json');
+          // if the user already exists, then need to show login window to user
+          req.flash('success', "This email has already been registered: "+req.body.email+". Please login or click 'Forgot Password.'");
+          return res.end(JSON.stringify({show_login:true, error: err}));
+        }
+      } else {
+        req.flash('error', err.message);
+        return res.render('register', { user : user,  err: err, error_flash: req.flash('error')});
+      }
     } else {
       createTokenAndSendVerifyEmail(req, user);
     }
@@ -89,10 +100,18 @@ exports.resend_verify = function(req,res) {
 };
 
 exports.login_page = function(req, res) {
-    res.render('login', { user : req.user });
+  var forwardpath = req.query.forwardpath;
+  res.render('login', { 
+    user: req.user,
+    forwardpath: forwardpath,
+    error_flash: req.flash('error'),
+    success_flash: req.flash('success')
+  });
 };
 
 exports.login = function(req, res, next) {
+  var forwardpath = req.body.forwardpath;
+  
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
@@ -103,7 +122,11 @@ exports.login = function(req, res, next) {
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       // return res.redirect('/users/' + user.username);
-      res.redirect('/');
+      if (forwardpath) {
+        res.redirect(forwardpath);
+      } else {
+        res.redirect('/');
+      }
     });
   })(req, res, next);
   // res.redirect('/');

@@ -10,10 +10,27 @@
         <div class='row'>
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
             <div id='content_container'>
-             
               <a href='#' class='pull-right'><i class='fa fa-question-circle'></i> Get Help</a>
               <h4 style='letter-spacing:-1px;'><strong>Step 1.</strong></h4>
               <h5>Build your game picking function.</h5>
+              
+              <div class="btn-group btn-group-justified" style='margin-bottom: 8px;'>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle noround" data-toggle="dropdown">
+                    <i class="fa fa-code"></i> Examples <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">Separated link</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default noround" id='btn-resetcode'><i class="fa fa-refresh"></i> &nbsp; Reset</button>
+                </div>
+              </div>
               <div id='editor_container' class='edit_page'>
                 <div id='editor' class='edit_page'>function(game, team1, team2){
   if (team1.seed < team2.seed) {
@@ -71,6 +88,10 @@
 <script src='/javascripts/jquery.elastic.source.js'></script>
 
 <script>
+  if(localStorage.getItem("code")) {
+    $('#editor').html(localStorage.getItem("code"));
+  }
+
   var editor = setupAceEditor();
 </script>
 
@@ -105,6 +126,7 @@
   
   $('#bracket').html(html);
   setupBracketEvents(bracket);
+  
   // $('#icancode_button').click(start_coding);
   
 </script>

@@ -9,9 +9,8 @@ Login at CodersBracket
 <div class="container">
   <div class='row' style='margin-bottom: 20px'>
   <h1>Login to CodersBracket</h1>
-  {% if error_flash %}
-    <div class='alert alert-danger'>{{error_flash}}</div>
-  {% endif %}
+
+  {% include "./partials/show_flash.html" %}
 
   <form role="form" action="/login" method="post" style="max-width: 300px;"><br>
     <div class="form-group">
@@ -22,6 +21,7 @@ Login at CodersBracket
       <label for='password'>Password</label>
       <input type="password" name="password" placeholder="Password" class="form-control">
     </div>
+    <input type="hidden" name="forwardpath" value="{{forwardpath}}" id="forwardpath">
     <button type="submit" class="btn btn-primary">Submit</button>
     <a href='/' class="btn btn-default">Cancel</a>
   </form>

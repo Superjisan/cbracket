@@ -17,6 +17,10 @@ var setupAceEditor = function () {
       },
       readOnly: true
   }]);
+  
+  editor.getSession().on('change', function(e) {
+    localStorage.setItem("code", editor.getValue());
+  });
   return editor;
 };
 
@@ -156,6 +160,8 @@ var setupBracketEvents = function (bracket) {
       showSaveBracketNewUser();
     } else {
       $('#saveBracketModal').modal();
+      $('#regmessage').html("<h4>Please give your code bracket a name.</h4>");
+      $('#bracket_name').focus();
     }
     e.preventDefault();
   };
@@ -179,8 +185,14 @@ var setupBracketEvents = function (bracket) {
 
     $.post('/register.json', params, function(data, textStatus, xhr) {
       $('#registerModal').modal('hide');
-      $('#saveBracketModal').modal();
-      $('#bracket_name').focus();
+
+      if (data.show_login) {
+        window.location="/login?forwardpath="+window.location.pathname;
+      } else {
+        $('#saveBracketModal').modal();
+        $('#bracket_name').focus();
+      }
+
       // bracket: JSON.stringify(bracket.data);
       
     });
@@ -213,7 +225,11 @@ var setupBracketEvents = function (bracket) {
       }
     });
   });
-
+  
+  $('#btn-resetcode').click(function() {
+    editor.setValue("function (game, team1, team2) {\n  \n}", 1);
+    editor.focus();
+  });
 };
 // var expandEditor = function () {
 //   $('#code_editor_col').animate({
