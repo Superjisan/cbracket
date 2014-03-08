@@ -1,6 +1,7 @@
 var passport = require('passport');
 var models = require('../models/connect');
 var mailer = require('../modules/mailer');
+var userModule = require('../modules/user');
 var url = require('url');
 var async = require('async');
 
@@ -81,14 +82,14 @@ exports.verify_email = function(req,res) {
         req.flash('success', "Your email is verified. Welcome " + user.display_name + ". You can <a href='/login'>login now</a>.");
         return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
-    })
+    });
   }
 };
 
 exports.resend_verify = function(req,res) {
   if (!req.user) {
-    console.log('not logged in while resending')
-    req.flash('error', "There is an error with re-sending verification email. Please us send a <a href='bugs@codersbracket.com'>bug report</a> with more info and we will try to help you.")
+    console.log('not logged in while resending');
+    req.flash('error', "There is an error with re-sending verification email. Please us send a <a href='bugs@codersbracket.com'>bug report</a> with more info and we will try to help you.");
     res.redirect('/');
   }
 
@@ -96,12 +97,12 @@ exports.resend_verify = function(req,res) {
   createTokenAndSendVerifyEmail(req, req.user);
   req.flash('success', "Verification email was re-sent. Please check your email!");
   res.redirect('/');
-  
+
 };
 
 exports.login_page = function(req, res) {
   var forwardpath = req.query.forwardpath;
-  res.render('login', { 
+  res.render('login', {
     user: req.user,
     forwardpath: forwardpath,
     error_flash: req.flash('error'),
@@ -111,7 +112,7 @@ exports.login_page = function(req, res) {
 
 exports.login = function(req, res, next) {
   var forwardpath = req.body.forwardpath;
-  
+
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
@@ -143,73 +144,50 @@ exports.forgotPassword = function(req, res) {
 
 exports.sendForgotPasswordEmail = function(req, res) {
   if (!req.body.email) {
-    return res.send(400);
+    console.log("no email provided");
+    return res.send(400, { msg: 'Email must be filled' });
   }
 
   var email = req.body.email;
-  var resetToken = new models.ResetToken({ email: email });
-  var link = req.protocol + "://" + req.get('host') + "/reset-password/" + resetToken.token;
 
-  async.series([
-    function saveToken(done) {
-      resetToken.save(function(err){
-        if (err) {
-          console.log("error saving token", err);
-          err = {error: 'An error occured, please try again'};
-        }
-
-        done(err);
-      });
-    },
-    function sendEmail(done) {
-      mailer.sendForgotPasswordEmail(email, link, function(err, success){
-        if (err) {
-          console.log(err);
-          err = {error: 'An error occurred while sending the email. Please try again'};
-        }
-
-        done(err);
-      });
-    }
-  ], function(err, result){
+  userModule.sendForgotPasswordEmail(email, false, function(err){
     if (err) {
-      res.status(400);
-      return res.send(err);
+      return res.send(400, {msg: 'An error occurred while sending the email. Please try again'});
     }
 
-    res.send(200);
+    return res.send(200, {msg: 'Email Sent.'});
   });
 };
 
-exports.resetPasswordPage = function() {
+exports.resetPasswordPage = function(req, res) {
+  var locals = {
+    bootstrapData: {}
+  };
+
   if (!req.params.token) {
-    return res.send(400);
+    locals.error_flash = 'No token given.';
+  } else {
+    locals.bootstrapData.token = req.params.token;
   }
 
-  res.render('reset_password');
+  res.render('reset_password', locals);
 };
 
+
 exports.resetPassword = function(req, res) {
-  if (!req.body.token) {
-    return res.send(400);
+  console.log(req.body, req.query);
+  if (!req.body.token || !req.body.password) {
+    return res.send(400, { msg: 'Required fields missing.' });
   }
 
   var token = req.body.token;
   var password = req.body.password;
 
-  models.ResetToken.findOne({token: token}, function(err, tokenModel){
-    if (err || !tokenModel) {
-      res.flash('error', 'Could not verify token');
-      return res.render('reset_password', { error_flash: req.flash('error') });
+  userModule.resetPassword(token, password, function(err){
+    if (err) {
+      return res.send(400, { msg: err.message });
     }
 
-    models.User.findOneAndUpdate({ email: tokenModel.email }, { password: password }, function(err){
-      if (err) {
-        return res.send(400);
-      }
-      req.flash('success', 'Your password has been reset');
-      res.render('reset_password', {success_flash: req.flash('success')});
-    });
-
+    return res.send(200, { msg: 'Your password has been reset.' });
   });
 };

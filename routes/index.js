@@ -10,7 +10,7 @@ var path = require('path');
 
 exports.index = function(req, res){
   res.render('index', {
-    homepage: true, 
+    homepage: true,
     user: req.user,
     error_flash: req.flash('error'),
     success_flash: req.flash('success')
@@ -29,7 +29,7 @@ exports.show_page = function (req,res) {
   var name = req.params.catch_all;
   // console.log(path.relative(__dirname, "views/"+name+'.html'));
   // console.log(__dirname);
-  // 
+  //
   fs.exists(path.resolve(__dirname, "../views/"+name+'.html'), function(exists) {
     if (exists) {
       res.render(name);
@@ -46,24 +46,24 @@ exports.code_bracket = function(req,res) {
     var html = bracket.generateBracketHtml(teams);
     var theuser;
     if (req.user) {
-      theuser = req.user
+      theuser = req.user;
     }
     var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
       return t1.name.localeCompare(t2.name);
     });
     var selectedteams = teams.slice(0,128);
-    res.render('code_bracket', { 
-      user: theuser, 
+    res.render('code_bracket', {
+      user: theuser,
       sorted_teams: sorted_teams,
       teams: selectedteams,
-      bracket_html: function() {return html;}, 
+      bracket_html: function() {return html;},
       error_flash: req.flash('error'),
       success_flash: req.flash('success')
     });
   });
 };
 exports.view_code_bracket = function(req,res) {
-  
+
   var isValidObjectID = function (str) {
     // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver
     str = str + '';
@@ -73,10 +73,10 @@ exports.view_code_bracket = function(req,res) {
     }
     return valid;
   };
-  
+
   var theuser;
   if (req.user) {
-    theuser = req.user
+    theuser = req.user;
   }
   var id = req.params.id;
   if (!!id && isValidObjectID(id)) {
@@ -92,7 +92,7 @@ exports.view_code_bracket = function(req,res) {
           });
           var selectedteams = teams.slice(0,128);
           res.render('view_code_bracket', {
-            bracket: data[0], 
+            bracket: data[0],
             user: theuser,
             teams: selectedteams,
             sorted_teams: sorted_teams,
@@ -108,22 +108,23 @@ exports.view_code_bracket = function(req,res) {
 };
 
 exports.save_bracket = function(req,res) {
+  var bracket_code, bracket_data;
   if (!!req.body.bracket_code) {
-    var bracket_code = req.body.bracket_code;
+    bracket_code = req.body.bracket_code;
   }
   if (!!req.body.bracket_data) {
-    var bracket_data = req.body.bracket_data;
+    bracket_data = req.body.bracket_data;
   }
   if (!!req.body.bracket_winner) {
     console.log(req.body.bracket_winner);
-    var bracket_winner = req.body.bracket_winner;
+    bracket_winner = req.body.bracket_winner;
   }
   if (!!req.body.bracket_name) {
-    var bracket_name = req.body.bracket_name;
+    bracket_name = req.body.bracket_name;
   } else {
-    var bracket_name = "";
+    bracket_name = "";
   }
-  
+
   if (!!bracket_data && !!req.user) {
     models.Bracket.create({
       name: bracket_name,
@@ -138,17 +139,17 @@ exports.save_bracket = function(req,res) {
       req.flash('success', "Your bracket '"+obj.name+",' was saved!");
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify({bracket:obj}));
-      
+
       // res.redirect('code_bracket/'+obj._id.toString());
-      // res.render('view_bracket', { 
-      //   user: theuser, 
+      // res.render('view_bracket', {
+      //   user: theuser,
       //   sorted_teams: sorted_teams,
       //   teams: selectedteams,
-      //   bracket_html: function() {return html;}, 
+      //   bracket_html: function() {return html;},
       //   error_flash: req.flash('error'),
       //   success_flash: req.flash('success')
       // });
-    })
+    });
   }
 };
 
@@ -173,11 +174,11 @@ exports.subscribe = function (req,res) {
 exports.teamsbysid = function(req,res) {
   models.Team.find(function(err,teams) {
     var teamsBySid = {};
-    
+
     teams.forEach(function(team) {
       teamsBySid[team.sid] = team;
     });
-    
+
     res.writeHead(200, {'Content-type': 'application/json'});
     res.end(JSON.stringify(teamsBySid));
   });
@@ -192,7 +193,7 @@ exports.mybrackets = function(req,res) {
       res.render('mybrackets', {brackets:brackets, user: user});
     }
   });
-  
+
 };
 
 
