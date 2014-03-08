@@ -226,7 +226,7 @@ var setupBracketEvents = function (bracket) {
     });
   });
   
-  $('#btn-resetcode').click(function() {
+  $('#menu-reset').click(function() {
     editor.setValue("function (game, team1, team2) {\n  \n}", 1);
     editor.focus();
   });

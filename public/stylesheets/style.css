@@ -291,6 +291,9 @@ a {
   #bracket_status div {
     margin-top: 4px; }
 
+.sample-code {
+  display: none; }
+
 .b {
   position: absolute;
   border: 1px solid black;
