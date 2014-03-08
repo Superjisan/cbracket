@@ -5,7 +5,7 @@ var setupAceEditor = function () {
   editor.getSession().setMode("ace/mode/javascript");
   editor.setHighlightActiveLine(false);
   editor.setShowPrintMargin(false);
-  editor.renderer.setShowGutter(false); 
+  editor.renderer.setShowGutter(false);
   editor.commands.addCommands([{
       name: "no_line_number_popup",
       bindKey: {
@@ -17,7 +17,7 @@ var setupAceEditor = function () {
       },
       readOnly: true
   }]);
-  
+
   editor.getSession().on('change', function(e) {
     localStorage.setItem("code", editor.getValue());
   });
@@ -25,26 +25,26 @@ var setupAceEditor = function () {
 };
 
 var setupEvents = function () {
-  
+
   $(function () {
     var getImgBottom = function () {
       var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
       var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
       return image_bottom;
     };
-    
+
     var image_bottom = getImgBottom();
     $('#text-editor-animate').animate({
       bottom: image_bottom + "px"
     }, 1000);
-      
+
     $(window).resize(function () {
       var image_bottom = getImgBottom()+15;
       $('#text-editor-animate').css('bottom', image_bottom + "px");
-    })
+    });
   });
-  
-  
+
+
   $('#waitlist_form').submit(function(e){
     var email = $('#email').val();
     if (!!email) {
@@ -73,7 +73,7 @@ var setupLayoutEvents = function() {
       // $('#sig_start_message').css('left', "10px");
     });
   });
-  
+
   $(function(){
     var path = window.location.pathname;
     $('nav li a[href="'+path+'"]').parents('li').addClass('active');
@@ -97,34 +97,34 @@ var expandBracket = function () {
 var showSaveBracketNewUser = function() {
   $('#registerModal').modal();
   // $('#saveBracketModal').modal();
-  
+
 };
 
 var setupBracketEvents = function (bracket) {
   $('#startbutton').click(function(e) {
     e.preventDefault();
-    
+
     // clear bracket with default HTML
     $('#bracket').html(html);
-    
+
     var btn = $(this);
     btn.button('loading');
     bracket.toggleSpinner(true);
-    
+
     $('#bracket_blur_image').fadeOut();
-    
+
     var f = eval("("+editor.getValue()+")");
     if (_.isFunction(f)) {
       bracket.play(f, function () {
         bracket.toggleSpinner(false);
-        btn.button('reset')
+        btn.button('reset');
         $('#bracket_status').slideDown();
       });
     } else {
-      alert("It seems like your function has an error in it.")
+      alert("It seems like your function has an error in it.");
     }
   });
-  
+
   $('#modify_code_btn').click(function(e) {
       var expandEditor = function () {
         $('#bracket_col').animate({
@@ -141,20 +141,20 @@ var setupBracketEvents = function (bracket) {
       expandEditor();
     $('#bracket_status').slideUp(function() {});
   });
-  
+
   var center_msg = function () {
     var bracket_height = $('#bracket').height();
     var bracket_width = $('#bracket').width();
     var init_bracket_msg = $('#matrix');
     var newtop = Math.floor(bracket_height/2 - init_bracket_msg.height()/2);
     var newleft = Math.floor(bracket_width/2 - init_bracket_msg.width()/2);
-    
+
     init_bracket_msg.css('left', newleft + "px");
     init_bracket_msg.css('top', newtop + "px");
   };
   $(center_msg);
   $(window).resize(center_msg);
-  
+
   var save_clicked = function(e) {
     if (!logged_in_user){
       showSaveBracketNewUser();
@@ -174,7 +174,7 @@ var setupBracketEvents = function (bracket) {
     var email = this.email.value;
     var nickname = this.nickname.value;
     var password = this.password.value;
-    
+
     var params = {
       first_name: first_name,
       last_name: last_name,
@@ -194,13 +194,13 @@ var setupBracketEvents = function (bracket) {
       }
 
       // bracket: JSON.stringify(bracket.data);
-      
+
     });
   });
-    
+
   $('#save_bracket_btn').click(save_clicked);
   $('#save_new_user_btn').click(function(e) {
-    
+
   });
 
   $("#saveBracketForm").on("submit", function(event) {
@@ -210,7 +210,7 @@ var setupBracketEvents = function (bracket) {
     var bracket_data = JSON.stringify(bracket.data);
     var bracket_code = editor.getValue();
     var winner = {sid: this.winner.sid, name: this.winner.name};
-    
+
     var params = {
       bracket_data: bracket_data,
       bracket_name: bracket_name,
@@ -225,12 +225,12 @@ var setupBracketEvents = function (bracket) {
       }
     });
   });
-  
+
   $('#menu-reset').click(function() {
     editor.setValue("function (game, team1, team2) {\n  \n}", 1);
     editor.focus();
   });
-  
+
   function setEditorCode(c) {
     var code = "";
     code += "function (game, team1, team2) {\n";

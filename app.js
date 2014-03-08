@@ -16,6 +16,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
+var env = process.env;
+
 app = express();
 app.engine('html', swig.renderFile);
 
@@ -36,19 +38,15 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(app.router);
-app.use(
-    sass.middleware({
-        src: __dirname + '/assets', //where the sass files are
-        dest: __dirname + '/public', //where css should go
-        debug: true // obvious
-    })
-);
 app.use(express.static(path.join(__dirname, 'public')));
 
 // development only
 if ('development' == app.get('env')) {
+  env.APP_HOST = '127.0.0.1:3000';
   swig.setDefaults({ cache: false });
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+} else {
+  env.APP_HOST = 'codersbracket.com';
 }
 
 if ('production' == app.get('env')) {
@@ -76,7 +74,7 @@ app.get('/contact', routes.contact);
 
 function ensureAuthenticated(req, res, next) {
  if (req.isAuthenticated()) { return next(); }
- res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is 
+ res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is
 };
 
 //logged in pages
@@ -93,7 +91,10 @@ app.post('/login', auth.login);
 app.get('/logout', auth.logout);
 app.get('/forgot-password', auth.forgotPassword);
 app.post('/forgot-password', auth.sendForgotPasswordEmail);
-app.get('/reset-password/:token', auth.resetPassword);
+app.get('/reset-password', auth.resetPasswordPage);
+app.get('/reset-password/:token', auth.resetPasswordPage);
+app.post('/reset-password', auth.resetPassword);
+// global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

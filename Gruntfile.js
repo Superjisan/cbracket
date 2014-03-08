@@ -1,4 +1,25 @@
 module.exports = function(grunt) {
+  var appSrc = [
+    './public-src/javascripts/app/main.js',
+    './public-src/javascripts/app/directives/equals.js',
+    './public-src/javascripts/app/controllers/ForgotPasswordCtrl.js',
+    './public-src/javascripts/app/controllers/ResetPasswordCtrl.js'
+  ];
+
+  var scriptSrc = [
+    './public-src/javascripts/app/modules/teamsbysid2013.js',
+    './public-src/javascripts/app/modules/bracket.js',
+    './public-src/javascripts/app/modules/game.js',
+    './public-src/javascripts/app/script.js',
+  ];
+
+  var libSrc = [
+    './public-src/javascripts/lib/async.js',
+    './public-src/javascripts/lib/jquery.elastic.source.js',
+    './public-src/javascripts/lib/jquery.fittext.js',
+    './public-src/javascripts/lib/swig.min.js'
+  ];
+
   grunt.initConfig({
     jshint: {
       all: {
@@ -6,21 +27,22 @@ module.exports = function(grunt) {
           './models/**/*.js',
           './modules/**/*.js',
           './routes/**/*.js',
-          './public/javascripts/**/*.js'
+          './public-src/javascripts/app/**/*.js'
         ]
       },
 
       options: {
-          "smarttabs": true,
-          "debug": true,
-          "devel": true,
-          "undef": false,
-          "laxcomma": true,
-          "laxbreak": false,
-          "jquery": true,
-          "loopfunc": true,
-          "sub": true,
-          "-W065": true
+        "smarttabs": true,
+        "debug": true,
+        "devel": true,
+        "undef": false,
+        "laxcomma": true,
+        "laxbreak": false,
+        "jquery": true,
+        "loopfunc": true,
+        "sub": true,
+        "-W065": true,
+        "-W084": true
       }
     },
 
@@ -29,20 +51,46 @@ module.exports = function(grunt) {
           mangle: false
       },
       app: {
-        // public js files
-        // usage --> 'dest.js': ['src1.js', 'src2.js', '..etc.js']
         files: {
-
+          './public/javascripts/app.js': appSrc
+        }
+      },
+      script: {
+        files: {
+          './public/javascripts/script.js': scriptSrc
+        }
+      },
+      libs: {
+        files: {
+          './public/javascripts/libs.js': libSrc
         }
       }
     },
 
     concat: {
       app: {
-        // public js src files
-        src: [
-        ],
-        dest: './public/javascripts/script.min.js'
+        src: appSrc ,
+        dest: './public/javascripts/app.js'
+      },
+      script: {
+        src: scriptSrc,
+        dest: './public/javascripts/script.js'
+      },
+      lib: {
+        src: libSrc,
+        dest: './public/javascripts/libs.js'
+      }
+    },
+
+    sass: {
+      styles: {
+        files: [{
+          expand: true,
+          cwd: './public-src/stylesheets/stylesheets',
+          src: ['**/**.scss'],
+          dest: './public/stylesheets',
+          ext: '.css'
+        }]
       }
     },
 
@@ -52,16 +100,16 @@ module.exports = function(grunt) {
           './models/**/*.js',
           './modules/**/*.js',
           './routes/**/*.js',
-          './public/javascripts/**/*.js'
+          './public-src/javascripts/**/*.js'
         ],
-        tasks: ['jshint'],
+        tasks: ['jshint', 'concat'],
         options: {
           nospawn: true
         }
       },
       css: {
         files: [
-          './assets/stylesheets/**/*.scss'
+          './public-src/stylesheets/**/*.scss'
         ],
         tasks: ['sass']
       }
@@ -74,7 +122,7 @@ module.exports = function(grunt) {
   if (process.env.NODE_ENV === 'development') {
     tasks = ['jshint', 'concat', 'sass', 'watch'];
   } else {
-    tasks = ['jshint', 'uglify', 'concat', 'sass'];
+    tasks = ['jshint', 'uglify', 'sass'];
   }
 
   grunt.loadNpmTasks('grunt-contrib-jshint');

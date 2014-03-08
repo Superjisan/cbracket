@@ -25,4 +25,4 @@ module.exports = function(m) {
   var ResetTokenModel = mongoose.model('ResetToken', ResetTokenSchema);
 
   return { model: ResetTokenModel };
-}
+};
