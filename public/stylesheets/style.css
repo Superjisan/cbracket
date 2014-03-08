@@ -127,8 +127,6 @@ a {
   width: 100%;
   height: 400px;
   margin: 0px auto;
-  background: #FFF7DB;
-  /*    background: #0D1E3C;*/
   font-size: 14px;
   line-height: 150%;
   overflow: hidden;
@@ -158,13 +156,12 @@ a {
 
 #editor_container {
   padding: 20px 10px;
-  background: #fff;
+  /*  background: #fff;*/
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
   border: 1px solid #ccc;
   /*  border-radius: 20px;*/
-  background: #FFF7DB;
   /*  position: absolute;*/
   /*  background: #0D1E3C;*/ }
 
@@ -202,6 +199,12 @@ a {
   top: 20px;
   /*  left: (2*$rounds*100px + 200px)/2 - 330px;*/
   z-index: 300; }
+
+.view_page {
+  background-color: #FFFFFF !important; }
+
+.edit_page {
+  background-color: #FFF7DB !important; }
 
 #generate_button {
   text-align: center;
@@ -287,6 +290,9 @@ a {
   display: none; }
   #bracket_status div {
     margin-top: 4px; }
+
+.sample-code {
+  display: none; }
 
 .b {
   position: absolute;

@@ -10,12 +10,38 @@
         <div class='row'>
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
             <div id='content_container'>
-             
               <a href='#' class='pull-right'><i class='fa fa-question-circle'></i> Get Help</a>
               <h4 style='letter-spacing:-1px;'><strong>Step 1.</strong></h4>
               <h5>Build your game picking function.</h5>
-              <div id='editor_container'>
-                <div id='editor'>function(game, team1, team2){
+              
+              <div class="btn-group " style='margin-bottom: 8px;'>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle noround noright" data-toggle="dropdown">
+                    <i class="fa fa-code"></i> Examples <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" id='byseed'>By the Seed</a></li>
+                    <li><a href="#" id='leastlosses'>Least Losses</a></li>
+                    <li><a href="#" id='randombracket'>Random Bracket</a></li>
+                    <li><a href="#" id='halfnhalf'>Half-n-Half (Seed & Random)</a></li>
+                    <li><a href="#" id='laterseed'>Seeds Weighted Higher in Later Rounds</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-default dropdown-toggle noround" data-toggle="dropdown">
+                    <i class="fa  fa-wrench"></i> Options <span class="caret"></span>
+                  </button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#" id='menu-reset'>Reset</a></li>
+                    <li><a href="#" id='menu-documentation'>Documentation</a></li>
+                  </ul>
+                </div>
+                <div class="btn-group hide">
+                  <button type="button" class="btn btn-default noround" id='btn-savebracket'><i class="fa fa-arrows-alt"></i> Expand</button>
+                </div>
+              </div>
+              <div id='editor_container' class='edit_page'>
+                <div id='editor' class='edit_page'>function(game, team1, team2){
   if (team1.seed < team2.seed) {
     team1.wins();
   } else {
@@ -53,7 +79,52 @@
               </div>
               <div id='bracket' class='bracket_blur'></div>
             </div><!-- end bracket-wrap -->
-            
+
+            <div class='sample-code' id='byseed-code'>  
+  if (team1.seed < team2.seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div class='sample-code' id='leastlosses-code'>  
+  if (team1.losses < team2.losses) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div  class='sample-code' id='randombracket-code'>  
+  if (Math.random() <= 0.5) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div class='sample-code' id='halfnhalf-code'>  
+  var rand1 = Math.random();
+  var rand2 = Math.random();
+  var log_t1_seed = Math.log(team1.seed+1);
+  var log_t2_seed = Math.log(team2.seed+1);
+  
+  if (rand1*log_t1_seed < rand2*log_t2_seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
+            <div class='sample-code' id='laterseed-code'>  
+  var rand1 = Math.random();
+  var rand2 = Math.random();
+  var log_t1_seed = Math.pow(Math.log(team1.seed+1), (game.round+2)/2);
+  var log_t2_seed = Math.pow(Math.log(team2.seed+1), (game.round+2)/2);
+  
+  if (rand1*log_t1_seed < rand2*log_t2_seed) {
+    team1.wins();
+  } else {
+    team2.wins();
+  }
+            </div>
             {% raw %}
             <script id="bracket-box" type="text/x-handlebars-template">
               <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
@@ -71,6 +142,10 @@
 <script src='/javascripts/jquery.elastic.source.js'></script>
 
 <script>
+  if(localStorage.getItem("code")) {
+    $('#editor').html(localStorage.getItem("code"));
+  }
+
   var editor = setupAceEditor();
 </script>
 
@@ -105,6 +180,7 @@
   
   $('#bracket').html(html);
   setupBracketEvents(bracket);
+  
   // $('#icancode_button').click(start_coding);
   
 </script>

@@ -46,3 +46,9 @@
   text-transform: uppercase; }
   .btn-codersbracket:hover {
     background-color: #d2a950; }
+
+.noround {
+  border-radius: 0 !important; }
+
+.noright {
+  border-right: 0 !important; }

@@ -7,6 +7,10 @@ module.exports = function(m) {
     data: { type : Array , "default" : [] },
     round_scores: { type : Array , "default" : [0,0,0,0,0,0] },
     score: { type : Number , "default" : 0 },
+    winner: {
+      sid: Number,
+      name: String
+    },
     code: String,
     user_id: {type: Schema.Types.ObjectId, required: true, ref: 'User'}
   });

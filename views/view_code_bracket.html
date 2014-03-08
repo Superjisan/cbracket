@@ -3,29 +3,47 @@
 {% block content %}
     {% include "./partials/show_flash.html" %}
 
-    <h1>Your code bracket</h1>
+    <style type="text/css" media="screen">
+       div.ace_cursor {
+           opacity: 0 !important;
+       }
+    </style>
+    <h1>{% if bracket.name %}{{bracket.name}}{% else %}Your Bracket{% endif %}</h1>
+      
+    <hr>
     <div class='row'>
-      <div id='bracket-wrap'>
-        <div id='bracket' class='view_page'></div>
-      </div> <!-- end bracket-wrap -->
+      <div class='col-lg-4 col-md-2'>
+        <h3>Bracket Code</h3>
+        <div id='editor_container' class='view_page'>
+          <div id='editor' class='view_page'>{{bracket.code}}</div>
+        </div> <!-- end editor_container -->        
+      </div>
+      <div class='col-lg-8 col-md-10'>
+        <h3>The Bracket</h3>
+        <div id='bracket-wrap'>
+          <div id='bracket' class='view_page'></div>
+        </div> <!-- end bracket-wrap -->
       
-      {% raw %}
-      <script id="bracket-box" type="text/x-handlebars-template">
-        <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
-            <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
-            <div class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
-        </div>
-      </script>
-      {% endraw %}
-      <div class='clearfix'></div>
-      
+        {% raw %}
+        <script id="bracket-box" type="text/x-handlebars-template">
+          <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
+              <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
+              <div class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
+          </div>
+        </script>
+        {% endraw %}
+        <div class='clearfix'></div>
+      </div>
     </div>
 {% endblock %}
 
 {% block bottomscripts %}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script src='/javascripts/teamsbysid2013.js'></script>
   
   <script>
+  var editor = setupAceEditor();
+  editor.setReadOnly(true);
   var teamsbysid = getTeamsBySid();
   var bracketObj = {{bracket|json|safe}};
   var bracketData = eval(bracketObj.data[0]);

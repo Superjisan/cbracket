@@ -30,6 +30,8 @@ exports.register = function(req, res) {
   var retjson = false;
   var url_parts = url.parse(req.url);
   if (url_parts.path.indexOf('json')>=0) {
+    // request came in for register.json
+    // probably from the register modal while saving a code bracket
     retjson = true;
   }
 
@@ -40,8 +42,17 @@ exports.register = function(req, res) {
   }), req.body.password, function(err, user) {
     if (err) {
       console.log(err);
-      req.flash('error', err.message);
-      return res.render('register', { user : user,  err: err, error_flash: req.flash('error')});
+      if (retjson) {
+        if (err.message.indexOf("User already exists") >= 0) {
+          res.setHeader('Content-Type', 'application/json');
+          // if the user already exists, then need to show login window to user
+          req.flash('success', "This email has already been registered: "+req.body.email+". Please login or click 'Forgot Password.'");
+          return res.end(JSON.stringify({show_login:true, error: err}));
+        }
+      } else {
+        req.flash('error', err.message);
+        return res.render('register', { user : user,  err: err, error_flash: req.flash('error')});
+      }
     } else {
       createTokenAndSendVerifyEmail(req, user);
     }
@@ -68,8 +79,8 @@ exports.verify_email = function(req,res) {
         req.flash('error', err.message);
         return res.render('index', { error_flash: req.flash('error')});
       } else {
-        req.flash('success', "Your email is verified. Welcome " + user.display_name + "!");
-        return res.render('index', { success_flash: req.flash('success')});
+        req.flash('success', "Your email is verified. Welcome " + user.display_name + ". You can <a href='/login'>login now</a>.");
+        return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
     })
   }
@@ -77,19 +88,31 @@ exports.verify_email = function(req,res) {
 
 exports.resend_verify = function(req,res) {
   if (!req.user) {
+    console.log('not logged in while resending')
     req.flash('error', "There is an error with re-sending verification email. Please us send a <a href='bugs@codersbracket.com'>bug report</a> with more info and we will try to help you.")
     res.redirect('/');
   }
 
   models.VerifyToken.findOneAndRemove({_userId: req.user._id});
   createTokenAndSendVerifyEmail(req, req.user);
+  req.flash('success', "Verification email was re-sent. Please check your email!");
+  res.redirect('/');
+
 };
 
 exports.login_page = function(req, res) {
-    res.render('login', { user : req.user });
+  var forwardpath = req.query.forwardpath;
+  res.render('login', {
+    user: req.user,
+    forwardpath: forwardpath,
+    error_flash: req.flash('error'),
+    success_flash: req.flash('success')
+  });
 };
 
 exports.login = function(req, res, next) {
+  var forwardpath = req.body.forwardpath;
+
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
@@ -100,7 +123,11 @@ exports.login = function(req, res, next) {
     req.logIn(user, function(err) {
       if (err) { return next(err); }
       // return res.redirect('/users/' + user.username);
-      res.redirect('/');
+      if (forwardpath) {
+        res.redirect(forwardpath);
+      } else {
+        res.redirect('/');
+      }
     });
   })(req, res, next);
   // res.redirect('/');
@@ -113,7 +140,7 @@ exports.logout = function(req, res) {
 
 exports.forgotPassword = function(req, res) {
   res.render('forgot_password');
-}
+};
 
 exports.sendForgotPasswordEmail = function(req, res) {
   if (!req.body.email) {
@@ -130,7 +157,7 @@ exports.sendForgotPasswordEmail = function(req, res) {
 
     return res.send(200, {msg: 'Email Sent.'});
   });
-}
+};
 
 exports.resetPasswordPage = function(req, res) {
   var locals = {
@@ -145,6 +172,7 @@ exports.resetPasswordPage = function(req, res) {
 
   res.render('reset_password', locals);
 }
+
 
 exports.resetPassword = function(req, res) {
   console.log(req.body, req.query);
@@ -162,4 +190,4 @@ exports.resetPassword = function(req, res) {
 
     return res.send(200, { msg: 'Your password has been reset.' });
   });
-}
+};

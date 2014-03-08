@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class='row'>
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+      <h1 style='margin-bottom: 20px;'>My Brackets</h1>
+      {% if brackets.length > 0 %}
+      <table class='table table-striped'>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Winner</th>
+            <th>Score</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for key,bracket in brackets %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td><a href="/code_bracket/{{bracket._id.toString()}}">{{bracket.name}}</a></td>
+              <td>{{bracket.winner.name|default('-')}}</td>
+              <td>{% if bracket.score>0 %}{{bracket.score}}{% else %}-{% endif %}</td>
+              <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+        <p>You don't have any saved code brackets yet. <a href='/code_bracket/'>Make one!</a></p>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
