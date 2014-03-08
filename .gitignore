@@ -16,4 +16,5 @@ build
 
 node_modules
 public/javascripts
-public/stylesheets/stylesheets
+public/stylesheets/style.css
+public/stylesheets/bootstrap_overrides.css

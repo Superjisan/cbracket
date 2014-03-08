@@ -23,7 +23,7 @@ body.home {
 
 a {
   color: #C43410;
-  
+
   &:hover{
     color: #FF9600;
     text-decoration: underline;
@@ -80,13 +80,13 @@ a {
   width: 800px;
   border-radius: 20px;
   margin: 20px auto 15px;
-  
+
   h2 {
     font-family: Satisfy;
     margin-bottom: 20px;
     color: #000;
   }
-  
+
   p {
     line-height: 150%;
     font-size: 19px;
@@ -107,7 +107,7 @@ a {
 #fssig {
   margin-top: 10px;
   position: relative;
-  
+
   #sig_start_message {
     padding: 5px;
   }
@@ -122,7 +122,7 @@ a {
     left: 0px;
     width: 220px;
     z-index: 0;
-    color: #fff; font: normal 24px Satisfy,georgia,"open sans",sans-serif; 
+    color: #fff; font: normal 24px Satisfy,georgia,"open sans",sans-serif;
     display:inline-block;
     margin-right: 12px;
   }
@@ -145,7 +145,7 @@ a {
     @for $i from 0 through -$exponent {
       $value: $value / $base; } }
   // return the last value written
-  @return $value; 
+  @return $value;
 }
 
 @function pow($base, $exponent) {
@@ -164,7 +164,7 @@ $view_editor_background: #FFFFFF;
   margin-top: 20px;
 }
 
-#editor { 
+#editor {
     width: 100%;
     height: 400px;
     margin: 0px auto;
@@ -229,12 +229,12 @@ $view_editor_background: #FFFFFF;
   left: 0;
   text-align: center;
   padding-top: 10px;
-  
+
   h1{
     font-weight: bold;
     text-shadow: -3px 0 white, 0 3px white, 3px 0 white, 0 -3px white;
   }
-  
+
   a.btn {
     i {
       float: left;
@@ -339,12 +339,12 @@ $view_editor_background: #FFFFFF;
 }
 */
 .bracket_blur {
-  -webkit-filter: blur(3px); 
+  -webkit-filter: blur(3px);
   -moz-filter: blur(3px);
   -ms-filter: blur(3px);
   -o-filter: blur(3px);
   filter: blur(3px);
-  filter: url(#blur);   
+  filter: url(#blur);
   filter:progid:DXImageTransform.Microsoft.Blur(PixelRadius='3');
 }
 
@@ -377,23 +377,23 @@ $view_editor_background: #FFFFFF;
 /*  width: $rounds*100px;*/
   width: percentage($rounds*$each_round_pct);
   z-index: 1;
-  
+
   .top {
     position:absolute;
     top: -1 * $line_height;
     opacity: 0.0;
   }
-  
+
   .bottom {
     position: absolute;
     bottom: 0;
     opacity: 0.0;
   }
-  
+
   .team {
     font-size: $font_size;
   }
-  
+
   &:hover {
     .team {
       color: red;
@@ -418,7 +418,7 @@ $view_editor_background: #FFFFFF;
   .bottom {
     opacity:1;
   }
-  
+
 }
 .bleft {
   text-align: right;
@@ -442,20 +442,20 @@ $view_editor_background: #FFFFFF;
 
 @for $i from 0 through ($rounds - 1) {
   @for $j from 0 through (pow(2,$i) - 1) {
-    
+
     #b#{$i}-#{$j}-left {
       //left: $i*-100px;
       left: $i*percentage(-1 * $each_round_pct);
       top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
     }
-    
+
     #b#{$i}-#{$j}-right {
       //right: $i*-100px;
       right: $i*percentage(-1 * $each_round_pct);
       top: $b_height/pow(2,$i+2)+($b_height/pow(2,$i+1))*($j)*2;
     }
   }
-  
+
   .b#{$i} {
     height: $b_height/pow(2,$i+1);
     z-index: $i;
@@ -504,7 +504,7 @@ $view_editor_background: #FFFFFF;
       margin-bottom: 20px;
     }
   }
-  
+
   a {
     color: #FF6B0A;
     text-decoration: none;
@@ -563,7 +563,7 @@ $view_editor_background: #FFFFFF;
   &:first-child {
     border: 0;
   }
-  
+
   .date {
     width: 160px;
   }

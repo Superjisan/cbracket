@@ -13,7 +13,7 @@ var email = function (options, done) {
   });
 
   if (!done) {
-    var done = function () {};
+    done = function () {};
   }
   smtpTransport.sendMail({
      from: "Coders Bracket <mail@codersbracket.com>", // sender address
@@ -56,7 +56,7 @@ var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
     to: to,
     link: resetPasswordLink
   }, done);
-}
+};
 
 module.exports = {
   email: email,
