@@ -55,7 +55,9 @@ var UserModule = {
         models.User.findOne({ email: tokenModel.email }, done);
       },
       function setPassword(userModel, done) {
-        userModel.setPassword(password, done);
+        userModel.setPassword(password, function(err){
+          userModel.save(done);
+        });
       }
     ], function(err){
       if (err) {
