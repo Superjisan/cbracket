@@ -4,6 +4,8 @@ var mailer = require('../modules/mailer');
 var userModule = require('../modules/user');
 var url = require('url');
 var async = require('async');
+// var FacebookStrategy = require('passport-facebook').Strategy
+// var TwitterStrategy = require('passport-twitter').Strategy
 
 exports.register_page = function(req, res) {
     res.render('register', { });
@@ -70,6 +72,8 @@ exports.register = function(req, res) {
     });
   });
 };
+
+
 
 exports.verify_email = function(req,res) {
   var token = req.params.token;

@@ -9,6 +9,7 @@ var fs = require('fs');
 var path = require('path');
 
 exports.index = function(req, res){
+  console.log(req.user)
   res.render('index', {
     homepage: true,
     user: req.user,

@@ -13,9 +13,12 @@ var http = require('http');
 var flash = require('connect-flash');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+var TwitterStrategy = require('passport-twitter').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
+var name = require("./modules/name_interpolation.js")
 var env = process.env;
 
 app = express();
@@ -27,10 +30,12 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'html');
 app.use(express.favicon());
 app.use(express.logger('dev'));
+app.use(express.bodyParser({uploadDir:path.join(__dirname, 'public-src')}));
 app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('fullstackrox!!'));
+app.use(express.cookieSession({ secret: 'tobo!', cookie: { maxAge: new Date(Date.now() +     3600000), }}));
 app.use(express.session());
 
 app.use(flash());
@@ -39,6 +44,8 @@ app.use(passport.session());
 
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public-src', express.static(__dirname + '/public-src'));
+// app.use(express.static(path.join(__dirname, 'public-src')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -57,8 +64,19 @@ if ('production' == app.get('env')) {
 models = require('./models/connect');
 // passport.use(new LocalStrategy(models.User.authenticate()));
 passport.use(models.User.createStrategy());
-passport.serializeUser(models.User.serializeUser());
-passport.deserializeUser(models.User.deserializeUser());
+passport.serializeUser(function(user, done) {
+        done(null, user.id);
+    });
+
+    // Deserialize the user object based on a pre-serialized token
+    // which is the user id
+passport.deserializeUser(function(id, done) {
+  models.User.findOne({
+      _id: id
+  }, '-salt -hashed_password', function(err, user) {
+      done(err, user);
+  });
+});
 
 app.get('/', routes.index);
 app.get('/code_bracket', routes.code_bracket);
@@ -95,6 +113,122 @@ app.get('/reset-password', auth.resetPasswordPage);
 app.get('/reset-password/:token', auth.resetPasswordPage);
 app.post('/reset-password', auth.resetPassword);
 // global.allteams = [];
+
+
+var FACEBOOK_APP_ID = "558806480893968";
+var FACEBOOK_APP_SECRET = "76c52123d1fa888874221542716e7596";
+
+passport.use(new FacebookStrategy({
+            clientID: FACEBOOK_APP_ID,
+            clientSecret: FACEBOOK_APP_SECRET,
+            callbackURL: "http://localhost:3000/auth/facebook/callback"
+
+        },
+        function(accessToken, refreshToken, profile, done) {
+            models.User.findOne({
+                'facebook.id': profile.id
+            }, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    console.log(profile._json.email)
+                    var user = new models.User({
+                        name: {
+                          first: profile.name.givenName,
+                          last: profile.name.familyName
+                        },
+                        email: profile.emails[0].value,
+                        nickname: profile.username,
+                        facebook: profile._json,
+                        provider: 'facebook'
+                    });
+                    user.save(function(err) {
+                        console.log(profile)
+                        if (err) console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    user.facebook = profile._json;
+                    user.save(function(err){
+                      console.log(profile)
+                      if(err) console.log(err);
+                      return done(err, user);
+                    })
+                }
+            });
+        }
+    ));
+
+var TWITTER_APP_ID = "TNICPd2moidR2ZK2kLpjWA"
+var TWITTER_APP_SECRET = 'w4kMt5iJPyWgCEfP7Du8mKnFNuDAj2LrSflfHqBES8'
+
+passport.use(new TwitterStrategy({
+            consumerKey: TWITTER_APP_ID,
+            consumerSecret: TWITTER_APP_SECRET,
+            callbackURL: "http://localhost:3000/auth/twitter/callback"
+
+        },
+        function(token, tokenSecret, profile, done) {
+            models.User.findOne({
+                'twitter.id_str': profile.id
+            }, function(err, user) {
+                if (err) {
+                    return done(err);
+                }
+                if (!user) {
+                    console.log("hello")
+                    var user = new models.User({
+                        name: {
+                          first: name.firstName(profile.displayName),
+                          last: name.lastName(profile.displayName)
+                        },
+
+                        nickname: profile.username,
+                        // twitter: profile._json,
+                        provider: 'twitter'
+                    });
+                    user.save(function(err) {
+                        console.log(user)
+                        if (err) console.log(err);
+                        return done(err, user);
+                    });
+                } else {
+                    // user.twitter = profile._json;
+                    user.save(function(err){
+                      if(err) console.log(err);
+                      console.log(user)
+                      return done(err, user);
+                    })
+                }
+            });
+        }
+    ));
+
+
+app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email', 'user_about_me'],
+        failureRedirect: '/register'
+    }));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        failureRedirect: '/register'
+    }), function(req, res){
+        req.user = JSON.stringify(req.user);
+        res.redirect('/')
+});
+
+app.get('/auth/twitter', passport.authenticate('twitter', {
+        failureRedirect: '/register'
+    }));
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+        failureRedirect: '/register'
+    }), function(req, res){
+        req.user = JSON.stringify(req.user);
+        res.redirect('/')
+});
+
+
+
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -23,6 +23,7 @@
               <td>{{bracket.winner.name|default('-')}}</td>
               <td>{% if bracket.score>0 %}{{bracket.score}}{% else %}-{% endif %}</td>
               <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td>
+
             </tr>
         {% endfor %}
         </tbody>

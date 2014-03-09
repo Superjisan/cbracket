@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "nodemon --ignore public/ --ignore public-src/ -e html,js,scss app.js"
   },
   "dependencies": {
     "express": "3.4.8",
@@ -24,9 +24,8 @@
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3",
     "grunt-contrib-uglify": "~0.1.2",
-    "async": "~0.2.10"
-  },
-  "scripts": {
-    "start": "nodemon --ignore public/ --ignore public-src/ -e html,js,scss app.js"
+    "async": "~0.2.10",
+    "passport-facebook": "~1.0.3",
+    "passport-twitter": "~1.0.2"
   }
 }
