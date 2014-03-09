@@ -1,5 +1,11 @@
 {% extends "layout.html" %}
 
+{% block headbottom %}
+    <script type="text/javascript">var switchTo5x=true;</script>
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "933db6c1-1e54-4f17-b394-18a05a7d0e43", doNotHash: true, doNotCopy: false, hashAddressBar: false});</script>
+{% endblock %}
+
 {% block content %}
     {% include "./partials/show_flash.html" %}
 
@@ -8,20 +14,34 @@
            opacity: 0 !important;
        }
     </style>
+    
+    <div class="btn-group pull-right" style='margin-top: 25px;'>
+      <div class="btn-group hide">
+        <button type="button" class="btn btn-default noround" id='btn-savebracket'><i class="fa fa-files-o"></i> Clone</button>
+      </div>
+      
+      <span class='st_sharethis_large' displayText='ShareThis'></span>
+      <span class='st_facebook_large' displayText='Facebook'></span>
+      <span class='st_twitter_large' displayText='Tweet'></span>
+      <span class='st_linkedin_large' displayText='LinkedIn'></span>
+      <span class='st_pinterest_large' displayText='Pinterest'></span>
+      <span class='st_email_large' displayText='Email'></span>
+      
+    </div>
     <h1>{% if bracket.name %}{{bracket.name}}{% else %}Your Bracket{% endif %}</h1>
       
     <hr>
-    <div class='row'>
+    <div class='row' id='view_bracket_row'>
       <div class='col-lg-4 col-md-2'>
-        <h3>Bracket Code</h3>
-        <div id='editor_container' class='view_page'>
-          <div id='editor' class='view_page'>{{bracket.code}}</div>
+        <h3 class='col_title'>Bracket Code <a href='#' class="btn noround" title='Expand Code' id='btn_expand_code'><i class='fa fa-arrows-alt'></i></a></h3>
+        <div id='editor_container' class='view_page_editor_container'>
+          <div id='editor' class='view_page_editor'>{{bracket.code}}</div>
         </div> <!-- end editor_container -->        
       </div>
       <div class='col-lg-8 col-md-10'>
-        <h3>The Bracket</h3>
-        <div id='bracket-wrap'>
-          <div id='bracket' class='view_page'></div>
+        <h3 class='col_title'>The Bracket <a href='#' class="btn noround" title='Expand Bracket' id='btn_expand_bracket'><i class='fa fa-arrows-alt'></i></a></h3>
+        <div id='bracket-wrap' style='padding: 20px; border: 1px dashed black; '>
+          <div id='bracket' class='view_page_bracket'></div>
         </div> <!-- end bracket-wrap -->
       
         {% raw %}

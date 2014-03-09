@@ -177,24 +177,28 @@ $view_editor_background: #FFFFFF;
 @media (max-width: 750px) {
   #editor {
     height: 300px;
+    font-size: 13px;
   }
 }
 
 @media (min-width:750px) and (max-width: 970px) {
   #editor {
     height: 500px;
+    font-size: 13px;
   }
 }
 
 @media (min-width:970px) and (max-width: 1170px) {
   #editor {
     height: 500px;
+    font-size: 14px;
   }
 }
 
 @media (min-width:1170px) {
   #editor {
     height: 600px;
+    font-size: 14px;
   }
 }
 
@@ -212,7 +216,9 @@ $view_editor_background: #FFFFFF;
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
-  border: 1px solid #ccc;
+  border: 1px dashed #92AAED;
+  background: url(/images/grid1.png);
+  
 /*  border-radius: 20px;*/
 /*  position: absolute;*/
 /*  background: #0D1E3C;*/
@@ -254,6 +260,12 @@ $view_editor_background: #FFFFFF;
   }
 }
 
+#view_bracket_row {
+  h3.col_title {
+    margin-top: 0;
+    font-weight: bold;
+  }
+}
 #editor_w_buttons {
   position:absolute;
   top: 20px;
@@ -261,12 +273,27 @@ $view_editor_background: #FFFFFF;
   z-index: 300;
 }
 
-.view_page {
-  background-color: $view_editor_background !important;
+.view_page_editor_container {
+  background: url(/images/grid1.png) !important;
 }
 
-.edit_page {
-  background-color: $editor_background !important;
+.view_page_editor {
+/*  background-color: $view_editor_background !important;*/
+  background: transparent !important;
+}
+
+.view_page_bracket {
+  background: #fff !important;
+}
+
+.edit_page_editor_container {
+/*  background-color: $editor_background !important;*/
+  background: url(/images/grid1.png) !important;
+  
+}
+.edit_page_editor {
+/*  background-color: $view_editor_background !important;*/
+  background: transparent !important;
 }
 
 #generate_button {
@@ -402,7 +429,7 @@ $view_editor_background: #FFFFFF;
   }
 }
 
-.view_page {
+.view_page_bracket {
   .top {
     opacity: 1;
   }
