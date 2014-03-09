@@ -18,3 +18,5 @@ node_modules
 public/javascripts
 public/stylesheets/style.css
 public/stylesheets/bootstrap_overrides.css
+
+*.sass-cache*
