@@ -17,10 +17,16 @@ module.exports = function(m) {
       zip: String
     },
     coder_level: Number,
-    email: String,
+    email: {
+      type: String,
+      index: {
+        unique: true
+      }
+    },
     nickname: String,
     verified: Boolean,
-    birthdate: Date
+    birthdate: Date,
+    groups: [{}]
   });
 
   userSchema.plugin(passportLocalMongoose, {
