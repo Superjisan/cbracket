@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 
 {% block content %}
-  
+
   <!-- Modals -->
   {% include "./partials/registerModal.html" %}
   {% include "./partials/saveBracketModal.html" %}
-  
+
   {% include "./partials/show_flash.html" %}
         <div class='row'>
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
@@ -13,7 +13,7 @@
               <a href='#' class='pull-right'><i class='fa fa-question-circle'></i> Get Help</a>
               <h4 style='letter-spacing:-1px;'><strong>Step 1.</strong></h4>
               <h5>Build your game picking function.</h5>
-              
+
               <div class="btn-group " style='margin-bottom: 8px;'>
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle noround noright" data-toggle="dropdown">
@@ -75,50 +75,50 @@
                 <a href='#' class='btn btn-warning btn-codersbracket'>Watch the Tutorial</a>
               </div>
               <div id='bracket_blur_image'>
-                <!-- <img src='/images/blurbracket.jpg'> -->
+                <img src='/images/blurbracket.jpg'>
               </div>
               <div id='bracket' class='bracket_blur'></div>
             </div><!-- end bracket-wrap -->
 
-            <div class='sample-code' id='byseed-code'>  
+            <div class='sample-code' id='byseed-code'>
   if (team1.seed < team2.seed) {
     team1.wins();
   } else {
     team2.wins();
   }
             </div>
-            <div class='sample-code' id='leastlosses-code'>  
+            <div class='sample-code' id='leastlosses-code'>
   if (team1.losses < team2.losses) {
     team1.wins();
   } else {
     team2.wins();
   }
             </div>
-            <div  class='sample-code' id='randombracket-code'>  
+            <div  class='sample-code' id='randombracket-code'>
   if (Math.random() <= 0.5) {
     team1.wins();
   } else {
     team2.wins();
   }
             </div>
-            <div class='sample-code' id='halfnhalf-code'>  
+            <div class='sample-code' id='halfnhalf-code'>
   var rand1 = Math.random();
   var rand2 = Math.random();
   var log_t1_seed = Math.log(team1.seed+1);
   var log_t2_seed = Math.log(team2.seed+1);
-  
+
   if (rand1*log_t1_seed < rand2*log_t2_seed) {
     team1.wins();
   } else {
     team2.wins();
   }
             </div>
-            <div class='sample-code' id='laterseed-code'>  
+            <div class='sample-code' id='laterseed-code'>
   var rand1 = Math.random();
   var rand2 = Math.random();
   var log_t1_seed = Math.pow(Math.log(team1.seed+1), (game.round+2)/2);
   var log_t2_seed = Math.pow(Math.log(team2.seed+1), (game.round+2)/2);
-  
+
   if (rand1*log_t1_seed < rand2*log_t2_seed) {
     team1.wins();
   } else {
@@ -153,13 +153,13 @@
   var teams = {{teams|json|safe}};
   var bracket = new Bracket(null,teams);
   var html = bracket.generateBracketHtml();
-  
+
   {% if user %}
     var logged_in_user = {{user|json|safe}};
   {% else %}
     var logged_in_user = false;
   {% endif %}
-/*  
+
   var start_coding = function(e) {
     $('#bracket').fadeIn(400,function() {});
     $('#editor_w_buttons').animate({
@@ -176,13 +176,13 @@
     $('#bracket-wrap').animate({top: '300px'});
     $('#generate_button').show();
   };
-*/
-  
+
+
   $('#bracket').html(html);
   setupBracketEvents(bracket);
-  
-  // $('#icancode_button').click(start_coding);
-  
+
+  $('#icancode_button').click(start_coding);
+
 </script>
 
 {% endblock %}

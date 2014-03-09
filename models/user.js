@@ -20,12 +20,15 @@ module.exports = function(m) {
     email: String,
     nickname: String,
     verified: Boolean,
-    birthdate: Date
+    birthdate: Date,
+    facebook : {},
+    twitter: {},
+    provider : String
   });
 
   userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",
-    usernameLowerCase: true
+    // usernameLowerCase: true
   });
 
   userSchema.virtual('name.full').get(function () {

@@ -10,6 +10,7 @@ var path = require('path');
 var userModule = require('../modules/user');
 
 exports.index = function(req, res){
+  console.log(req.user)
   res.render('index', {
     homepage: true,
     user: req.user,
