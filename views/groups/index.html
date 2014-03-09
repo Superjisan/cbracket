@@ -1,0 +1,30 @@
+{% extends "../layout.html" %}
+
+{% block title %}
+Groups
+{% endblock%}
+
+{% block content %}
+
+<div class="container" ng-controller="GroupInviteCtrl">
+  <div class='row' style='margin-bottom: 20px'>
+  <h1>Groups</h1>
+  <p>Invite your friends via email</p>
+  {% if error_flash %}
+    <div class='alert alert-danger'>{{error_flash}}</div>
+  {% endif %}
+  {% raw %}
+  <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+  <form ng-submit="submit()" name="groupInviteForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
+    <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
+      <label for='email'>Friend's Email</label>
+      <input ng-model="email" ng-required="true" type="email" name="email" placeholder="Email" class="form-control">
+      <p ng-show="groupInviteForm.$diry && groupInviteForm.email.$invalid" class="error">Invalid email</p>
+    </div>
+    <button ng-disabled="groupInviteForm.$invalid" type="submit" class="btn btn-primary">Invite</button>
+  </form>
+  {% endraw %}
+  </div>
+</div>
+
+{% endblock %}
