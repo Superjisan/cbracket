@@ -2,7 +2,10 @@ var async = require('async');
 var models = require('../models/connect');
 var mailer = require('../modules/mailer');
 
-var UserModule = {
+function UserModule() {};
+
+
+UserModule.prototype = {
 
   sendForgotPasswordEmail: function(email, secureLink, cb) {
     var resetToken = new models.ResetToken({ email: email });
@@ -67,7 +70,41 @@ var UserModule = {
 
       cb(err);
     });
+  },
+
+  update: function(userId, updates, password, cb) {
+    if (typeof password === 'function') {
+      cb = password;
+    }
+
+    async.waterfall([
+      function getUser(done) {
+        models.User.findOne({_id: userId}, done);
+      },
+      function updateUser(userModel, done) {
+        userModel.set(updates);
+
+        if (password) {
+          userModel.setPassword(password, function(err){
+            done(err, userModel);
+          });
+        } else {
+          done(null, userModel);
+        }
+      },
+      function saveUser(userModel, done) {
+        userModel.save(function(err){
+          done(err);
+        });
+      }
+    ], function(err){
+      if (err) {
+        console.log(err);
+      }
+
+      cb(err);
+    });
   }
 };
 
-module.exports = UserModule;
+module.exports = new UserModule;
