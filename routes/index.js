@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var mailer = require('../modules/mailer');
 var fs = require('fs');
 var path = require('path');
+var userModule = require('../modules/user');
 
 exports.index = function(req, res){
   res.render('index', {
@@ -196,5 +197,58 @@ exports.mybrackets = function(req,res) {
 
 };
 
+exports.account = function(req, res) {
+  var locals = {bootstrapData:{}};
 
+  if (!req.user) {
+    locals.bootstrapData.errorFlash = "Please <a href='/login'>Login</a> to view this page";
+  } else {
+    locals.user = req.user;
+    locals.bootstrapData.user = {
+      name: req.user.name,
+      email: req.user.email,
+      nickname: req.user.nickname
+    };
+  }
 
+  res.render('my_account.html', locals);
+}
+
+exports.updateAccount = function(req, res) {
+  if (!req.user) {
+    return res.send(400, { msg: "Please <a href='/login'>Login</a> to view this page"});
+  }
+  if (!req.body.user) {
+    return res.send(400, { msg: "No updates recieved"});
+  }
+
+  var updates = req.body.user;
+  var password = req.body.password;
+
+  console.log(req.user, updates, password);
+
+  userModule.update(req.user._id, updates, password, function(err){
+    if (err) {
+      console.log(err);
+      return res.send(400);
+    }
+
+    function done(err) {
+      if (err) {
+        res.send(400);
+      } else {
+        res.send(200);
+      }
+    }
+
+    // Update session if user changed email
+    if (updates.email !== req.user.email) {
+      req.user.email = updates.email;
+      req.login(req.user, function(err){
+        done(err);
+      });
+    } else {
+      done();
+    }
+  });
+}

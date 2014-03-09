@@ -11,12 +11,15 @@ var user = require('./routes/user');
 var auth = require('./routes/auth');
 var http = require('http');
 var flash = require('connect-flash');
+var MongoStore = require('connect-mongo')(express);
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
 var env = process.env;
+
+env.DB_NAME = 'hackersbracket';
 
 app = express();
 app.engine('html', swig.renderFile);
@@ -31,7 +34,12 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('fullstackrox!!'));
-app.use(express.session());
+app.use(express.session({
+  cookie: {
+    maxAge: 3600000
+  },
+  store: new MongoStore({ db: env.DB_NAME })
+}));
 
 app.use(flash());
 app.use(passport.initialize());
@@ -94,6 +102,8 @@ app.post('/forgot-password', auth.sendForgotPasswordEmail);
 app.get('/reset-password', auth.resetPasswordPage);
 app.get('/reset-password/:token', auth.resetPasswordPage);
 app.post('/reset-password', auth.resetPassword);
+app.get('/account', routes.account);
+app.post('/account', routes.updateAccount);
 // global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){
