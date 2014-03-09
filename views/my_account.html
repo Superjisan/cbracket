@@ -8,6 +8,7 @@ My Account
   {% raw %}
   <div class="container" ng-controller="MyAccountCtrl">
     <h1>Update your information</h1>
+      <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
       <div ng-show="errorFlash" class='alert alert-danger ng-cloak' ng-bind-html="errorFlash"></div>
     <br>
     <form ng-submit="submit()" name="myAccountForm" role="form" style="max-width: 400px;">
@@ -28,7 +29,6 @@ My Account
         <input ng-model="password" type="password" name="password" placeholder="Password" class="form-control">
       </div>
       <button ng-disabled="myAccountForm.$invalid" type="submit" class="btn btn-primary">Update</button>
-      <p>{{ responseText }}</p>
     </form>
   </div>
   {% endraw %}
