@@ -156,8 +156,8 @@ exports.acceptInvite = function(req, res) {
       }
 
       userModule.register({
-        first_name: req.body.user.first_name,
-        last_name: req.body.user.last_name,
+        first_name: req.body.user.name.first,
+        last_name: req.body.user.name.last,
         nickname: req.body.user.nickname,
         email: inviteToken.email,
         password: req.body.user.password

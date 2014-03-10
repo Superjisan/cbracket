@@ -38,7 +38,7 @@ module.exports = function(m) {
       members: [{
         id: ObjectId
       }]
-    }]
+    }],
     facebook : {},
     twitter: {},
     provider : String
