@@ -1,0 +1,28 @@
+{% extends "../layout.html" %}
+
+{% block title %}
+You're Invited
+{% endblock%}
+
+{% block content %}
+
+<div class="container" ng-controller="ViewGroupInviteCtrl">
+  <div class='row' style='margin-bottom: 20px'>
+  {% if error_flash %}
+    <div class='alert alert-danger'>{{error_flash}}</div>
+  {% else %}
+  <h1>You've been invited to join "{{group}}"</h1>
+  <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+
+  <p>{{ sender }} wants you to join their group. Simply click the button below to accept.</p>
+
+  <form ng-submit="submit()" name="acceptInviteForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
+    <button type="submit" class="btn btn-primary">Accept Invite</button>
+  </form>
+
+
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}

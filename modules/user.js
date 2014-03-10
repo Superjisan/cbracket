@@ -8,8 +8,13 @@ function UserModule() {};
 UserModule.prototype = {
 
   sendForgotPasswordEmail: function(email, secureLink, cb) {
+    if (typeof secureLink === 'function') {
+      cb = secureLink;
+      secureLink = true;
+    }
+
     var resetToken = new models.ResetToken({ email: email });
-    var link = secureLink ? 'https' : 'http' + "://" + process.env.APP_HOST + "/reset-password/" + resetToken.token;
+    var link = (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/reset-password/" + resetToken.token;
 
     async.series([
       function saveToken(done) {
@@ -104,6 +109,16 @@ UserModule.prototype = {
 
       cb(err);
     });
+  },
+
+  getGroups: function(userId, cb){
+    var groups = models.User.findOne({_id: userId}, {groups: "*"}, function(err, userModel){
+      cb(err, userModel? userModel.groups : []);
+    });
+  },
+
+  addGroup: function(groupData) {
+
   }
 };
 

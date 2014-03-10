@@ -9,6 +9,7 @@ require('./filters')(swig);
 var routes = require('./routes');
 var user = require('./routes/user');
 var auth = require('./routes/auth');
+var groups = require('./routes/groups');
 var http = require('http');
 var flash = require('connect-flash');
 var MongoStore = require('connect-mongo')(express);
@@ -104,6 +105,12 @@ app.get('/reset-password/:token', auth.resetPasswordPage);
 app.post('/reset-password', auth.resetPassword);
 app.get('/account', routes.account);
 app.post('/account', routes.updateAccount);
+app.get('/groups', groups.index);
+app.post('/groups', groups.create);
+app.get('/groups/invite', groups.invite);
+app.post('/groups/invite', groups.sendInvite);
+app.get('/groups/invite/:token', groups.viewInvite);
+app.post('/groups/invite/:token', groups.acceptInvite);
 // global.allteams = [];
 
 http.createServer(app).listen(app.get('port'), function(){

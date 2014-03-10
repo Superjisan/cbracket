@@ -1,9 +1,6 @@
-app.controller('GroupInviteCtrl', function($scope, $http){
-  $scope.groups = bootstrapData.groups || [];
-  $scope.group = $scope.groups[0];
-
+app.controller('CreateGroupCtrl', function($scope, $http){
   $scope.submit = function() {
-    $http.post("/groups/invite", { group: $scope.group, email: $scope.email }).
+    $http.post("/groups", { name: $scope.name }).
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;

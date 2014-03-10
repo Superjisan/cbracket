@@ -12,16 +12,16 @@ Create New Group
   {% if error_flash %}
     <div class='alert alert-danger'>{{error_flash}}</div>
   {% else %}
+  {% raw %}
   <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
   <form ng-submit="submit()" name="createGroupForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
-    {% raw %}
     <div class="form-group">
       <label for='name'>Group Name</label>
       <input ng-required="true" ng-model="name" type="text" name="name" placeholder="Group Name" class="form-control">
     </div>
     <button ng-disabled="createGroupForm.$invalid" type="submit" class="btn btn-primary">Create</button>
-    {% endraw %}
   </form>
+  {% endraw %}
   {% endif %}
   </div>
 </div>
