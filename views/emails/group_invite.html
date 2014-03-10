@@ -1,0 +1,28 @@
+{% extends "default.html" %}
+
+{% block content %}
+<table border="0" cellpadding="20" cellspacing="0" width="100%">
+  <tr>
+    <td valign="top" class="bodyContent">
+      <div mc:edit="std_content00">
+        <h2 class="h2">{{senderName}} invites you to join their group "{{groupName}}" at CodersBracket.</h2>
+        To view the invite: {{link}}
+        <br />
+      </div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" style="padding-top:0;">
+      <table border="0" cellpadding="15" cellspacing="0" class="templateButton">
+        <tr>
+          <td valign="middle" class="templateButtonContent">
+            <div mc:edit="std_content01">
+              <a href="{{link}}" target="_blank">View Invite</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+{% endblock %}

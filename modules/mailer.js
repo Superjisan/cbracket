@@ -58,9 +58,19 @@ var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
   }, done);
 };
 
+var sendGroupInviteEmail = function(to, senderName, groupName, inviteLink, done) {
+  sendTemplateMail("group_invite", {
+    to: to,
+    senderName: senderName,
+    groupName: groupName,
+    link: inviteLink
+  }, done);
+}
+
 module.exports = {
   email: email,
   sendVerifyEmail: sendVerifyEmail,
   sendTemplateMail: sendTemplateMail,
-  sendForgotPasswordEmail: sendForgotPasswordEmail
+  sendForgotPasswordEmail: sendForgotPasswordEmail,
+  sendGroupInviteEmail: sendGroupInviteEmail
 };

@@ -4,6 +4,7 @@ var fn = require('../modules/functions.js');
 module.exports = function(m) {
   var mongoose = m || require('mongoose');
   var Schema = mongoose.Schema;
+  var ObjectId = Schema.ObjectId;
 
   var userSchema = new Schema({
 
@@ -26,11 +27,25 @@ module.exports = function(m) {
     nickname: String,
     verified: Boolean,
     birthdate: Date,
+    groups: [{
+      ownerId: ObjectId,
+      name: String,
+      password: String,
+      invites: [{
+        email: String,
+        accepted: Boolean
+      }],
+      members: [{
+        id: ObjectId
+      }]
+    }],
     facebook : {},
     twitter: {},
-    provider : String,
-    groups: [{}]
+    provider : String
   });
+
+  userSchema.index({email: 1, 'groups.name': 1}, {unique: true});
+  userSchema.index({email: 1, 'groups.invites.email': 1}, {unique: true});
 
   userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",

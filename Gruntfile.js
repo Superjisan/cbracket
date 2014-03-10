@@ -4,7 +4,10 @@ module.exports = function(grunt) {
     './public-src/javascripts/app/directives/equals.js',
     './public-src/javascripts/app/controllers/ForgotPasswordCtrl.js',
     './public-src/javascripts/app/controllers/ResetPasswordCtrl.js',
-    './public-src/javascripts/app/controllers/MyAccountCtrl.js'
+    './public-src/javascripts/app/controllers/MyAccountCtrl.js',
+    './public-src/javascripts/app/controllers/CreateGroupCtrl.js',
+    './public-src/javascripts/app/controllers/GroupInviteCtrl.js',
+    './public-src/javascripts/app/controllers/ViewGroupInviteCtrl.js'
   ];
 
   var scriptSrc = [

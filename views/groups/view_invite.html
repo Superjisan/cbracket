@@ -1,0 +1,53 @@
+{% extends "../layout.html" %}
+
+{% block title %}
+You're Invited
+{% endblock%}
+
+{% block content %}
+
+<div class="container" ng-controller="ViewGroupInviteCtrl">
+  <div class='row' style='margin-bottom: 20px'>
+  {% if error_flash %}
+    <div class='alert alert-danger'>{{error_flash}}</div>
+  {% else %}
+  <h1>You've been invited to join "{{group}}"</h1>
+  {% raw %}
+  <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+  {% endraw %}
+    {% if user %}
+      <p>{{ sender }} wants you to join their group. Simply click the button below to accept.</p>
+
+      <form ng-submit="submit()" name="acceptInviteForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
+        <button type="submit" class="btn btn-primary">Accept Invite</button>
+      </form>
+
+    {% else %}
+      <p>{{ sender }} invited you to their bracket. Enter your name and password to make an account and join the group.</p>
+
+      <form ng-submit="submitNew()" name="acceptInviteAndJoinForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
+        <div class="form-group">
+          <label for='email'>Your Name</label><br>
+          <input ng-model="user.name.first" type="text" name="first_name" placeholder='First' class="form-control" style='width: 48%; display:inline;'> <input ng-model="user.name.last" type="text" name="last_name" class="form-control" placeholder='Last' style='width: 48%; display:inline;'>
+        </div>
+        <div class="form-group">
+          <label for='email'>Public Nickname</label>
+          <input ng-model="user.nickname" type="text" name="nickname" class="form-control">
+        </div>
+        <div class="form-group">
+          <label for='email'>Your Email</label>
+          <input disabled="disabled" type="text" name="email" class="form-control" value="{{email}}">
+        </div>
+        <div class="form-group">
+          <label for='password'>Your Password</label>
+          <input ng-required="true" ng-model="user.password" type="password" name="password" placeholder="New Password" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-primary">Accept Invite</button>
+      </form>
+    {% endif %}
+
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}
