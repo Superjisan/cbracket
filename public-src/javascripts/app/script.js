@@ -43,6 +43,18 @@ var setupEvents = function () {
       $('#text-editor-animate').css('bottom', image_bottom + "px");
     });
   });
+  
+  $(function() {
+    var orig;
+    $('#watch_tutorial_btn').hover(function() {
+      orig = $(this).html();
+      $(this).html("Coming Soon!");
+    }, function() {
+      if (!!orig) {
+        $(this).html(orig);
+      }
+    });
+  });
 
 
   $('#waitlist_form').submit(function(e){

@@ -12,7 +12,7 @@
             <th>Name</th>
             <th>Winner</th>
             <th>Score</th>
-            <th>Actions</th>
+            <!-- <th>Actions</th> -->
           </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
               <td><a href="/code_bracket/{{bracket._id.toString()}}">{{bracket.name}}</a></td>
               <td>{{bracket.winner.name|default('-')}}</td>
               <td>{% if bracket.score>0 %}{{bracket.score}}{% else %}-{% endif %}</td>
-              <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td>
+              <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->
 
             </tr>
         {% endfor %}
