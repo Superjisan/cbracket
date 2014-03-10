@@ -123,6 +123,7 @@ exports.save_bracket = function(req,res) {
   if (!!req.body.bracket_winner) {
     console.log(req.body.bracket_winner);
     bracket_winner = req.body.bracket_winner;
+    bracket_winner.sid = bracket_winner.sid*1;
   }
   if (!!req.body.bracket_name) {
     bracket_name = req.body.bracket_name;
@@ -135,7 +136,8 @@ exports.save_bracket = function(req,res) {
       name: bracket_name,
       data: bracket_data,
       code: bracket_code,
-      user_id: req.user._id
+      user_id: req.user._id,
+      winner: bracket_winner
     }, function(err,obj) {
       if (err) {
         console.error(err.message);

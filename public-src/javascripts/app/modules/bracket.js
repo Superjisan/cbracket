@@ -91,6 +91,11 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
           break;
         }
       } else {
+        var finalWinnerTempGame = new Game(round-1, Math.floor(game1.spot/2), game1.division, game1.bracket_level-1, winnerteam1, false);
+        finalWinnerTempGame.bracket = this;
+        
+        // debugger;
+        q.push({game: finalWinnerTempGame});
         this.winner = winnerteam1;
         console.log(this.winner.name, " wins tournament!");
       }
@@ -98,7 +103,7 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
   }
 
   q.push({finish:function () {
-    console.log('finish fun');
+    // console.log('finish fun');
     finishFunc();
   }});
 
@@ -238,5 +243,25 @@ Bracket.prototype.generateBracketHtml = function (bracket) {
       html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "right", team1:teamright1, team2:teamright2 }});
     }
   }
+  var final_four_html = $('#final_four_games').html();
+  if (this.bracketData) {
+    // all rounds after the first round
+    round = 0;
+    division = 1;
+    spot = 0;
+    blevel = round-1;
+    var finalist1 = this.getTeamFromData(round,division, spot);
+    var finalist2 = this.getTeamFromData(round, division+2, spot);
+    var winner = teamsbysid[this.winner];
+    game = new Game(round, division, spot, blevel, finalist1, finalist2, "b"+blevel+"-"+spot+"-left");
+    this.games[0].push(game);
+    html += swig.render(final_four_html, { locals: { finalist1: finalist1.name, finalist2:finalist2.name, winner: winner.name }});
+  } else {
+    html += swig.render(final_four_html, { locals: { finalist1: "", finalist2:"", winner: "" }});
+  }
+  
   return html;
 };
+
+
+
