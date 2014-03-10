@@ -17,13 +17,19 @@ module.exports = function(m) {
       zip: String
     },
     coder_level: Number,
-    email: String,
+    email: {
+      type: String,
+      index: {
+        unique: true
+      }
+    },
     nickname: String,
     verified: Boolean,
     birthdate: Date,
     facebook : {},
     twitter: {},
-    provider : String
+    provider : String,
+    groups: [{}]
   });
 
   userSchema.plugin(passportLocalMongoose, {

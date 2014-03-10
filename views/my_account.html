@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}
+My Account
+{% endblock%}
+
+{% block content %}
+  {% raw %}
+  <div class="container" ng-controller="MyAccountCtrl">
+    <h1>Update your information</h1>
+      <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+      <div ng-show="errorFlash" class='alert alert-danger ng-cloak' ng-bind-html="errorFlash"></div>
+    <br>
+    <form ng-submit="submit()" name="myAccountForm" role="form" style="max-width: 400px;">
+      <div class="form-group">
+        <label for='email'>Your Name</label><br>
+        <input ng-model="user.name.first" type="text" name="first_name" placeholder='First' class="form-control" style='width: 48%; display:inline;'> <input ng-model="user.name.last" type="text" name="last_name" class="form-control" placeholder='Last' style='width: 48%; display:inline;'>
+      </div>
+      <div class="form-group">
+        <label for='email'>Public Nickname</label>
+        <input ng-model="user.nickname" type="text" name="nickname" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for='email'>Your Email</label>
+        <input ng-model="user.email" type="text" name="email" placeholder="name@example.com" class="form-control">
+      </div>
+      <div class="form-group">
+        <label for='password'>Change Password</label>
+        <input ng-model="password" type="password" name="password" placeholder="Password" class="form-control">
+      </div>
+      <button ng-disabled="myAccountForm.$invalid" type="submit" class="btn btn-primary">Update</button>
+    </form>
+  </div>
+  {% endraw %}
+{% endblock %}

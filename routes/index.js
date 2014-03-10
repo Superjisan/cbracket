@@ -225,7 +225,7 @@ exports.account = function(req, res) {
 
 exports.updateAccount = function(req, res) {
   if (!req.user) {
-    return res.send(400, { msg: "Please <a href='/login'>Login</a> to view this page"});
+    return res.send(400, { msg: "Please login to view this page"});
   }
   if (!req.body.user) {
     return res.send(400, { msg: "No updates recieved"});
@@ -237,16 +237,18 @@ exports.updateAccount = function(req, res) {
   console.log(req.user, updates, password);
 
   userModule.update(req.user._id, updates, password, function(err){
+    var msg = '';
+
     if (err) {
-      console.log(err);
-      return res.send(400);
+      msg = err.code === 11001 ? "A user with email " + updates.email + " already exists" : null;
+      return res.send(400, { msg: msg });
     }
 
     function done(err) {
       if (err) {
         res.send(400);
       } else {
-        res.send(200);
+        res.send(200, { msg: 'Your updates have been made successfully.'});
       }
     }
 
