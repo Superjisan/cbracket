@@ -33,7 +33,7 @@ Bracket.prototype.generateBracketHtml = function (teams) {
     return (seed-1)*4+subseed;
   };
 
-  console.log("number of teams: " + teams.length);
+  // console.log("number of teams: " + teams.length);
   var teamleft1, teamleft2, teamright1, teamright2, game;
 
   for (var i=4; i>=0; i--) {

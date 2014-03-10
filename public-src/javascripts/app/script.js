@@ -26,7 +26,7 @@ var setupAceEditor = function () {
 
 var setupEvents = function () {
 
-  $(function () {
+  $(window).load(function () {
     var getImgBottom = function () {
       var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
       var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
@@ -190,6 +190,7 @@ var setupBracketEvents = function (bracket) {
         window.location="/login?forwardpath="+window.location.pathname;
       } else {
         $('#saveBracketModal').modal();
+        $('#is_new_user').val("yes");
         $('#bracket_name').focus();
       }
 
@@ -209,13 +210,15 @@ var setupBracketEvents = function (bracket) {
     var bracket_name = this.bracket_name.value;
     var bracket_data = JSON.stringify(bracket.data);
     var bracket_code = editor.getValue();
-    var winner = {sid: this.winner.sid, name: this.winner.name};
-
+    var winner = {sid: bracket.winner.sid, name: bracket.winner.name};
+    var is_new_user = this.is_new_user.value;
+    
     var params = {
       bracket_data: bracket_data,
       bracket_name: bracket_name,
       bracket_code: bracket_code,
-      bracket_winner: winner
+      bracket_winner: winner,
+      is_new_user: is_new_user
     };
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {

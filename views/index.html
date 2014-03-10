@@ -2,13 +2,12 @@
 
 {% block content %}
   <div class='heading'>[code your bracket]</div>
-  
+
   <div class='container' id='front_page_container'>
     {% include "./partials/show_flash.html" %}
     <div class='row'>
       <div id='front_message'>
         <h2>Still using a mouse to fill out your bracket?</h2>
-        <!-- <p>Learn to code while making a killer bracket and benefiting great non-profits advancing STEM education. All in about <strong>two minutes</strong>. Sound good?</p> -->
         <p>Learn to code and make a <strong>smart college basketball bracket</strong> in about <strong>two minutes</strong>. All while benefiting great non-profits advancing STEM education. Sound good?</p>
       </div>
       <div id='front_buttons'>
@@ -18,13 +17,12 @@
     </div> <!-- end row -->
   </div> <!-- end content_container -->
   <div id="text-editor-animate">
-		<img src="/images/text-editor3.png" />
-	</div>
-
+    <img src="/images/text-editor3.png" />
+  </div>
 {% endblock %}
 
 {% block bottomscripts %}
-  
+
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script>
     setupEvents();

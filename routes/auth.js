@@ -4,6 +4,8 @@ var mailer = require('../modules/mailer');
 var userModule = require('../modules/user');
 var url = require('url');
 var async = require('async');
+// var FacebookStrategy = require('passport-facebook').Strategy
+// var TwitterStrategy = require('passport-twitter').Strategy
 
 exports.register_page = function(req, res) {
     res.render('register', { });
@@ -57,7 +59,11 @@ exports.register = function(req, res) {
       createTokenAndSendVerifyEmail(req, user);
     }
     var theuser = user;
-    req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
+    if (retjson) {
+      req.flash('success', "Your account was successfully created and bracket was saved. Please check your Inbox (and Spam folder) for the email verification link!");
+    } else {
+      req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
+    }
     passport.authenticate('local')(req, res, function () {
       if (retjson) {
         res.setHeader('Content-Type', 'application/json');
@@ -70,6 +76,8 @@ exports.register = function(req, res) {
     });
   });
 };
+
+
 
 exports.verify_email = function(req,res) {
   var token = req.params.token;

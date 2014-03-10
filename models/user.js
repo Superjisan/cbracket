@@ -39,6 +39,9 @@ module.exports = function(m) {
         id: ObjectId
       }]
     }]
+    facebook : {},
+    twitter: {},
+    provider : String
   });
 
   userSchema.index({email: 1, 'groups.name': 1}, {unique: true});

@@ -1,0 +1,16 @@
+{% raw %}
+<script id="bracket-box" type="text/x-handlebars-template">
+  <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
+      <div class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
+      <div class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
+  </div>
+</script>
+
+<script id="final_four_games" type="text/x-handlebars-template">
+  <div id='ff-rd1'>
+    <div class="ff-team" id='ff-rd1-team1'>{{finalist1}}</div>
+    <div class="ff-team" id='ff-rd1-team2'>{{finalist2}}</div>
+    <div id='ff-rd2'>{{winner}}</div>
+  </div>
+</script>
+{% endraw %}

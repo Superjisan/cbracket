@@ -10,6 +10,7 @@ var path = require('path');
 var userModule = require('../modules/user');
 
 exports.index = function(req, res){
+  // console.log(req.user);
   res.render('index', {
     homepage: true,
     user: req.user,
@@ -109,7 +110,10 @@ exports.view_code_bracket = function(req,res) {
 };
 
 exports.save_bracket = function(req,res) {
-  var bracket_code, bracket_data;
+  var bracket_code, bracket_data, bracket_winner,bracket_name, is_new_user;
+  if (!!req.body.is_new_user) {
+    is_new_user = req.body.is_new_user;
+  }
   if (!!req.body.bracket_code) {
     bracket_code = req.body.bracket_code;
   }
@@ -119,6 +123,7 @@ exports.save_bracket = function(req,res) {
   if (!!req.body.bracket_winner) {
     console.log(req.body.bracket_winner);
     bracket_winner = req.body.bracket_winner;
+    bracket_winner.sid = bracket_winner.sid*1;
   }
   if (!!req.body.bracket_name) {
     bracket_name = req.body.bracket_name;
@@ -131,13 +136,19 @@ exports.save_bracket = function(req,res) {
       name: bracket_name,
       data: bracket_data,
       code: bracket_code,
-      user_id: req.user._id
+      user_id: req.user._id,
+      winner: bracket_winner
     }, function(err,obj) {
       if (err) {
         console.error(err.message);
       }
-      console.log("saving bracket data: "+obj);
-      req.flash('success', "Your bracket '"+obj.name+",' was saved!");
+
+      if (is_new_user == "no") {
+        // new users already have a success flash message from the 
+        // successful registration
+        req.flash('success', "Your bracket '"+obj.name+",' was saved!");
+      }
+      
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify({bracket:obj}));
 
@@ -212,7 +223,7 @@ exports.account = function(req, res) {
   }
 
   res.render('my_account.html', locals);
-}
+};
 
 exports.updateAccount = function(req, res) {
   if (!req.user) {
@@ -253,4 +264,4 @@ exports.updateAccount = function(req, res) {
       done();
     }
   });
-}
+};
