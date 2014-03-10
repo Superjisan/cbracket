@@ -142,7 +142,7 @@ passport.use(new FacebookStrategy({
                     return done(err);
                 }
                 if (!user) {
-                    console.log(profile._json.email)
+                    // console.log(profile._json.email)
                     var user = new models.User({
                         name: {
                           first: profile.name.givenName,
@@ -154,14 +154,14 @@ passport.use(new FacebookStrategy({
                         provider: 'facebook'
                     });
                     user.save(function(err) {
-                        console.log(profile)
+                        // console.log(profile)
                         if (err) console.log(err);
                         return done(err, user);
                     });
                 } else {
                     user.facebook = profile._json;
                     user.save(function(err){
-                      console.log(profile)
+                      // console.log(profile)
                       if(err) console.log(err);
                       return done(err, user);
                     })
@@ -177,7 +177,6 @@ passport.use(new TwitterStrategy({
             consumerKey: TWITTER_APP_ID,
             consumerSecret: TWITTER_APP_SECRET,
             callbackURL: "http://localhost:3000/auth/twitter/callback"
-
         },
         function(token, tokenSecret, profile, done) {
             models.User.findOne({
@@ -198,13 +197,13 @@ passport.use(new TwitterStrategy({
                           first: firstName,
                           last: lastName
                         },
-
+                        
                         nickname: profile.username,
                         // twitter: profile._json,
                         provider: 'twitter'
                     });
                     user.save(function(err) {
-                        console.log(user)
+                        // console.log(user)
                         if (err) console.log(err);
                         return done(err, user);
                     });
@@ -229,7 +228,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', {
         failureRedirect: '/register'
     }), function(req, res){
         req.user = JSON.stringify(req.user);
-        res.redirect('/')
+        res.redirect('/');
 });
 
 app.get('/auth/twitter', passport.authenticate('twitter', {
@@ -239,11 +238,8 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', {
         failureRedirect: '/register'
     }), function(req, res){
         req.user = JSON.stringify(req.user);
-        res.redirect('/')
+        res.redirect('/');
 });
-
-
-
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
