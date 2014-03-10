@@ -117,8 +117,47 @@ UserModule.prototype = {
     });
   },
 
-  addGroup: function(groupData) {
+  createTokenAndSendVerifyEmail: function(user, secureLink, cb) {
+    if (typeof secureLink === 'function') {
+      cb = secureLink;
+      secureLink = true;
+    }
 
+    var verificationToken = new models.VerifyToken({_userId: user._id});
+
+    verificationToken.createVerificationToken(function (err, token) {
+        if (err) return console.log("Couldn't create verification token", err);
+        var verify_url =  (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/verify/" + token;
+
+        mailer.sendVerifyEmail(user, verify_url, function (err, success) {
+            if (err) {
+                console.error("Unable to send email: " + error.message);
+                if (cb) return cb(err);
+            }
+            // console.info("Sent to verify email for delivery to: "+user.email);
+        });
+    });
+  },
+
+  register: function(userInfo, cb) {
+    var self = this;
+
+    models.User.register(new models.User({
+      name: {first: userInfo.first_name, last: userInfo.last_name},
+      nickname: userInfo.nickname,
+      email : userInfo.email
+    }), userInfo.password, function(err, user) {
+      if (err) {
+        if (err.message.indexOf("User already exists") >= 0) {
+          err = new Error("This email has already been registered: "+userInfo.email+". Please login or click 'Forgot Password.'")
+        }
+      }
+
+      // return to client and send verifaction email in the background
+      cb(err);
+
+      self.createTokenAndSendVerifyEmail(user, false);
+    });
   }
 };
 

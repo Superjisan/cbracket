@@ -10,6 +10,7 @@ var async = require('async');
 var models = require('../models/connect');
 var userModule = require('../modules/user');
 var groupsModule = require('../modules/groups');
+var passport = require('passport');
 
 exports.index = function(req, res){
   res.render('groups/index', {user: req.user});
@@ -94,6 +95,7 @@ exports.viewInvite = function(req, res) {
         } else {
           locals.group = inviteToken.group.name;
           locals.sender = inviteToken.sender;
+          locals.email = inviteToken.email;
           locals.bootstrapData.token = inviteToken.token;
         }
         done(err, inviteToken);
@@ -143,8 +145,34 @@ exports.acceptInvite = function(req, res) {
     function updateAccount(inviteToken, done) {
       console.log('updateAccount');
       var update = { $push: {groups: inviteToken.group.toObject() } };
-      models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err){
-        done(err, inviteToken);
+      models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
+        console.log('findOneAndUpdate',userModel);
+        done(err, inviteToken, !userModel);
+      });
+    },
+    function createNewAccount(inviteToken, createAccount, done) {
+      if (!createAccount) {
+        return done(null, inviteToken);
+      }
+
+      userModule.register({
+        first_name: req.body.user.first_name,
+        last_name: req.body.user.last_name,
+        nickname: req.body.user.nickname,
+        email: inviteToken.email,
+        password: req.body.user.password
+      }, function(err) {
+        if (err) {
+          return done(err);
+        }
+        // Since this flow starts with a link from email the user is already email verified
+        // Might need to do extra things for mandril later on
+        var update = { $push: {groups: inviteToken.group.toObject() }, verified: true };
+        models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
+          req.login(userModel, function(err){
+            done(err, inviteToken);
+          });
+        });
       });
     }
   ], function(err, inviteToken) {
