@@ -2,7 +2,7 @@ var async = require('async');
 var models = require('../models/connect');
 var mailer = require('../modules/mailer');
 
-function UserModule() {};
+function UserModule() {}
 
 
 UserModule.prototype = {
@@ -107,4 +107,4 @@ UserModule.prototype = {
   }
 };
 
-module.exports = new UserModule;
+module.exports = new UserModule();

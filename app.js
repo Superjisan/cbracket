@@ -19,7 +19,7 @@ var TwitterStrategy = require('passport-twitter').Strategy;
 var path = require('path');
 var sass = require('node-sass');
 var teams = require("./modules/teams");
-var name = require("./modules/name_interpolation.js")
+// var name = require("./modules/name_interpolation.js")
 var env = process.env;
 
 env.DB_NAME = 'hackersbracket';
@@ -187,11 +187,16 @@ passport.use(new TwitterStrategy({
                     return done(err);
                 }
                 if (!user) {
-                    console.log("hello")
+                    var nameSplit = profile.displayName.split(' ');
+                    var firstName = (!!nameSplit[0]) ? nameSplit[0]: "";
+                    var lastName = (!!nameSplit[1]) ? nameSplit[1]: "";
+                    
                     var user = new models.User({
+                          // first: name.firstName(profile.displayName),
+                          // last: name.lastName(profile.displayName)
                         name: {
-                          first: name.firstName(profile.displayName),
-                          last: name.lastName(profile.displayName)
+                          first: firstName,
+                          last: lastName
                         },
 
                         nickname: profile.username,

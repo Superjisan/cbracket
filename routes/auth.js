@@ -59,7 +59,11 @@ exports.register = function(req, res) {
       createTokenAndSendVerifyEmail(req, user);
     }
     var theuser = user;
-    req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
+    if (retjson) {
+      req.flash('success', "Your account was successfully created and bracket was saved. Please check your Inbox (and Spam folder) for the email verification link!");
+    } else {
+      req.flash('success', "Your account was successfully created. Next, please check your Inbox (and Spam folder) for the email verification link!");
+    }
     passport.authenticate('local')(req, res, function () {
       if (retjson) {
         res.setHeader('Content-Type', 'application/json');

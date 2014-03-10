@@ -92,7 +92,7 @@ Bracket.prototype.play = function(playFunc, finishFunc) {
         }
       } else {
         this.winner = winnerteam1;
-        console.log(winnerteam1.name, " wins tournament!");
+        console.log(this.winner.name, " wins tournament!");
       }
     }
   }

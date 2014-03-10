@@ -28,7 +28,7 @@ module.exports = function(m) {
 
   userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",
-    // usernameLowerCase: true
+    usernameLowerCase: true
   });
 
   userSchema.virtual('name.full').get(function () {
