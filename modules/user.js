@@ -149,7 +149,7 @@ UserModule.prototype = {
     }), userInfo.password, function(err, user) {
       if (err) {
         if (err.message.indexOf("User already exists") >= 0) {
-          err = new Error("This email has already been registered: "+userInfo.email+". Please login or click 'Forgot Password.'")
+          err = new Error("This email has already been registered: "+userInfo.email+". Please login or click 'Forgot Password.'");
         }
       }
 

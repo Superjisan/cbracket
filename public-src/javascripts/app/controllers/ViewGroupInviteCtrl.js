@@ -22,5 +22,5 @@ app.controller('ViewGroupInviteCtrl', function($scope, $http){
         $scope.status = false;
         $scope.responseText = data.msg || 'An error occured. Please try again';
       });
-  }
+  };
 });

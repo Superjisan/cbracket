@@ -65,7 +65,7 @@ var sendGroupInviteEmail = function(to, senderName, groupName, inviteLink, done)
     groupName: groupName,
     link: inviteLink
   }, done);
-}
+};
 
 module.exports = {
   email: email,

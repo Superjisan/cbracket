@@ -21,7 +21,7 @@ exports.invite = function(req, res){
     return res.render('groups/invite', { error_flash: 'You must be logged in.' });
   }
 
-  var locals = { user: req.user, bootstrapData: {}}
+  var locals = { user: req.user, bootstrapData: {}};
   userModule.getGroups(req.user._id, function(err, groups){
     console.log('groups', groups);
     locals.bootstrapData.groups = groups;
@@ -45,7 +45,7 @@ exports.create = function(req, res) {
 
     return res.send(200, { msg: 'Your group has been created.' });
   });
-}
+};
 
 exports.sendInvite = function(req, res) {
   var user = req.user;
@@ -79,7 +79,7 @@ exports.sendInvite = function(req, res) {
       res.send(200, { msg: "Your invitation was sent to " + email + ". Why not invite more friends?"});
     }
   });
-}
+};
 
 exports.viewInvite = function(req, res) {
   var token = req.params.token;
@@ -120,7 +120,7 @@ exports.viewInvite = function(req, res) {
   ], function(err){
     res.render('groups/view_invite', locals);
   });
-}
+};
 
 exports.acceptInvite = function(req, res) {
   var token = req.params.token;
@@ -184,7 +184,7 @@ exports.acceptInvite = function(req, res) {
       return res.send(400, { msg: msg });
     }
 
-    return res.send(200, { msg: 'You are now in the "' + inviteToken.group.name + '" group.' })
-  })
+    return res.send(200, { msg: 'You are now in the "' + inviteToken.group.name + '" group.' });
+  });
 
-}
+};

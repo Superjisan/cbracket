@@ -46,7 +46,8 @@ module.exports = function(grunt) {
         "loopfunc": true,
         "sub": true,
         "-W065": true,
-        "-W084": true
+        "-W084": true,
+        "evil": true
       }
     },
 

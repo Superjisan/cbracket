@@ -2,7 +2,7 @@ var async = require('async');
 var models = require('../models/connect');
 var mailer = require('../modules/mailer');
 
-function GroupModule() {};
+function GroupModule() {}
 
 
 GroupModule.prototype = {
@@ -98,4 +98,4 @@ GroupModule.prototype = {
 
 };
 
-module.exports = new GroupModule;
+module.exports = new GroupModule();
