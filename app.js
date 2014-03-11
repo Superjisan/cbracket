@@ -70,23 +70,6 @@ if ('production' == app.get('env')) {
 }
 
 // passport config
-models = require('./models/connect');
-// passport.use(new LocalStrategy(models.User.authenticate()));
-passport.use(models.User.createStrategy());
-passport.serializeUser(function(user, done) {
-        done(null, user.id);
-    });
-
-    // Deserialize the user object based on a pre-serialized token
-    // which is the user id
-passport.deserializeUser(function(id, done) {
-  models.User.findOne({
-      _id: id
-  }, '-salt -hashed_password', function(err, user) {
-      done(err, user);
-  });
-});
-
 app.get('/', routes.index);
 app.get('/code_bracket', routes.code_bracket);
 app.get('/code_bracket/:id', routes.view_code_bracket);
@@ -132,10 +115,38 @@ app.post('/groups/invite/:token', groups.acceptInvite);
 // global.allteams = [];
 
 
-var FACEBOOK_APP_ID = "558806480893968";
-var FACEBOOK_APP_SECRET = "76c52123d1fa888874221542716e7596";
+var mongoose = require('mongoose');
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/hackersbracket';
 
-passport.use(new FacebookStrategy({
+mongoose.connect(mongoUri);
+db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+
+models = {};
+
+db.once('open', function callback () {
+  models = require('./models/connect');
+  passport.use(models.User.createStrategy());
+  passport.serializeUser(function(user, done) {
+          done(null, user.id);
+      });
+
+      // Deserialize the user object based on a pre-serialized token
+      // which is the user id
+  passport.deserializeUser(function(id, done) {
+    models.User.findOne({
+        _id: id
+    }, '-salt -hashed_password', function(err, user) {
+        done(err, user);
+    });
+  });
+  
+    var FACEBOOK_APP_ID = "558806480893968";
+    var FACEBOOK_APP_SECRET = "76c52123d1fa888874221542716e7596";
+
+    passport.use(new FacebookStrategy({
             clientID: FACEBOOK_APP_ID,
             clientSecret: FACEBOOK_APP_SECRET,
             callbackURL: "http://localhost:3000/auth/facebook/callback"
@@ -177,10 +188,10 @@ passport.use(new FacebookStrategy({
         }
     ));
 
-var TWITTER_APP_ID = "TNICPd2moidR2ZK2kLpjWA"
-var TWITTER_APP_SECRET = 'w4kMt5iJPyWgCEfP7Du8mKnFNuDAj2LrSflfHqBES8'
+    var TWITTER_APP_ID = "TNICPd2moidR2ZK2kLpjWA"
+    var TWITTER_APP_SECRET = 'w4kMt5iJPyWgCEfP7Du8mKnFNuDAj2LrSflfHqBES8'
 
-passport.use(new TwitterStrategy({
+    passport.use(new TwitterStrategy({
             consumerKey: TWITTER_APP_ID,
             consumerSecret: TWITTER_APP_SECRET,
             callbackURL: "http://localhost:3000/auth/twitter/callback"
@@ -225,6 +236,9 @@ passport.use(new TwitterStrategy({
             });
         }
     ));
+});
+
+// passport.use(new LocalStrategy(models.User.authenticate()));
 
 
 app.get('/auth/facebook', passport.authenticate('facebook', {

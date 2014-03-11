@@ -17,8 +17,8 @@ var teamSchema = new Schema({
 });
 
 */
-models.connection.once('open', function() {
-  models.connection.db.dropCollection('teams', function(err) {
+db.once('open', function() {
+  db.db.dropCollection('teams', function(err) {
     if (err) {
       console.log(err);
     } else {
