@@ -43,7 +43,7 @@ app.use(express.session({
   cookie: {
     maxAge: 3600000
   },
-  store: new MongoStore({ db: env.DB_NAME })
+  store: new MongoStore({ url: process.env.MONGOHQ_MASTER_HOST || 'mongodb://localhost/hackersbracket' })
 }));
 // app.use(express.cookieSession({ secret: 'tobo!', cookie: { maxAge: new Date(Date.now() +     3600000), }}));
 
@@ -196,7 +196,7 @@ passport.use(new TwitterStrategy({
                     var nameSplit = profile.displayName.split(' ');
                     var firstName = (!!nameSplit[0]) ? nameSplit[0]: "";
                     var lastName = (!!nameSplit[1]) ? nameSplit[1]: "";
-                    
+
                     var user = new models.User({
                           // first: name.firstName(profile.displayName),
                           // last: name.lastName(profile.displayName)
@@ -204,7 +204,7 @@ passport.use(new TwitterStrategy({
                           first: firstName,
                           last: lastName
                         },
-                        
+
                         nickname: profile.username,
                         // twitter: profile._json,
                         provider: 'twitter'
