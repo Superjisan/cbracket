@@ -37,6 +37,7 @@ module.exports = function(grunt) {
 
       options: {
         "smarttabs": true,
+        "force":true,
         "debug": true,
         "devel": true,
         "undef": false,
