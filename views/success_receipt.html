@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Login at CodersBracket
+{% endblock%}
+
+{% block content %}
+    <span class="payment-errors"></span>
+
+    <div class="form-row">
+      <label>
+        <span>Payment Status</span>
+        <span>{{charge.paid}}</span>
+      </label>
+    </div>
+
+
+    <div class="form-row">
+      <label>
+        <span>Currency</span>
+        <span>{{charge.currency}}</span>
+      </label>
+    </div>
+
+    <div class="form-row">
+      <label>
+        <span>Amount</span>
+        <span>{{charge.amount}}</span>
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        <span>Card Type</span>
+        <span>{{charge.card.type}}</span>
+      </label>
+    </div>
+
+{% endblock %}
+
+{% block bottomscripts %}
+    <script>
+      $(function () {
+        $('#emailinput').focus();
+      })
+    </script>
+{% endblock %}

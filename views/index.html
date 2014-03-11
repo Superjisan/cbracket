@@ -2,7 +2,7 @@
 
 {% block content %}
   <div class='heading'>[code your bracket]</div>
-  
+
   <div class='container' id='front_page_container'>
     {% include "./partials/show_flash.html" %}
     <div class='row'>
@@ -24,7 +24,9 @@
 {% endblock %}
 
 {% block bottomscripts %}
-  
+  <script type="text/javascript">
+      window.user = {{user|safe}};
+    </script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script>
     setupEvents();

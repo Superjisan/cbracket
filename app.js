@@ -38,7 +38,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(app.router);
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public-src')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -66,7 +66,8 @@ app.get('/code_bracket/:id', routes.view_code_bracket);
 app.post('/save_bracket', routes.save_bracket);
 app.post('/waitlist', routes.subscribe);
 app.get('/teamsbysid.js', routes.teamsbysid);
-
+app.get('/donate', user.donate_page);
+app.post('/donate', user.donate)
 //static pages
 app.get('/contest/timeline', routes.timeline);
 app.get('/contact', routes.contact);

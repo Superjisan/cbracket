@@ -11,7 +11,7 @@ var path = require('path');
 exports.index = function(req, res){
   res.render('index', {
     homepage: true,
-    user: req.user,
+    user: req.user ? JSON.stringify(req.user) : 'null',
     error_flash: req.flash('error'),
     success_flash: req.flash('success')
   });

@@ -6,7 +6,7 @@ module.exports = function(m) {
   var Schema = mongoose.Schema;
 
   var userSchema = new Schema({
-  
+
     name: {
       first: String,
       last: String
@@ -20,14 +20,15 @@ module.exports = function(m) {
     email: String,
     nickname: String,
     verified: Boolean,
-    birthdate: Date
+    birthdate: Date,
+    stripe_id: String
   });
 
   userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",
     usernameLowerCase: true
   });
-  
+
   userSchema.virtual('name.full').get(function () {
     var fullname = [], first, last;
     if (first = fn.dig(this.name,'first')) {
@@ -38,7 +39,7 @@ module.exports = function(m) {
     }
     return fullname.join(" ");
   });
-  
+
   userSchema.virtual('display_name').get(function () {
     var displayname = [], first, last, nick, email;
     if (first = fn.dig(this.name,'first')) {
@@ -59,7 +60,7 @@ module.exports = function(m) {
     }
     return displayname.join(" ");
   });
-  
+
   userSchema.virtual('hometown').get(function () {
     var place = [], city, state;
     if (city = fn.dig(this.location, 'city')) {
@@ -83,7 +84,7 @@ module.exports = function(m) {
         });
     });
   };
-  
+
   var User = mongoose.model('User', userSchema);
   return {model: User};
 };

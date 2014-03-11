@@ -1,12 +1,12 @@
 module.exports = function (swig) {
   var full_name = function (user) {
     var name = [];
-    if (user.first_name || user.last_name) {
-      if (user.first_name) {
-        name.push(user.first_name);
+    if (user.first || user.last) {
+      if (user.first) {
+        name.push(user.first);
       }
-      if (user.last_name) {
-        name.push(user.last_name);
+      if (user.last) {
+        name.push(user.last);
       }
     } else {
       name.push(user.email);
@@ -24,5 +24,4 @@ module.exports = function (swig) {
   };
   login_or_user.safe = true;
   swig.setFilter('login_or_user', login_or_user);
-
 };
