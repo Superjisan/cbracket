@@ -8,9 +8,9 @@
 
 <script id="final_four_games" type="text/x-handlebars-template">
   <div id='ff-rd1'>
-    <div class="ff-team" id='ff-rd1-team1'>{{finalist1}}</div>
-    <div class="ff-team" id='ff-rd1-team2'>{{finalist2}}</div>
-    <div id='ff-rd2'>{{winner}}</div>
+    <div class="ff-team" id='ff-rd1-team1'>{% if finalist1 %}{{finalist1.seed}}. {{finalist1.name}}{% endif %}</div>
+    <div class="ff-team" id='ff-rd1-team2'>{% if finalist2 %}{{finalist2.seed}}. {{finalist2.name}}{% endif %}</div>
+    <div id='ff-rd2'><span id='ff-rd2-span'>{{winner}}</span></div>
   </div>
 </script>
 {% endraw %}

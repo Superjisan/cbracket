@@ -157,9 +157,9 @@ a {
 }
 
 $rounds: 5;
-$b_height: $rounds*190px;
-$font_size: 0.012*$b_height;
-$line_height: 0.016*$b_height;
+$b_height: $rounds*170px;
+$font_size: 0.013*$b_height;
+$line_height: 0.0175*$b_height;
 $each_round_pct: 0.09;
 $editor_background: #FFF7DB;
 $view_editor_background: #FFFFFF;
@@ -476,7 +476,7 @@ $winner_box_width: 5*$each_round_pct;
 #ff-rd1 {
   position: relative;
   width: percentage(1*$winner_box_width);
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #333;
   height: 40px;
   left: percentage(0.5 - $winner_box_width/2);
   background: white;
@@ -503,7 +503,7 @@ $winner_box_width: 5*$each_round_pct;
     position: absolute;
     bottom: -2*$line_height;
     background: white;
-    border: 2px solid black;
+    border: 2px solid #333;
     width: percentage($winner_box_width);
     min-height: 4*$line_height;
     left: percentage(0.5 - $winner_box_width/2);
@@ -511,7 +511,13 @@ $winner_box_width: 5*$each_round_pct;
     text-align: center;
     padding: 13px 5px;
     letter-spacing: -0.5px;
+    
   }
+  
+  #ff-rd2-span {
+    display:none;
+  }
+  
 }
 
 @for $i from 0 through ($rounds - 1) {

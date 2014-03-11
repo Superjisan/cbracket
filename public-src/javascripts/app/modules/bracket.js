@@ -255,7 +255,7 @@ Bracket.prototype.generateBracketHtml = function (bracket) {
     var winner = teamsbysid[this.winner];
     game = new Game(round, division, spot, blevel, finalist1, finalist2, "b"+blevel+"-"+spot+"-left");
     this.games[0].push(game);
-    html += swig.render(final_four_html, { locals: { finalist1: finalist1.name, finalist2:finalist2.name, winner: winner.name }});
+    html += swig.render(final_four_html, { locals: { finalist1: {name: finalist1.name, seed: finalist1.seed}, finalist2:{name: finalist2.name, seed: finalist2.seed}, winner: winner.name }});
   } else {
     html += swig.render(final_four_html, { locals: { finalist1: "", finalist2:"", winner: "" }});
   }

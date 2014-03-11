@@ -49,7 +49,7 @@ Game.prototype.render = function (callback) {
     $("#"+this.domId+" .top").html(this.team1.seed + ". " + this.team1.name);
     $("#"+this.domId+" .bottom").html(this.team2.seed + ". " + this.team2.name);
     var self = this;
-    var animation_duration = 30;
+    var animation_duration = 20;
     if($("#"+self.domId).length) {
       $("#"+self.domId+" .top").fadeTo(animation_duration,1,function() {
         $("#"+self.domId+" .bottom").fadeTo(animation_duration, 1,function() {
@@ -57,13 +57,15 @@ Game.prototype.render = function (callback) {
         });
       });
     } else if (this.round===0 && this.team1 && this.team2){
-      $('#ff-rd1-team1').html(this.team1.name);
-      $('#ff-rd1-team2').html(this.team2.name);
+      $('#ff-rd1-team1').html(this.team1.seed + ". " + this.team1.name);
+      $('#ff-rd1-team2').html(this.team2.seed + ". " + this.team2.name);
       callback();
     }
   } else {
-    $('#ff-rd2').html(this.team1.name);
-    callback();
+    $('#ff-rd2-span').html(this.team1.name);
+    $('#ff-rd2-span').fadeIn(1000, function () {
+      callback();
+    });
   }
 
 };

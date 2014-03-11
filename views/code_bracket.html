@@ -23,6 +23,7 @@
                     <li><a href="#" id='byseed'>By the Seed</a></li>
                     <li><a href="#" id='leastlosses'>Least Losses</a></li>
                     <li><a href="#" id='randombracket'>Random Bracket</a></li>
+                    <li><a href="#" id='illiniwin'>The Illini Win!</a></li>
                     <li><a href="#" id='halfnhalf'>Half-n-Half (Seed & Random)</a></li>
                     <li><a href="#" id='laterseed'>Seeds Weighted Higher in Later Rounds</a></li>
                   </ul>
@@ -99,6 +100,21 @@
     team1.wins();
   } else {
     team2.wins();
+  }
+            </div>
+            <div  class='sample-code' id='illiniwin-code'>
+  // if team name equals "Illinois", team wins
+  if (team1.name == "Illinois") {
+    team1.wins();
+  } else if (team2.name == "Illinois") {
+    team2.wins();
+  } else {
+    // if team name not Illinois, random selection
+    if (Math.random() <= 0.5) {
+      team1.wins();
+    } else {
+      team2.wins();
+    }
   }
             </div>
             <div class='sample-code' id='halfnhalf-code'>
