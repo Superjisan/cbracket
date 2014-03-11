@@ -113,6 +113,15 @@ var showSaveBracketNewUser = function() {
 };
 
 var setupBracketEvents = function (bracket) {
+  
+  $('#open_help').click(function() {
+    $('#help_doc').slideToggle();
+    if ($('#open_help > i').hasClass('fa-chevron-right')) {
+      $('#open_help > i').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+    } else {
+      $('#open_help > i').addClass('fa-chevron-right').removeClass('fa-chevron-down');
+    }
+  });
   $('#startbutton').click(function(e) {
     e.preventDefault();
 

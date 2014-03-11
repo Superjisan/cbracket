@@ -214,14 +214,54 @@ $view_editor_background: #FFFFFF;
   overflow-x: hidden !important;
 }
 
+#help_section {
+  
+}
+#open_help {
+  background: rgba(199, 2, 2,.5);
+  background: rgba(195, 68, 13, .5);
+  padding: 5px 7px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  i {
+    width: 20px;
+  }
+}
+
+#help_section {
+  
+}
+
+#help_doc {
+  display: none;
+  background: white;
+  color: black;
+  padding: 10px;
+  
+  .title {
+    margin-bottom: 10px; font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-weight: bold;
+    margin: 20px 0 8px; font-size: 16px;
+  }
+}
+
+#editor_help_container {
+  border: 1px dashed #92AAED;
+  background: url(/images/grid1.png);
+}
+
 #editor_container {
   padding: 20px 10px;
 /*  background: #fff;*/
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
-  border: 1px dashed #92AAED;
-  background: url(/images/grid1.png);
   
 /*  border-radius: 20px;*/
 /*  position: absolute;*/

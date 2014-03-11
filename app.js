@@ -91,7 +91,7 @@ function ensureAuthenticated(req, res, next) {
 app.get('/mybrackets', ensureAuthenticated, routes.mybrackets);
 
 //authentication routes
-app.get('/verify/resend', ensureAuthenticated, auth.resend_verify);
+app.get('/verify/resend', auth.resend_verify);
 app.get('/verify/:token', auth.verify_email);
 app.get('/register', auth.register_page);
 app.post('/register', auth.register);
