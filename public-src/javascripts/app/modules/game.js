@@ -63,9 +63,8 @@ Game.prototype.render = function (callback) {
     }
   } else {
     $('#ff-rd2-span').html(this.team1.name);
-    $('#ff-rd2-span').fadeIn(1000, function () {
-      callback();
-    });
+    $('#ff-rd2-span').fadeIn(1000);
+    window.setTimeout(function () {callback();},500);
   }
 
 };

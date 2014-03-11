@@ -26,4 +26,17 @@ module.exports = function (swig) {
   login_or_user.safe = true;
   swig.setFilter('login_or_user', login_or_user);
 
+  var nickname = function (user) {
+    if(user.nickname) {
+      return user.nickname;
+    } else if(user.name && user.name.first) {
+      return user.name.first;
+    } else {
+      return "Anonymous User";
+    }
+  }; 
+
+  // nickname.safe = true;
+  swig.setFilter('nickname', nickname);
+
 };

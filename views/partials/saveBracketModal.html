@@ -15,12 +15,13 @@
           <div class='form-group'>
             <div class="form-group">
               <label for="bracket_name">Name Your Bracket</label>
-              <input type="text" class="form-control input-lg" name='bracket_name' id="bracket_name" placeholder="Jane's Code Bracket">
+              <input type="text" class="form-control input-lg" name='bracket_name' id="bracket_name" value="{{user|nickname}}'s Code Bracket">
               <input type="hidden" name='is_new_user' id='is_new_user' value='no'>
             </div>
           </div>
       </div>
       <div class="modal-footer">
+        <span style='font-size: 22px; margin: 15px 10px 0 0;' id='save_bracket_spinner'><i class="fa fa-spinner fa-spin"></i></span>
         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
         <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Save Bracket">
       </div>

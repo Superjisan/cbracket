@@ -661,12 +661,24 @@ $winner_box_width: 5*$each_round_pct;
   padding: 20px;
 }
 
+#register_error, #register_spinner, #save_bracket_spinner {
+  display:none;
+}
+
+
+
 .inline {
   display: inline-block;
   width: 49%;
 }
 .inline.second {
   margin-left: 2%;
+}
+
+h1 > .by_user {
+  font-size: 20px;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}

@@ -181,6 +181,8 @@ var setupBracketEvents = function (bracket) {
   $("#saveBracketNewUser").on("submit", function(event) {
     event.preventDefault();
     // $(this).serialize();
+    $('#register_spinner').show();
+    $('#register_error').hide();
     var first_name = this.first_name.value;
     var last_name = this.last_name.value;
     var email = this.email.value;
@@ -205,10 +207,10 @@ var setupBracketEvents = function (bracket) {
         $('#is_new_user').val("yes");
         $('#bracket_name').focus();
       }
-
-      // bracket: JSON.stringify(bracket.data);
-
-    });
+    }).fail(function () {
+        $('#register_spinner').hide();
+        $('#register_error').show();
+      });
   });
 
   $('#save_bracket_btn').click(save_clicked);
@@ -218,6 +220,7 @@ var setupBracketEvents = function (bracket) {
 
   $("#saveBracketForm").on("submit", function(event) {
     event.preventDefault();
+    $('#save_bracket_spinner').show();
     // $(this).serialize();
     var bracket_name = this.bracket_name.value;
     var bracket_data = JSON.stringify(bracket.data);
@@ -238,6 +241,8 @@ var setupBracketEvents = function (bracket) {
       if (!!data.bracket) {
         window.location = "/code_bracket/"+data.bracket._id;
       }
+    }).fail(function() {
+      $('#save_bracket_spinner').hide();
     });
   });
 
