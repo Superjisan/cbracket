@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --ignore public/ --ignore public-src/ -e html,js,scss app.js",
-    "postinstall":"jake db:seed"
+    "postinstall":"jake db:seed; grunt --force"
   },
   "dependencies": {
     "express": "3.4.8",
