@@ -127,12 +127,12 @@ module.exports = function(grunt) {
   if (process.env.NODE_ENV === 'development') {
     tasks = ['jshint', 'concat', 'sass', 'watch'];
   } else {
-    tasks = ['jshint', 'sass'];
+    tasks = ['jshint', 'concat', 'sass'];
   }
 
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  // grunt.loadNpmTasks('grunt-contrib-uglify');
+  // grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.registerTask('heroku:production', tasks);
