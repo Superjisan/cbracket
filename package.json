@@ -19,6 +19,7 @@
     "nodemailer": "~0.6.0",
     "node-uuid": "~1.4.1",
     "grunt": "~0.4.2",
+    "jake": "latest",
     "grunt-contrib-sass": "~0.7.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-concat": "~0.3.0",
