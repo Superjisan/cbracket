@@ -187,21 +187,21 @@ $view_editor_background: #FFFFFF;
 
 @media (min-width:750px) and (max-width: 970px) {
   #editor {
-    height: 500px;
+    height: 400px;
     font-size: 13px;
   }
 }
 
 @media (min-width:970px) and (max-width: 1170px) {
   #editor {
-    height: 500px;
+    height: 400px;
     font-size: 14px;
   }
 }
 
 @media (min-width:1170px) {
   #editor {
-    height: 600px;
+    height: 500px;
     font-size: 14px;
   }
 }
@@ -342,7 +342,7 @@ $view_editor_background: #FFFFFF;
 
 #generate_button {
   text-align:center;
-  margin-bottom:10px;
+  margin:10px 0;
 }
 
 /* Wrapper for page content to push down footer */
@@ -602,6 +602,39 @@ $winner_box_width: 5*$each_round_pct;
   position: absolute;
   text-align: center;
   font: normal 24px "open sans", arial, sans-serif;
+}
+
+#documentation_overlay {
+  display: none;
+  height: 90%;
+  width: 90%;
+  padding: 0px;
+  z-index: 12;
+  position: absolute;
+  top: 0;
+  left: 5%;
+  background: transparent;
+  #help_doc {
+    padding: 20px;
+    display: block;
+    background: rgba(255,255,255,.9) !important;
+  }
+  
+  #close_documentation_overlay {
+    display: block;
+    font-size: 18px;
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    color: black;
+    padding: 0 4px;
+    &:hover {
+      text-decoration: none;
+      background-color: #000;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
 }
 
 #matrix_titles {

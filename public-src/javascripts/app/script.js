@@ -122,7 +122,7 @@ var setupBracketEvents = function (bracket) {
       $('#open_help > i').addClass('fa-chevron-right').removeClass('fa-chevron-down');
     }
   });
-  $('#startbutton').click(function(e) {
+  $('#startbutton, #btn-generatebracket').click(function(e) {
     e.preventDefault();
 
     // clear bracket with default HTML
@@ -146,23 +146,49 @@ var setupBracketEvents = function (bracket) {
     }
   });
 
+  var expandEditor = function () {
+    $('#bracket_col').animate({
+      width: "60%"
+    }, 600);
+    window.setTimeout(function() {
+      $('#code_editor_col').animate({
+        width: "40%"
+      }, 600, function() {
+        $('#editor textarea').focus();
+      });
+    }, 500);
+  };
+  
   $('#modify_code_btn').click(function(e) {
-      var expandEditor = function () {
-        $('#bracket_col').animate({
-          width: "60%"
-        }, 600);
-        window.setTimeout(function() {
-          $('#code_editor_col').animate({
-            width: "40%"
-          }, 600, function() {
-            $('#editor textarea').focus();
-          });
-        }, 500);
-      };
-      expandEditor();
-    $('#bracket_status').slideUp(function() {});
+    expandEditor();
+    $('#bracket_status').slideUp();
   });
 
+  $('#menu-expandeditor').click(function() {
+    expandEditor();
+  });
+  
+  $('.menu-set-font').click(function() {
+    switch(this.id) {
+      case "menu-font-small":
+        editor.setFontSize("12px");
+        break;
+      case "menu-font-medium":
+        editor.setFontSize("14px");
+        break;
+      case "menu-font-large":
+        editor.setFontSize("16px");
+        break;
+    }
+    
+  });
+  
+  $('#menu-showdocs').click(function() {
+    $('#documentation_overlay').fadeIn();
+  });
+  $('#close_documentation_overlay').click(function() {
+    $('#documentation_overlay').fadeOut();
+  });
   var center_msg = function () {
     var bracket_height = $('#bracket').height();
     var bracket_width = $('#bracket').width();
@@ -267,7 +293,7 @@ var setupBracketEvents = function (bracket) {
     code += "}";
     editor.setValue(code,1);
   }
-  $('.dropdown-menu a').click( function () {
+  $('.example_menu a').click( function () {
     setEditorCode($('#'+this.id+'-code').text());
   });
 };

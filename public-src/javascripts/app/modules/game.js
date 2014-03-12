@@ -28,11 +28,11 @@ Game.prototype.play = function (playFunc) {
     this.team1.winner = false;
     this.team2.winner = false;
 
-    this.team1.wins = function() {
+    this.team1.winsGame = function() {
       this.winner = true;
     };
 
-    this.team2.wins = function() {
+    this.team2.winsGame = function() {
       this.winner = true;
     };
     

@@ -7,20 +7,23 @@
   {% include "./partials/saveBracketModal.html" %}
 
   {% include "./partials/show_flash.html" %}
-        <h1 id="build_code_bracket" style='margin-top: 5px;'>Build Code Bracket</h1>
+        <!-- <h1 id="build_code_bracket" style='margin-top: 5px;'>Build Code Bracket</h1> -->
         <div class='row'>
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
             <div id='content_container'>
               <!-- <a href='#' class='pull-right'><i class='fa fa-question-circle'></i> Get Help</a> -->
-              <h4 style='letter-spacing:-1px;'><strong>Step 1.</strong></h4>
-              <h5>Write your game picking function.</h5>
+              <h4 style='letter-spacing:-1px; margin-bottom: 10px;'><strong>Step 1. Write Game Picking Function</strong></h4>
+              <!-- <h5>Write your game picking function.</h5> -->
 
               <div class="btn-group " style='margin-bottom: 8px;'>
+                <div class="btn-group">
+                  <button type="button" class="btn btn-warning noround" id='btn-generatebracket'><i class="fa fa-play"></i> Generate</button>
+                </div>
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle noround noright" data-toggle="dropdown">
                     <i class="fa fa-code"></i> Examples <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
+                  <ul class="dropdown-menu example_menu" role="menu">
                     <li><a href="#" id='byseed'>By the Seed</a></li>
                     <li><a href="#" id='leastlosses'>Least Losses</a></li>
                     <li><a href="#" id='randombracket'>Random Bracket</a></li>
@@ -31,81 +34,57 @@
                 </div>
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle noround" data-toggle="dropdown">
-                    <i class="fa  fa-wrench"></i> Options <span class="caret"></span>
+                    <i class="fa  fa-wrench"></i> Help <span class="caret"></span>
                   </button>
-                  <ul class="dropdown-menu" role="menu">
+                  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" >
                     <li><a href="#" id='menu-reset'>Reset</a></li>
-                    <!-- <li><a href="#" id='menu-documentation'>Documentation</a></li> -->
+                    <li><a href="#" id='menu-showdocs'>Show Documentation</a></li>
+                    <li><a href="#" id='menu-expandeditor'>Expand Editor</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-submenu">
+                      <a tabindex="-1" href="#">Font Size</a>
+                      <ul class="dropdown-menu" role="menu">
+                        <li><a href="#" class='menu-set-font' id='menu-font-small'>Small</a></li>
+                        <li><a href="#" class='menu-set-font' id='menu-font-medium'>Medium</a></li>
+                        <li><a href="#" class='menu-set-font' id='menu-font-large'>Large</a></li>
+                      </ul>
+                    </li>
+                    <li class="dropdown-submenu hide">
+                      <a tabindex="-1" href="#">Examples</a>
+                      <ul class="dropdown-menu">
+                        <li><a tabindex="-1" href="#">Second level</a></li>
+                        <li class="dropdown-submenu">
+                          <a href="#">More..</a>
+                          <ul class="dropdown-menu">
+                            <li><a href="#">3rd level</a></li>
+                            <li><a href="#">3rd level</a></li>
+                          </ul>
+                        </li>
+                        <li><a href="#">Second level</a></li>
+                        <li><a href="#">Second level</a></li>
+                      </ul>
+                    </li>
                   </ul>
-                </div>
-                <div class="btn-group hide">
-                  <button type="button" class="btn btn-default noround" id='btn-savebracket'><i class="fa fa-arrows-alt"></i> Expand</button>
                 </div>
               </div>
               <div id='editor_help_container'>
+              {#
                 <div id='help_section'>
                   <a href='#' id='open_help'><i class="fa fa-chevron-right"></i> View Documentation</a>
-                  <div id='help_doc'>
-                    <div class='title'>Game Picker Function Help</div>
-                    <div class="alert alert-info"><strong>Heads up!</strong><br>The current data-set is from 2013. This year's 2014 bracket data will be uploaded immediately following Selection Sunday on March 16th.</div>
-                    
-                    <p>Your game picker function is provided three variables: <strong>team1</strong>, <strong>team2</strong> and <strong>game</strong>.</p>
-                    <p>Each of these variables holds an object with important information to help you determine the winner of the game. You can reference the stat you want by using the "dot notation", like <code>team1.losses</code> or <code>team1.win_pct</code> or <code>game.round</code>.</p>
-                    <div class='subtitle'>team1 & team2 Objects</div>
-                    <p>
-                      <table class='table'>
-                        <thead>
-                          <tr>
-                            <th>Property</th>
-                            <th>Description</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>name</td><td>Name of team</td></tr>
-                          <tr><td>seed</td><td>Seed in March Madness Bracket</td></tr>
-                          <tr><td>total_games</td><td>Total games played by team</td></tr>
-                          <tr><td>wins</td><td>No. of games won by team</td></tr>
-                          <tr><td>losses</td><td>No. of games lost by team</td></tr>
-                          <tr><td>win_pct</td><td>Team's win percentage</td></tr>
-                          <tr><td>pts_for</td><td>Total points scored by team</td></tr>
-                          <tr><td>pts_against</td><td>Total points scored against team</td></tr>
-                          <tr><td>pts_game</td><td>Avg points scored per game</td></tr>
-                          <tr><td>pts_allowed</td><td>Avg points allowed per game</td></tr>
-                        </tbody>
-                      </table>
-                    </p>
-                    <div class='subtitle'>game Object</div>
-                    <p>
-                      <table class='table'>
-                        <thead>
-                          <tr>
-                            <th>Property</th>
-                            <th>Description</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr><td>round</td><td>Round of current game. Value ranges from 0 to 5. 5 is the first round and 0 is the championship.</td></tr>
-                          <tr><td>date</td><td>Date of game</td></tr>
-                        </tbody>
-                      </table>
-                    </p>
-                    
-                    <p>For more questions or help, please email <a href="mailto:codersbracket@fullstackacademy.com">codersbracket@fullstackacademy.com</a>.</p>
-                    
-                    
-                  </div>
-                </div>      
+                  {% include "./partials/documentation.html" %}
+                </div> <!-- end help_section -->      
+              #}
                 <div id='editor_container' class='edit_page_editor_container'>
                   <div id='editor' class='edit_page_editor'>function(game, team1, team2){
   if (team1.seed < team2.seed) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
 }</div>
                 </div> <!-- end editor_container -->
               </div> <!-- end editor_help_container -->
-              <h4 style='letter-spacing:-1px;'><strong>Step 2.</strong></h4>
+              <!-- <h4 style='letter-spacing:-1px;'><strong>Step 2.</strong></h4> -->
               <div id='generate_button'>
                 <a href='#' class='btn btn-warning btn-codersbracket' id="startbutton" data-loading-text="Generating Bracket...">
                   Generate Bracket
@@ -130,6 +109,10 @@
                 <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Examples</a> -->
                 <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Watch the Tutorial</a> -->
               </div>
+              <div id='documentation_overlay'>
+                <a href='#' id='close_documentation_overlay'>&#10006;</a>
+                {% include "./partials/documentation.html" %}
+              </div>
               <!-- <div id='bracket_blur_image'>
                 <img src='/images/blurbracket.jpg'>
               </div> -->
@@ -138,37 +121,37 @@
 
             <div class='sample-code' id='byseed-code'>
   if (team1.seed < team2.seed) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
             </div>
             <div class='sample-code' id='leastlosses-code'>
   if (team1.losses < team2.losses) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
             </div>
             <div  class='sample-code' id='randombracket-code'>
   if (Math.random() <= 0.5) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
             </div>
             <div  class='sample-code' id='illiniwin-code'>
   // if team name equals "Illinois", team wins
   if (team1.name == "Illinois") {
-    team1.wins();
+    team1.winsGame();
   } else if (team2.name == "Illinois") {
-    team2.wins();
+    team2.winsGame();
   } else {
     // if team name not Illinois, random selection
     if (Math.random() <= 0.5) {
-      team1.wins();
+      team1.winsGame();
     } else {
-      team2.wins();
+      team2.winsGame();
     }
   }
             </div>
@@ -179,9 +162,9 @@
   var log_t2_seed = Math.log(team2.seed+1);
 
   if (rand1*log_t1_seed < rand2*log_t2_seed) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
             </div>
             <div class='sample-code' id='laterseed-code'>
@@ -191,9 +174,9 @@
   var log_t2_seed = Math.pow(Math.log(team2.seed+1), (game.round+2)/2);
 
   if (rand1*log_t1_seed < rand2*log_t2_seed) {
-    team1.wins();
+    team1.winsGame();
   } else {
-    team2.wins();
+    team2.winsGame();
   }
             </div>
             {% include "./partials/bracket_drawing_boxes.html" %}
