@@ -9,8 +9,15 @@ var fs = require('fs');
 var path = require('path');
 var userModule = require('../modules/user');
 
+function noCacheFix(res) {
+  // see here: http://stackoverflow.com/questions/18811286/nodejs-express-cache-and-304-status-code
+  res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.header("Pragma", "no-cache");
+  res.header("Expires", 0);
+}
+
 exports.index = function(req, res){
-  // console.log(req.user);
+  noCacheFix(res);
   res.render('index', {
     homepage: true,
     user: req.user,
@@ -20,14 +27,17 @@ exports.index = function(req, res){
 };
 
 exports.contact = function(req, res){
+  noCacheFix(res);
   res.render('contact');
 };
 
 exports.timeline = function (req,res) {
+  noCacheFix(res);
   res.render('timeline');
 };
 
 exports.contest_rules = function (req,res) {
+  noCacheFix(res);
   res.render('contest_rules');
 };
 
@@ -69,6 +79,7 @@ exports.code_bracket = function(req,res) {
   });
 };
 exports.view_code_bracket = function(req,res) {
+  noCacheFix(res);
 
   var isValidObjectID = function (str) {
     // coerce to string so the function can be generically used to test both strings and native objectIds created by the driver

@@ -26,23 +26,23 @@ var setupAceEditor = function () {
 
 var setupEvents = function () {
 
-  $(window).load(function () {
-    var getImgBottom = function () {
-      var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
-      var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
-      return image_bottom;
-    };
-
-    var image_bottom = getImgBottom();
-    $('#text-editor-animate').animate({
-      bottom: image_bottom + "px"
-    }, 1000);
-
-    $(window).resize(function () {
-      var image_bottom = getImgBottom()+15;
-      $('#text-editor-animate').css('bottom', image_bottom + "px");
-    });
-  });
+  // $(window).load(function () {
+  //   var getImgBottom = function () {
+  //     var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
+  //     var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
+  //     return image_bottom;
+  //   };
+  // 
+  //   var image_bottom = getImgBottom();
+  //   $('#text-editor-animate').animate({
+  //     bottom: image_bottom + "px"
+  //   }, 1000);
+  // 
+  //   $(window).resize(function () {
+  //     var image_bottom = getImgBottom()+15;
+  //     $('#text-editor-animate').css('bottom', image_bottom + "px");
+  //   });
+  // });
   
   $(function() {
     var orig;

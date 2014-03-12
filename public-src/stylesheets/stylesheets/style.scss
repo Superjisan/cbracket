@@ -1,10 +1,13 @@
 @import url(http://fonts.googleapis.com/css?family=Satisfy);
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
-html, body {
+html {
   font: 14px "Open Sans", Helvetica, Arial, sans-serif;
   height: 100%;
-  background: white;
+/*  background: white;*/
+}
+body {
+  font: 14px "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 @font-face {font-family: 'Nexa Black';src: url('webfonts/2A0305_0_0.eot');src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2A0305_0_0.woff') format('woff'),url('webfonts/2A0305_0_0.ttf') format('truetype');}
@@ -18,7 +21,6 @@ body.home {
     background: -ms-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* IE10+ */
     background: linear-gradient(to bottom, #f34c0f 50%,#e23710 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f34c0f', endColorstr='#e23710',GradientType=0 ); /* IE6-9 */
-    overflow: hidden;
 }
 
 a {
@@ -165,7 +167,14 @@ $editor_background: #FFF7DB;
 $view_editor_background: #FFFFFF;
 
 #footer {
-  margin-top: 20px;
+  margin: 20px 20px;
+/*  margin-top: 20px;*/
+}
+
+.home #footer {
+  hr {
+    border-color: #D8430E;
+  }
 }
 
 #editor {
@@ -682,12 +691,13 @@ $winner_box_width: 5*$each_round_pct;
 
 /* ANIMATION */
 #text-editor-animate {
-		width: 100%;
+/*    width: 100%;*/
 		text-align:center;
-    position: absolute;
-    bottom: -600px;
-    overflow: hidden;
-    z-index: 0;
+		margin-top: 40px;
+/*    position: absolute;*/
+/*    bottom: -600px;*/
+/*    overflow: hidden;*/
+/*    z-index: 0;*/
 /*    -webkit-animation: floatBubble 1s normal ease-out;
     animation: floatBubble 1s normal ease-out;
 */
@@ -738,7 +748,11 @@ $winner_box_width: 5*$each_round_pct;
   display:none;
 }
 
-
+.rules_page {
+  .rule_title {
+    font: bold 16px "open sans", sans-serif;
+  }
+}
 
 .inline {
   display: inline-block;
