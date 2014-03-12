@@ -79,6 +79,7 @@ app.get('/teamsbysid.js', routes.teamsbysid);
 
 //static pages
 app.get('/contest/timeline', routes.timeline);
+app.get('/contest/rules', routes.contest_rules);
 app.get('/contact', routes.contact);
 
 

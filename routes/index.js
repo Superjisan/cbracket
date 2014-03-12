@@ -27,6 +27,10 @@ exports.timeline = function (req,res) {
   res.render('timeline');
 };
 
+exports.contest_rules = function (req,res) {
+  res.render('contest_rules');
+};
+
 exports.show_page = function (req,res) {
   var name = req.params.catch_all;
   // console.log(path.relative(__dirname, "views/"+name+'.html'));
