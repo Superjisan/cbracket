@@ -1,0 +1,35 @@
+{% extends "../layout.html" %}
+
+{% block title %}
+Manage Groups
+{% endblock%}
+
+{% block content %}
+
+<div class="container" ng-controller="CreateGroupCtrl">
+  <div class='row' style='margin-bottom: 20px'>
+  <h1>Create New Group</h1>
+  {% if error_flash %}
+    <div class='alert alert-danger'>{{error_flash}}</div>
+  {% else %}
+  {% raw %}
+  <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+  <form ng-submit="submit()" name="createGroupForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
+    <div class="form-group">
+      <label for='group'>Group</label>
+      <select ng-model="group" ng-required="true" name="group" class="form-control" ng-options="g.name for g in groups">
+      </select>
+    </div>
+    <div class="form-group">
+      <label for='name'>Assign Bracket</label>
+      <select ng-model="bracket" ng-required="true" name="bracket" class="form-control" ng-options="b.name for b in brackets">
+      </select>
+    </div>
+    <button ng-disabled="createGroupForm.$invalid" type="submit" class="btn btn-primary">Create</button>
+  </form>
+  {% endraw %}
+  {% endif %}
+  </div>
+</div>
+
+{% endblock %}
