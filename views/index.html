@@ -1,14 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  {% include "./partials/howToVideoModal.html" %}
   <div class='heading'>[code your bracket]</div>
 
   <div class='container' id='front_page_container'>
     {% include "./partials/show_flash.html" %}
+    
     <div class='row'>
       <div id='front_message'>
         <!-- <h2>Still using a mouse to fill out your bracket?</h2> -->
-        <h2>Win the $2,500 Cash Prize for the Best Code Bracket</h2>
+        <h2>Win the $2,000 Cash Prize for the Best Code Bracket</h2>
         <p>Learn to code and make a <strong>smart college basketball bracket</strong> in about <strong>two minutes</strong>. All while benefiting great non-profits advancing STEM education. Sound good?</p>
       </div>
       <div id='front_buttons'>
@@ -20,6 +22,7 @@
   <div id="text-editor-animate">
     <img src="/images/text-editor3.png" />
   </div>
+  
 {% endblock %}
 
 {% block bottomscripts %}

@@ -1,10 +1,13 @@
-@import url(http://fonts.googleapis.com/css?family=Satisfy);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
+@import url(//fonts.googleapis.com/css?family=Satisfy);
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
-html, body {
+html {
   font: 14px "Open Sans", Helvetica, Arial, sans-serif;
   height: 100%;
-  background: white;
+/*  background: white;*/
+}
+body {
+  font: 14px "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 @font-face {font-family: 'Nexa Black';src: url('webfonts/2A0305_0_0.eot');src: url('webfonts/2A0305_0_0.eot?#iefix') format('embedded-opentype'),url('webfonts/2A0305_0_0.woff') format('woff'),url('webfonts/2A0305_0_0.ttf') format('truetype');}
@@ -18,7 +21,6 @@ body.home {
     background: -ms-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* IE10+ */
     background: linear-gradient(to bottom, #f34c0f 50%,#e23710 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f34c0f', endColorstr='#e23710',GradientType=0 ); /* IE6-9 */
-    overflow: hidden;
 }
 
 a {
@@ -63,9 +65,6 @@ a {
     box-shadow: 1px 1px 15px rgba(20,20,20,.4);
   }
   
-  #watch_tutorial_btn:hover {
-    cursor: default;
-  }
 }
 
 #thanks {
@@ -165,7 +164,14 @@ $editor_background: #FFF7DB;
 $view_editor_background: #FFFFFF;
 
 #footer {
-  margin-top: 20px;
+  margin: 20px 20px;
+/*  margin-top: 20px;*/
+}
+
+.home #footer {
+  hr {
+    border-color: #D8430E;
+  }
 }
 
 #editor {
@@ -187,21 +193,21 @@ $view_editor_background: #FFFFFF;
 
 @media (min-width:750px) and (max-width: 970px) {
   #editor {
-    height: 500px;
+    height: 400px;
     font-size: 13px;
   }
 }
 
 @media (min-width:970px) and (max-width: 1170px) {
   #editor {
-    height: 500px;
+    height: 400px;
     font-size: 14px;
   }
 }
 
 @media (min-width:1170px) {
   #editor {
-    height: 600px;
+    height: 500px;
     font-size: 14px;
   }
 }
@@ -214,14 +220,54 @@ $view_editor_background: #FFFFFF;
   overflow-x: hidden !important;
 }
 
+#help_section {
+  
+}
+#open_help {
+  background: rgba(199, 2, 2,.5);
+  background: rgba(195, 68, 13, .5);
+  padding: 5px 7px;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+  display: block;
+  i {
+    width: 20px;
+  }
+}
+
+#help_section {
+  
+}
+
+#help_doc {
+  display: none;
+  background: white;
+  color: black;
+  padding: 10px;
+  
+  .title {
+    margin-bottom: 10px; font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .subtitle {
+    font-weight: bold;
+    margin: 20px 0 8px; font-size: 16px;
+  }
+}
+
+#editor_help_container {
+  border: 1px dashed #92AAED;
+  background: url(/images/grid1.png);
+}
+
 #editor_container {
   padding: 20px 10px;
 /*  background: #fff;*/
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
-  border: 1px dashed #92AAED;
-  background: url(/images/grid1.png);
   
 /*  border-radius: 20px;*/
 /*  position: absolute;*/
@@ -302,7 +348,7 @@ $view_editor_background: #FFFFFF;
 
 #generate_button {
   text-align:center;
-  margin-bottom:10px;
+  margin:10px 0;
 }
 
 /* Wrapper for page content to push down footer */
@@ -564,6 +610,39 @@ $winner_box_width: 5*$each_round_pct;
   font: normal 24px "open sans", arial, sans-serif;
 }
 
+#documentation_overlay {
+  display: none;
+  height: 90%;
+  width: 90%;
+  padding: 0px;
+  z-index: 12;
+  position: absolute;
+  top: 0;
+  left: 5%;
+  background: transparent;
+  #help_doc {
+    padding: 20px;
+    display: block;
+    background: rgba(255,255,255,.9) !important;
+  }
+  
+  #close_documentation_overlay {
+    display: block;
+    font-size: 18px;
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    color: black;
+    padding: 0 4px;
+    &:hover {
+      text-decoration: none;
+      background-color: #000;
+      color: #fff;
+      border-radius: 3px;
+    }
+  }
+}
+
 #matrix_titles {
   display:none;
   color: #fff;
@@ -609,12 +688,13 @@ $winner_box_width: 5*$each_round_pct;
 
 /* ANIMATION */
 #text-editor-animate {
-		width: 100%;
+/*    width: 100%;*/
 		text-align:center;
-    position: absolute;
-    bottom: -600px;
-    overflow: hidden;
-    z-index: 0;
+		margin-top: 40px;
+/*    position: absolute;*/
+/*    bottom: -600px;*/
+/*    overflow: hidden;*/
+/*    z-index: 0;*/
 /*    -webkit-animation: floatBubble 1s normal ease-out;
     animation: floatBubble 1s normal ease-out;
 */
@@ -661,12 +741,28 @@ $winner_box_width: 5*$each_round_pct;
   padding: 20px;
 }
 
+#register_error, #register_spinner, #save_bracket_spinner {
+  display:none;
+}
+
+.rules_page {
+  .rule_title {
+    font: bold 16px "open sans", sans-serif;
+  }
+}
+
 .inline {
   display: inline-block;
   width: 49%;
 }
 .inline.second {
   margin-left: 2%;
+}
+
+h1 > .by_user {
+  font-size: 20px;
+  margin-left: 10px;
+  display: inline-block;
 }
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}

@@ -1,0 +1,53 @@
+<div id='help_doc'>
+  <div class='title'>Coder's Bracket Documentation</div>
+  <div class="alert alert-info"><strong>Heads up!</strong><br>The current data-set is from the2013 season. This year's 2014 bracket data will be uploaded immediately following Selection Sunday on March 16th.</div>
+  
+  <p>Your game picker function is provided three variables: <strong>team1</strong>, <strong>team2</strong> and <strong>game</strong>.</p>
+  <p>Each of these variables holds an object with important information to help you determine the winner of the game. You can reference the stat you want by using the "dot notation", like <code>team1.losses</code> or <code>team1.win_pct</code> or <code>game.round</code>.</p>
+  <div class='subtitle'>team1 & team2 Objects</div>
+  <p>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>name</td><td>Name of team</td></tr>
+        <tr><td>seed</td><td>Seed in March Madness Bracket</td></tr>
+        <tr><td>total_games</td><td>Total games played by team</td></tr>
+        <tr><td>wins</td><td>No. of games won by team</td></tr>
+        <tr><td>losses</td><td>No. of games lost by team</td></tr>
+        <tr><td>win_pct</td><td>Team's win percentage</td></tr>
+        <tr><td>pts_for</td><td>Total points scored by team</td></tr>
+        <tr><td>pts_against</td><td>Total points scored against team</td></tr>
+        <tr><td>pts_game</td><td>Avg points scored per game</td></tr>
+        <tr><td>pts_allowed</td><td>Avg points allowed per game</td></tr>
+      </tbody>
+    </table>
+  </p>
+  <div class='subtitle'>game Object</div>
+  <p>
+    <table class='table'>
+      <thead>
+        <tr>
+          <th>Property</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>round</td><td>Round of current game. Value ranges from 0 to 5. 5 is the first round and 0 is the championship.</td></tr>
+        <tr><td>date</td><td>Date of game</td></tr>
+      </tbody>
+    </table>
+  </p>
+  <div class='subtitle'>Writing the function</div>
+  <ul>
+    <li>The game picking function definition should look like this: <code>function (game, team1, team2) {}</code></li>
+    <li>To indicate a team's win, call the function: <code>team1.winsGame()</code> or <code>team2.winsGame()</code></li>
+    <li>To give both team1 and team2 a chance to win, make sure both teams have their respective <code>winsGame()</code> function called at some point in your logic.</li>
+  </ul>
+  
+  <p>For more questions or help, please email <a href="mailto:codersbracket@fullstackacademy.com">codersbracket@fullstackacademy.com</a>.</p>
+</div> <!-- end help_doc -->

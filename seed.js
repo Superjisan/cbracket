@@ -1,5 +1,13 @@
 var models = require('./models/connect');
 var teams = require('./modules/teams');
+var mongoose = require('mongoose');
+var mongoUri = process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/hackersbracket';
+
+mongoose.connect(mongoUri);
+db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 /*
 var teamSchema = new Schema({

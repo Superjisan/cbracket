@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --ignore public/ --ignore public-src/ -e html,js,scss app.js",
-    "postinstall": "./node_modules/grunt/bin/grunt"
+    "postinstall":"jake db:seed"
   },
   "dependencies": {
     "express": "3.4.8",
@@ -20,11 +20,12 @@
     "nodemailer": "~0.6.0",
     "node-uuid": "~1.4.1",
     "grunt": "~0.4.2",
+    "jake": "latest",
+    "grunt-contrib": "*",
     "grunt-contrib-sass": "~0.7.2",
     "grunt-contrib-jshint": "~0.8.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-uglify": "~0.1.2",
     "async": "~0.2.10",
     "connect-mongo": "~0.4.0",
     "passport-facebook": "~1.0.3",

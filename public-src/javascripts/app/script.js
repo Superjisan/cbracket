@@ -26,37 +26,41 @@ var setupAceEditor = function () {
 
 var setupEvents = function () {
 
-  $(window).load(function () {
-    var getImgBottom = function () {
-      var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
-      var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
-      return image_bottom;
-    };
-
-    var image_bottom = getImgBottom();
-    $('#text-editor-animate').animate({
-      bottom: image_bottom + "px"
-    }, 1000);
-
-    $(window).resize(function () {
-      var image_bottom = getImgBottom()+15;
-      $('#text-editor-animate').css('bottom', image_bottom + "px");
-    });
-  });
+  // $(window).load(function () {
+  //   var getImgBottom = function () {
+  //     var front_buttons_bottom = $('#front_buttons').offset().top + $('#front_buttons').height();
+  //     var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
+  //     return image_bottom;
+  //   };
+  // 
+  //   var image_bottom = getImgBottom();
+  //   $('#text-editor-animate').animate({
+  //     bottom: image_bottom + "px"
+  //   }, 1000);
+  // 
+  //   $(window).resize(function () {
+  //     var image_bottom = getImgBottom()+15;
+  //     $('#text-editor-animate').css('bottom', image_bottom + "px");
+  //   });
+  // });
   
   $(function() {
     var orig;
-    $('#watch_tutorial_btn').hover(function() {
-      orig = $(this).html();
-      $(this).html("Coming Soon!");
-    }, function() {
-      if (!!orig) {
-        $(this).html(orig);
-      }
-    });
+    // $('#watch_tutorial_btn').hover(function() {
+    //   orig = $(this).html();
+    //   $(this).html("Coming Soon!");
+    // }, function() {
+    //   if (!!orig) {
+    //     $(this).html(orig);
+    //   }
+    // });
   });
 
-
+  $('#watch_tutorial_btn').click(function(e) {
+    e.preventDefault();
+    showHowToVideo();
+  });
+  
   $('#waitlist_form').submit(function(e){
     var email = $('#email').val();
     if (!!email) {
@@ -112,8 +116,21 @@ var showSaveBracketNewUser = function() {
 
 };
 
+var showHowToVideo = function() {
+  $('#howToVideoModal').modal();
+};
+
 var setupBracketEvents = function (bracket) {
-  $('#startbutton').click(function(e) {
+  
+  $('#open_help').click(function() {
+    $('#help_doc').slideToggle();
+    if ($('#open_help > i').hasClass('fa-chevron-right')) {
+      $('#open_help > i').removeClass('fa-chevron-right').addClass('fa-chevron-down');
+    } else {
+      $('#open_help > i').addClass('fa-chevron-right').removeClass('fa-chevron-down');
+    }
+  });
+  $('#startbutton, #btn-generatebracket').click(function(e) {
     e.preventDefault();
 
     // clear bracket with default HTML
@@ -137,23 +154,49 @@ var setupBracketEvents = function (bracket) {
     }
   });
 
+  var expandEditor = function () {
+    $('#bracket_col').animate({
+      width: "60%"
+    }, 600);
+    window.setTimeout(function() {
+      $('#code_editor_col').animate({
+        width: "40%"
+      }, 600, function() {
+        $('#editor textarea').focus();
+      });
+    }, 500);
+  };
+  
   $('#modify_code_btn').click(function(e) {
-      var expandEditor = function () {
-        $('#bracket_col').animate({
-          width: "60%"
-        }, 600);
-        window.setTimeout(function() {
-          $('#code_editor_col').animate({
-            width: "40%"
-          }, 600, function() {
-            $('#editor textarea').focus();
-          });
-        }, 500);
-      };
-      expandEditor();
-    $('#bracket_status').slideUp(function() {});
+    expandEditor();
+    $('#bracket_status').slideUp();
   });
 
+  $('#menu-expandeditor').click(function() {
+    expandEditor();
+  });
+  
+  $('.menu-set-font').click(function() {
+    switch(this.id) {
+      case "menu-font-small":
+        editor.setFontSize("12px");
+        break;
+      case "menu-font-medium":
+        editor.setFontSize("14px");
+        break;
+      case "menu-font-large":
+        editor.setFontSize("16px");
+        break;
+    }
+    
+  });
+  
+  $('#menu-showdocs').click(function() {
+    $('#documentation_overlay').fadeIn();
+  });
+  $('#close_documentation_overlay').click(function() {
+    $('#documentation_overlay').fadeOut();
+  });
   var center_msg = function () {
     var bracket_height = $('#bracket').height();
     var bracket_width = $('#bracket').width();
@@ -181,6 +224,8 @@ var setupBracketEvents = function (bracket) {
   $("#saveBracketNewUser").on("submit", function(event) {
     event.preventDefault();
     // $(this).serialize();
+    $('#register_spinner').show();
+    $('#register_error').hide();
     var first_name = this.first_name.value;
     var last_name = this.last_name.value;
     var email = this.email.value;
@@ -205,10 +250,10 @@ var setupBracketEvents = function (bracket) {
         $('#is_new_user').val("yes");
         $('#bracket_name').focus();
       }
-
-      // bracket: JSON.stringify(bracket.data);
-
-    });
+    }).fail(function () {
+        $('#register_spinner').hide();
+        $('#register_error').show();
+      });
   });
 
   $('#save_bracket_btn').click(save_clicked);
@@ -218,6 +263,7 @@ var setupBracketEvents = function (bracket) {
 
   $("#saveBracketForm").on("submit", function(event) {
     event.preventDefault();
+    $('#save_bracket_spinner').show();
     // $(this).serialize();
     var bracket_name = this.bracket_name.value;
     var bracket_data = JSON.stringify(bracket.data);
@@ -238,6 +284,8 @@ var setupBracketEvents = function (bracket) {
       if (!!data.bracket) {
         window.location = "/code_bracket/"+data.bracket._id;
       }
+    }).fail(function() {
+      $('#save_bracket_spinner').hide();
     });
   });
 
@@ -253,7 +301,7 @@ var setupBracketEvents = function (bracket) {
     code += "}";
     editor.setValue(code,1);
   }
-  $('.dropdown-menu a').click( function () {
+  $('.example_menu a').click( function () {
     setEditorCode($('#'+this.id+'-code').text());
   });
 };
