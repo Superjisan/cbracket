@@ -36,18 +36,18 @@
     {% block headbottom %}{% endblock %}
   </head>
 
-  <body{% if homepage %} class="home"{% endif %}>
+  <body{% if homepage %} class="home"{% endif %} data-ng-app="codeYourBracket">
 
     <!-- Wrap all page content here -->
-      <nav class="navbar navbar-inverse navbar-default" role="navigation">
-        <div class="container-fluid">
+      <nav class="navbar navbar-inverse navbar-default" role="navigation" >
+        <div class="container-fluid" data-ng-controller="HeadersCtrl">
           <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
+              <span class="icon-bar"></spa
             </button>
             <!-- <a class="navbar-brand" href="/"><tt>Coder's Bracket</tt></a> -->
           </div>
@@ -56,9 +56,9 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><a href="/">Home</a></li>
-              <li><a href="/code_bracket">Build Code Bracket</a></li>
-              <li><a href="/mybrackets">My Brackets</a></li>
-              <!-- <li><a href="/standings">Standings</a></li> -->
+              <li data-ng-show="global.authenticated"><a href="/donate">Donate</a></li>
+              <li data-ng-show="global.authenticated"><a href="/code_bracket">Code Bracket</a></li>
+              <li data-ng-show="global.authenticated"><a href="/mybrackets">My Brackets</a></li>
               <li class="dropdown hide">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -66,7 +66,8 @@
                   <li><a href="/groups/invite">Invite</a></li>
                 </ul>
               </li>
-              <li class="dropdown">
+              <li data-ng-show="global.authenticated"><a href="/standings">Standings</a></li>
+              <li class="dropdown" data-ng-show="global.authenticated">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contest Info <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="/contest/timeline">Timeline</a></li>
@@ -75,26 +76,27 @@
                   <!-- <li><a href="/contest/sponsors">Sponsors</a></li> -->
                 </ul>
               </li>
-
-              <!-- <li><a href="/contact">Help</a></li> -->
             </ul>
+
             <ul class="nav navbar-nav navbar-right hide">
               <li id='fssig'> <span id='sig_start_message'>A product of Love by </span><div id='sig_img_cont'><a href="http://www.fullstackacademy.com"><img src='/images/FullStack-Logo-white.png' id='fslogo'><img src='/images/FullStack-Name-Only.png'></a></div></li>
               <!-- <li><a href="http://www.fullstackacademy.com" style='text-align: center;'><span style='font-family:georgia; text-transform: none;font-style: italic;'>A Project by </span> Fullstack Academy</a> </li> -->
             </ul>
             <ul class="nav navbar-nav navbar-right">
               <!-- <li><a href="#">Link</a></li> -->
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user|login_or_user}} <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  {% if user %}
+              <li class="dropdown" data-ng-show="global.authenticated">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{global.user.name.first}}<b class="caret"></b></a>
+                <ul class="dropdown-menu" >
                   <li><a href='/account'>My Account</a></li>
                   <li class="divider"></li>
                   <li><a href="/logout">Log Out</a></li>
-                  {% else %}
-                  <li><a href="/login">Log In</a></li>
-                  <li><a href="/register">Create Account</a></li>
-                  {% endif %}
+                </ul>
+              </li>
+              <li class="dropdown" data-ng-hide="global.authenticated">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Log in or Register<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    <li><a href="/login">Log In</a></li>
+                    <li><a href="/register">Create Account</a></li>
                 </ul>
               </li>
             </ul>
@@ -109,16 +111,16 @@
 
     <div id="footer">
       <hr>
-      <p class="text-muted">Coder's Bracket is a project by <a href="http://www.fullstackacademy.com">Fullstack Academy of Code</a></p>.
+      <p class="text-muted">Coder's Bracket is a project by <a href="http://www.fullstackacademy.com">Fullstack Academy of Code</a></p>
     </div>
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script src="/javascripts/script.js"></script>
     <script src="/javascripts/libs.js"></script>
     <script src="/javascripts/app.js"></script>
-    <script src="/javascripts/script.js"></script>
 
     {% block bottomscripts %} {% endblock %}
     <script>

@@ -26,7 +26,9 @@
 {% endblock %}
 
 {% block bottomscripts %}
-
+  <script type="text/javascript">
+    window.user = {{user|safe}};
+  </script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script>
     setupEvents();
