@@ -144,9 +144,7 @@ exports.acceptInvite = function(req, res) {
     },
     function updateAccount(inviteToken, done) {
       console.log('updateAccount');
-      var update = { $push: {groups: inviteToken.group.toObject() } };
-      models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
-        console.log('findOneAndUpdate',userModel);
+      groupsModule.addUser(inviteToken, function(err, userModel){
         done(err, inviteToken, !userModel);
       });
     },
@@ -160,23 +158,26 @@ exports.acceptInvite = function(req, res) {
         last_name: req.body.user.name.last,
         nickname: req.body.user.nickname,
         email: inviteToken.email,
-        password: req.body.user.password
+        password: req.body.user.password,
+        // Since this flow starts with a link from email the user is already email verified
+        // Might need to do extra things for mandril later on
+        verified: true
       }, function(err) {
         if (err) {
           return done(err);
         }
-        // Since this flow starts with a link from email the user is already email verified
-        // Might need to do extra things for mandril later on
-        var update = { $push: {groups: inviteToken.group.toObject() }, verified: true };
-        models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
+        groupsModule.addUser(inviteToken, function(err, userModel){
+          if (err) {
+            return done(err);
+          }
           req.login(userModel, function(err){
-            done(err, inviteToken);
+            done(err);
           });
         });
       });
     }
   ], function(err, inviteToken) {
-    console.log('--', err);
+    console.log('acceptInvite', err);
     var msg = 'An error occured. Please try again at a later time';
     if (err) {
       console.log('acceptInvite', err);
@@ -188,3 +189,38 @@ exports.acceptInvite = function(req, res) {
   });
 
 };
+
+exports.managePage = function(req, res) {
+  if (!req.user) {
+    return res.render('groups/manage', {error_flash:'You must be signed in to view this page.'});
+  }
+
+  async.parallel({
+    getBrackets: function(done){
+      done();
+    },
+    getGroups: function(done){
+      models.User.findOne({ _id: req.user._id }, {groups:'*'}, function(err){
+        done(err);
+      });
+    }
+  }, function(err, data) {
+    res.render('groups/manage', data);
+  });
+}
+
+exports.manage = function(req, res) {
+  if (!req.body.group || !req.body.bracket) {
+    return res.send(400, { msg: "A group and braket must be chosen" });
+  }
+  var group = req.body.group;
+  var bracket = req.body.bracket;
+
+  groupsModule.assignBracket(bracket._id, group._id, function(err){
+    if (err) {
+      return res.send(400, { msg: "Error assigning bracket." });
+    }
+
+    res.send(200, { msg: "The bracket has been assigned" })
+  });
+}

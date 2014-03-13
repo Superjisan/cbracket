@@ -43,7 +43,6 @@ GroupModule.prototype = {
         });
       },
       function updateGroups(userModel, done){
-        userModel.groups.id(groupId).invites.push({ email: email, accepted: false });
         userModel.save(function(err){
           done(err, userModel);
         });
@@ -94,8 +93,31 @@ GroupModule.prototype = {
 
       cb(err, inviteToken);
     });
-  }
+  },
 
+  addUser: function(inviteToken, cb) {
+    var update = { $push: {groups: inviteToken.group.toObject() } };
+    models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
+      cb(err, userModel);
+    });
+  },
+
+  assignBracket: function(bracketId, groupId, cb) {
+    models.User.findOne({'groups._id': groupId}, function(err, group){
+      if (err) {
+        console.log('assignBracket', err);
+        return cb(err);
+      }
+
+      group.set('bracket', bracketId);
+      group.save(function(err){
+        if (err) {
+          console.log('save bracket', err);
+        }
+        cb(err);
+      });
+    });
+  }
 };
 
 module.exports = new GroupModule();
