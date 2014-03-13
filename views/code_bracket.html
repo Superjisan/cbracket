@@ -76,11 +76,13 @@
               #}
                 <div id='editor_container' class='edit_page_editor_container'>
                   <div id='editor' class='edit_page_editor'>function(game, team1, team2){
+                  
   if (team1.seed < team2.seed) {
     team1.winsGame();
   } else {
     team2.winsGame();
   }
+  
 }</div>
                 </div> <!-- end editor_container -->
               </div> <!-- end editor_help_container -->
@@ -106,8 +108,6 @@
               <div id='matrix_titles'>Generating your bracket...</div>
               <div id='matrix'>
                 Start by creating your game picking function on the left.<br><br>
-                <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Examples</a> -->
-                <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Watch the Tutorial</a> -->
               </div>
               <div id='documentation_overlay'>
                 <a href='#' id='close_documentation_overlay'>&#10006;</a>
@@ -187,7 +187,6 @@
 
 {% block bottomscripts %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
-<script src='/javascripts/jquery.elastic.source.js'></script>
 
 <script>
   if(localStorage.getItem("code")) {
@@ -197,28 +196,8 @@
   var editor = setupAceEditor();
 </script>
 
-<script type="text/template" id="welcome-guider">
-  Are you ready for some basketball?  We've made a quick tour guide to help you navigate the Bracket Editor (you can also watch the video below).  Here you'll write the code to generate your bracket.  Don't worry, it's easy, quick and fun!  <br /><br />
+{% include "./partials/guiderTemplates.html" %}
 
-  <div style="text-align:center">
-    <iframe width="560" height="315" src="//www.youtube.com/embed/bUVOlBc1aus?rel=0" frameborder="0" allowfullscreen></iframe>
-  </div>
-</script>
-
-<script type="text/template" id="action-guider">
-  These three buttons are what you'll be using as you build your bracket.  Press <strong>Generate</strong> anytime you want to test your game-picking function.  It will run your game-picking code against all the match-ups and generate a bracket.<br /><br />
-
-  <strong>Examples</strong> are a great place to get some ideas for how to write a game-picking function.  There are great examples of using randomness and specific statistics.  
-
-  <br />
-  <br />
-
-  <strong>Help</strong> shows you all the various information about a game or a specific team that you have access to in your function.  For example, if you want to see what properties are available on each team, check out <strong>Help &gt; Show Documentation</strong>
-</script>
-
-<script type="text/template" id="editor-guider">
-  The editor window is where you can write your actual code.  Your code needs to be a <strong>function</strong> that at some point in it's execution, says that one of the team wins the game (using <strong>team1.winsGame()</strong>) for example.
-</script>
 <script>
   var teams = {{teams|json|safe}};
   var bracket = new Bracket(null,teams);
@@ -230,30 +209,9 @@
     var logged_in_user = false;
   {% endif %}
 
-/*
-  var start_coding = function(e) {
-    $('#bracket').fadeIn(400,function() {});
-    $('#editor_w_buttons').animate({
-      top: "0px"
-    }, {
-      duration: 500,
-      complete: function() {
-        $('#editor_screen').fadeOut(500);
-      }
-    });
-    $('#pagetitle').fadeOut();
-    $('#bracket').removeClass('bracket_blur');
-    $('#bracket-wrap').fadeIn();
-    $('#bracket-wrap').animate({top: '300px'});
-    $('#generate_button').show();
-  };
-*/
-
   $('#bracket').html(html);
   setupBracketEvents(bracket);
   activateGuidersForBracketEditor();
-  // $('#icancode_button').click(start_coding);
-
 </script>
 
 {% endblock %}
