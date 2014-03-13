@@ -31,13 +31,7 @@ module.exports = function(m) {
       ownerId: ObjectId,
       name: String,
       password: String,
-      invites: [{
-        email: String,
-        accepted: Boolean
-      }],
-      members: [{
-        id: ObjectId
-      }]
+      bracket: {type: ObjectId, ref: 'Bracket'}
     }],
     facebook : {},
     twitter: {},
