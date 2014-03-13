@@ -17,6 +17,7 @@ var mongoose = require('mongoose');
   var VerifyTokenModule = require('./verifyToken')(mongoose);
   var ResetTokenModule = require('./resetToken')(mongoose);
   var InviteTokenModule = require('./inviteToken')(mongoose);
+  
   module.exports = {
     // connection: db,
     "Team": TeamModule.model,

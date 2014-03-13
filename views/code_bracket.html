@@ -15,7 +15,7 @@
               <h4 style='letter-spacing:-1px; margin-bottom: 10px;'><strong>Step 1. Write Game Picking Function</strong></h4>
               <!-- <h5>Write your game picking function.</h5> -->
 
-              <div class="btn-group " style='margin-bottom: 8px;'>
+              <div id='editor-btns' class="btn-group " style='margin-bottom: 8px;'>
                 <div class="btn-group">
                   <button type="button" class="btn btn-warning noround" id='btn-generatebracket'><i class="fa fa-play"></i> Generate</button>
                 </div>
@@ -76,11 +76,13 @@
               #}
                 <div id='editor_container' class='edit_page_editor_container'>
                   <div id='editor' class='edit_page_editor'>function(game, team1, team2){
+                  
   if (team1.seed < team2.seed) {
     team1.winsGame();
   } else {
     team2.winsGame();
   }
+  
 }</div>
                 </div> <!-- end editor_container -->
               </div> <!-- end editor_help_container -->
@@ -106,8 +108,6 @@
               <div id='matrix_titles'>Generating your bracket...</div>
               <div id='matrix'>
                 Start by creating your game picking function on the left.<br><br>
-                <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Examples</a> -->
-                <!-- <a href='#' class='btn btn-warning btn-codersbracket'>Watch the Tutorial</a> -->
               </div>
               <div id='documentation_overlay'>
                 <a href='#' id='close_documentation_overlay'>&#10006;</a>
@@ -196,6 +196,8 @@
   var editor = setupAceEditor();
 </script>
 
+{% include "./partials/guiderTemplates.html" %}
+
 <script>
   var teams = {{teams|json|safe}};
   var bracket = new Bracket(null,teams);
@@ -207,30 +209,9 @@
     var logged_in_user = false;
   {% endif %}
 
-/*
-  var start_coding = function(e) {
-    $('#bracket').fadeIn(400,function() {});
-    $('#editor_w_buttons').animate({
-      top: "0px"
-    }, {
-      duration: 500,
-      complete: function() {
-        $('#editor_screen').fadeOut(500);
-      }
-    });
-    $('#pagetitle').fadeOut();
-    $('#bracket').removeClass('bracket_blur');
-    $('#bracket-wrap').fadeIn();
-    $('#bracket-wrap').animate({top: '300px'});
-    $('#generate_button').show();
-  };
-*/
-
   $('#bracket').html(html);
   setupBracketEvents(bracket);
-
-  // $('#icancode_button').click(start_coding);
-
+  activateGuidersForBracketEditor();
 </script>
 
 {% endblock %}

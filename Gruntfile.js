@@ -23,6 +23,7 @@ module.exports = function(grunt) {
   var libSrc = [
     './public-src/javascripts/lib/async.js',
     './public-src/javascripts/lib/jquery.elastic.source.js',
+    './public-src/javascripts/lib/guiders.js',
     './public-src/javascripts/lib/jquery.fittext.js',
     './public-src/javascripts/lib/swig.min.js'
   ];
