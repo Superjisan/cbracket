@@ -1,10 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
+  {% include "./partials/howToVideoModal.html" %}
   <div class='heading'>[code your bracket]</div>
 
   <div class='container' id='front_page_container'>
     {% include "./partials/show_flash.html" %}
+    
     <div class='row'>
       <div id='front_message'>
         <!-- <h2>Still using a mouse to fill out your bracket?</h2> -->
@@ -20,6 +22,7 @@
   <div id="text-editor-animate">
     <img src="/images/text-editor3.png" />
   </div>
+  
 {% endblock %}
 
 {% block bottomscripts %}

@@ -46,17 +46,21 @@ var setupEvents = function () {
   
   $(function() {
     var orig;
-    $('#watch_tutorial_btn').hover(function() {
-      orig = $(this).html();
-      $(this).html("Coming Soon!");
-    }, function() {
-      if (!!orig) {
-        $(this).html(orig);
-      }
-    });
+    // $('#watch_tutorial_btn').hover(function() {
+    //   orig = $(this).html();
+    //   $(this).html("Coming Soon!");
+    // }, function() {
+    //   if (!!orig) {
+    //     $(this).html(orig);
+    //   }
+    // });
   });
 
-
+  $('#watch_tutorial_btn').click(function(e) {
+    e.preventDefault();
+    showHowToVideo();
+  });
+  
   $('#waitlist_form').submit(function(e){
     var email = $('#email').val();
     if (!!email) {
@@ -110,6 +114,10 @@ var showSaveBracketNewUser = function() {
   $('#registerModal').modal();
   // $('#saveBracketModal').modal();
 
+};
+
+var showHowToVideo = function() {
+  $('#howToVideoModal').modal();
 };
 
 var setupBracketEvents = function (bracket) {
