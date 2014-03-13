@@ -125,6 +125,8 @@ app.get('/groups/invite', ensureAuthenticated, groups.invite);
 app.post('/groups/invite', ensureAuthenticated, groups.sendInvite);
 app.get('/groups/invite/:token', groups.viewInvite);
 app.post('/groups/invite/:token', groups.acceptInvite);
+app.get('/groups/manage', groups.managePage);
+app.post('/groups/manage', groups.manage);
 // global.allteams = [];
 
 
@@ -155,7 +157,7 @@ db.once('open', function callback () {
         done(err, user);
     });
   });
-  
+
     var FACEBOOK_APP_ID = "558806480893968";
     var FACEBOOK_APP_SECRET = "76c52123d1fa888874221542716e7596";
 
