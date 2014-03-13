@@ -145,7 +145,8 @@ UserModule.prototype = {
     models.User.register(new models.User({
       name: {first: userInfo.first_name, last: userInfo.last_name},
       nickname: userInfo.nickname,
-      email : userInfo.email
+      email : userInfo.email,
+      verified: userInfo.verified
     }), userInfo.password, function(err, user) {
       if (err) {
         if (err.message.indexOf("User already exists") >= 0) {
