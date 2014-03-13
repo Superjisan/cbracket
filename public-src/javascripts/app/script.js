@@ -327,7 +327,7 @@ var activateGuidersForBracketEditor = function() {
     id: "g-welcome",
     next: "g-buttons",
     overlay: true,
-    title: "Welcome to the Bracket Editor",
+    title: "Welcome to the Code Bracket Editor",
     width: 600,
     xButton: true
   }).show();
