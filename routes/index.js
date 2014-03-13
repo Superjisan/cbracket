@@ -41,6 +41,11 @@ exports.contest_rules = function (req,res) {
   res.render('contest_rules');
 };
 
+exports.contest_prizes = function (req,res) {
+  noCacheFix(res);
+  res.render('contest_prizes');
+};
+
 exports.show_page = function (req,res) {
   var name = req.params.catch_all;
   // console.log(path.relative(__dirname, "views/"+name+'.html'));

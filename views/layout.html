@@ -73,16 +73,13 @@
                 <ul class="dropdown-menu">
                   <li><a href="/contest/timeline">Timeline</a></li>
                   <li><a href="/contest/rules">Rules</a></li>
+                  <li><a href="/contest/prizes">Prizes</a></li>
                   <!-- <li><a href="/contest/rules">Rules</a></li> -->
                   <!-- <li><a href="/contest/sponsors">Sponsors</a></li> -->
                 </ul>
               </li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right hide">
-              <li id='fssig'> <span id='sig_start_message'>A product of Love by </span><div id='sig_img_cont'><a href="http://www.fullstackacademy.com"><img src='/images/FullStack-Logo-white.png' id='fslogo'><img src='/images/FullStack-Name-Only.png'></a></div></li>
-              <!-- <li><a href="http://www.fullstackacademy.com" style='text-align: center;'><span style='font-family:georgia; text-transform: none;font-style: italic;'>A Project by </span> Fullstack Academy</a> </li> -->
-            </ul>
             <ul class="nav navbar-nav navbar-right">
               <!-- <li><a href="#">Link</a></li> -->
               <li class="dropdown" data-ng-show="global.authenticated">
@@ -112,7 +109,9 @@
 
     <div id="footer">
       <hr>
-      <p class="text-muted">Coder's Bracket is a project by <a href="http://www.fullstackacademy.com">Fullstack Academy of Code</a></p>
+      <div id='fssig' class='pull-right'> <span id='sig_start_message'>A product of Love by </span><div id='sig_img_cont'><a href="http://www.fullstackacademy.com"><img src='/images/FullStack-Logo-white.png' id='fslogo'><img src='/images/FullStack-Name-Only.png'></a></div></div>
+      <p class="text-muted">Coder's Bracket is a project by <a href="http://www.fullstackacademy.com">Fullstack Academy of Code</a>.</p>
+      
     </div>
   
     <script>

@@ -39,10 +39,15 @@
   color: #999;
 /*  text-transform: uppercase;*/
   font-size: 12px;
+  text-align:center;
 }
 
 .home .text-muted {
   color: #ccc;
+  text-align:left;
+  a{
+    color:#fff;
+  }
 }
 
 .btn-codersbracket {
