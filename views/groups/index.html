@@ -19,6 +19,12 @@ Create New Group
       <label for='name'>Group Name</label>
       <input ng-required="true" ng-model="name" type="text" name="name" placeholder="Group Name" class="form-control">
     </div>
+    <div class="form-group">
+      <label for='name'>Assign Bracket</label>
+      <select ng-model="bracket" ng-required="true" name="bracket" class="form-control" ng-options="b.name for b in brackets">
+        <option value="">-- Assign Later --</option>
+      </select>
+    </div>
     <button ng-disabled="createGroupForm.$invalid" type="submit" class="btn btn-primary">Create</button>
   </form>
   {% endraw %}
