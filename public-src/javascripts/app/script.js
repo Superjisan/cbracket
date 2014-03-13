@@ -362,7 +362,9 @@ var activateGuidersForBracketEditor = function() {
   });
 };
 
+// Donate Path
 
+$('#input_card_number').payment('formatCardNumber');
 
 
 

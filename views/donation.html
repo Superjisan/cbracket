@@ -6,17 +6,10 @@ Login at CodersBracket
 
 {% block content %}
 
-
+<h1>Make a Donation</h1>
 <div data-ng-controller="UsersCtrl">
   <form method="POST" action="/donate" data-ng-show="global.authenticated">
     <span class="payment-errors"></span>
-    <div class="form-row">
-      <label>
-        <span>Currency</span>
-        <input type="text" size="20" name="currency"/>
-      </label>
-    </div>
-
     <div class="form-row">
       <label>
         <span>Amount</span>
@@ -31,10 +24,9 @@ Login at CodersBracket
     <div class="form-row">
       <label>
         <span>Card Number</span>
-        <input type="text" size="20" data-stripe="number"/>
+        <input type="text" size="20" data-stripe="number" id='input_card_number'/>
       </label>
     </div>
-
 
     <div class="form-row">
       <label>
@@ -87,7 +79,7 @@ Login at CodersBracket
 
   <script type="text/javascript">
     // This identifies your website in the createToken call below
-    Stripe.setPublishableKey('pk_test_RqiSLBD86I6Ur0YkYVt24fmL');
+    Stripe.setPublishableKey('pk_tg1zjaGO6H3EKQAF4afVV4jmmLJua');
 
     var stripeResponseHandler = function(status, response) {
       var $form = $('#payment-form');
@@ -119,9 +111,3 @@ Login at CodersBracket
       });
   </script>
 {% endblock %}
-
-
-<!-- test secret key: sk_test_ryxfaW2IwOI9GRmlJCbf1jzX -->
-<!-- test publishable key: pk_test_RqiSLBD86I6Ur0YkYVt24fmL -->
-<!-- live secret key sk_live_IIzBfRWBYkdwUUasTNkaVYiu -->
-<!-- live publishable key pk_live_g4IJe2DtfMRmtEwoTrtPuMHM -->
