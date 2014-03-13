@@ -318,3 +318,51 @@ var setupBracketEvents = function (bracket) {
 //     });
 //   }, 400);
 // };
+// 
+
+var activateGuidersForBracketEditor = function() {
+  guiders.createGuider({
+    buttons: [{name: "Next"}],
+    description: $("#welcome-guider").text(),
+    id: "g-welcome",
+    next: "g-buttons",
+    overlay: true,
+    title: "Welcome to the Bracket Editor",
+    width: 600,
+    xButton: true
+  }).show();
+  /* .show() means that this guider will get shown immediately after creation. */
+
+  guiders.createGuider({
+    attachTo: "#editor-btns",
+    buttons: [{name: "Next"}],
+    description: $("#action-guider").text(),
+    id: "g-buttons",
+    next: "g-editorwindow",
+    position: 2,
+    offset: { left: 0, top: -25 },
+    title: "Editor Actions",
+    width: 500,
+    // overlay: true,
+    // highlight: 
+    xButton: true
+  });
+
+  guiders.createGuider({
+    attachTo: "#editor_container",
+    buttons: [{name: "Get Started!", onclick: guiders.hideAll}],
+    description: $("#editor-guider").text(),
+    id: "g-editorwindow",
+    position: 3,
+    // overlay: true,
+    // highlight: "#code_editor_col",
+    title: "Editor Window",
+    width: 450,
+    xButton: true
+  });
+};
+
+
+
+
+

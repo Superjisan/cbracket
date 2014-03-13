@@ -62,12 +62,24 @@ if ('development' == app.get('env')) {
   swig.setDefaults({ cache: false });
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 } else {
-  env.APP_HOST = 'codersbracket.com';
+  env.APP_HOST = 'www.codersbracket.com';
 }
 
 if ('production' == app.get('env')) {
   app.use(express.errorHandler());
+
+  // SSL redirect
+  /* At the top, with other redirect methods before other routes */
+  app.get('*', function(req,res,next){
+    if(req.headers['x-forwarded-proto']!='https') {
+      res.redirect('https://www.codersbracket.com'+req.url);
+    } else {
+      next(); /* Continue to other routes if we're not redirecting */
+    }
+  });
+
 }
+
 
 // passport config
 app.get('/', routes.index);
