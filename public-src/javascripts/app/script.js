@@ -318,3 +318,38 @@ var setupBracketEvents = function (bracket) {
 //     });
 //   }, 400);
 // };
+// 
+
+var activateGuidersForBracketEditor = function() {
+  guiders.createGuider({
+    buttons: [{name: "Next"}],
+    description: 'Are you ready for some basketball?  We\'ve made a quick tour guide to help you navigate the Bracket Editor (you can also watch the video below).  Here you\'ll write the code to generate your bracket.  Don\'t worry, it\'s easy, quick and fun!  <br /><br /><div style="text-align:center"><iframe width="560" height="315" src="//www.youtube.com/embed/bUVOlBc1aus?rel=0" frameborder="0" allowfullscreen></iframe></div>',
+    id: "welcome",
+    next: "second",
+    overlay: true,
+    title: "Welcome to the Bracket Editor",
+    width: 600,
+    xButton: true
+  }).show();
+  /* .show() means that this guider will get shown immediately after creation. */
+
+  guiders.createGuider({
+    attachTo: 
+  });
+
+  guiders.createGuider({
+    attachTo: "#editor-btns",
+    buttons: [{name: "Close, then click on the clock.", onclick: guiders.hideAll}],
+    description: "Custom event handlers can be used to hide and show guiders. This allows you to interactively show the user how to use your software by having them complete steps. To try it, click on the clock.",
+    id: "third",
+    next: "fourth",
+    position: 2,
+    title: "You can also advance guiders from custom event handlers.",
+    width: 450
+  });
+
+};
+
+
+
+

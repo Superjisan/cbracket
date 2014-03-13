@@ -15,7 +15,7 @@
               <h4 style='letter-spacing:-1px; margin-bottom: 10px;'><strong>Step 1. Write Game Picking Function</strong></h4>
               <!-- <h5>Write your game picking function.</h5> -->
 
-              <div class="btn-group " style='margin-bottom: 8px;'>
+              <div id='editor-btns' class="btn-group " style='margin-bottom: 8px;'>
                 <div class="btn-group">
                   <button type="button" class="btn btn-warning noround" id='btn-generatebracket'><i class="fa fa-play"></i> Generate</button>
                 </div>
@@ -197,6 +197,28 @@
   var editor = setupAceEditor();
 </script>
 
+<script type="text/template" id="welcome-guider">
+  Are you ready for some basketball?  We've made a quick tour guide to help you navigate the Bracket Editor (you can also watch the video below).  Here you'll write the code to generate your bracket.  Don't worry, it's easy, quick and fun!  <br /><br />
+
+  <div style="text-align:center">
+    <iframe width="560" height="315" src="//www.youtube.com/embed/bUVOlBc1aus?rel=0" frameborder="0" allowfullscreen></iframe>
+  </div>
+</script>
+
+<script type="text/template" id="action-guider">
+  These three buttons are what you'll be using as you build your bracket.  Press <strong>Generate</strong> anytime you want to test your game-picking function.  It will run your game-picking code against all the match-ups and generate a bracket.<br /><br />
+
+  <strong>Examples</strong> are a great place to get some ideas for how to write a game-picking function.  There are great examples of using randomness and specific statistics.  
+
+  <br />
+  <br />
+
+  <strong>Help</strong> shows you all the various information about a game or a specific team that you have access to in your function.  For example, if you want to see what properties are available on each team, check out <strong>Help &gt; Show Documentation</strong>
+</script>
+
+<script type="text/template" id="editor-guider">
+  The editor window is where you can write your actual code.  Your code needs to be a <strong>function</strong> that at some point in it's execution, says that one of the team wins the game (using <strong>team1.winsGame()</strong>) for example.
+</script>
 <script>
   var teams = {{teams|json|safe}};
   var bracket = new Bracket(null,teams);
@@ -229,7 +251,7 @@
 
   $('#bracket').html(html);
   setupBracketEvents(bracket);
-
+  activateGuidersForBracketEditor();
   // $('#icancode_button').click(start_coding);
 
 </script>
