@@ -59,7 +59,7 @@ exports.code_bracket = function(req,res) {
   var Bracket = require('../modules/bracket');
   var bracket = new Bracket();
   bracket.getTeams().addBack(function(err,teams) {
-    var html = bracket.generateBracketHtml(teams);
+   // var html = bracket.generateBracketHtml(teams);
     var theuser;
     if (req.user) {
       theuser = req.user;
@@ -72,7 +72,7 @@ exports.code_bracket = function(req,res) {
       user: theuser,
       sorted_teams: sorted_teams,
       teams: selectedteams,
-      bracket_html: function() {return html;},
+     // bracket_html: function() {return html;},
       error_flash: req.flash('error'),
       success_flash: req.flash('success')
     });
@@ -159,11 +159,11 @@ exports.save_bracket = function(req,res) {
       }
 
       if (is_new_user == "no") {
-        // new users already have a success flash message from the 
+        // new users already have a success flash message from the
         // successful registration
         req.flash('success', "Your bracket '"+obj.name+",' was saved!");
       }
-      
+
       res.writeHead(200, {'Content-type': 'application/json'});
       res.end(JSON.stringify({bracket:obj}));
 
