@@ -72,7 +72,7 @@
                 <div id='help_section'>
                   <a href='#' id='open_help'><i class="fa fa-chevron-right"></i> View Documentation</a>
                   {% include "./partials/documentation.html" %}
-                </div> <!-- end help_section -->      
+                </div> <!-- end help_section -->
               #}
                 <div id='editor_container' class='edit_page_editor_container'>
                   <div id='editor' class='edit_page_editor'>function(game, team1, team2){
@@ -180,14 +180,13 @@
   }
             </div>
             {% include "./partials/bracket_drawing_boxes.html" %}
-            
+
             <div class='clearfix'></div>
           </div>
 {% endblock %}
 
 {% block bottomscripts %}
 <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
-<script src='/javascripts/jquery.elastic.source.js'></script>
 
 <script>
   if(localStorage.getItem("code")) {
@@ -208,7 +207,7 @@
 <script type="text/template" id="action-guider">
   These three buttons are what you'll be using as you build your bracket.  Press <strong>Generate</strong> anytime you want to test your game-picking function.  It will run your game-picking code against all the match-ups and generate a bracket.<br /><br />
 
-  <strong>Examples</strong> are a great place to get some ideas for how to write a game-picking function.  There are great examples of using randomness and specific statistics.  
+  <strong>Examples</strong> are a great place to get some ideas for how to write a game-picking function.  There are great examples of using randomness and specific statistics.
 
   <br />
   <br />
