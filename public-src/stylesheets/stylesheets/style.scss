@@ -15,7 +15,7 @@ body {
 body.home {
     background: #f34c0f; /* Old browsers */
     background: -moz-linear-gradient(top, #f34c0f 50%, #e23710 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710)); /* Chrome,Safari4+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710));*/ /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* IE10+ */

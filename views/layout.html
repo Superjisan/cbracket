@@ -56,9 +56,9 @@
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
               <li><a href="/">Home</a></li>
-              <li data-ng-show="global.authenticated"><a href="/donate">Donate</a></li>
-              <li data-ng-show="global.authenticated"><a href="/code_bracket">Code Bracket</a></li>
-              <li data-ng-show="global.authenticated"><a href="/mybrackets">My Brackets</a></li>
+              <li class='hide'><a href="/donate">Donate</a></li>
+              <li><a href="/code_bracket">Build Code Bracket</a></li>
+              <li><a href="/mybrackets">My Brackets</a></li>
               <li class="dropdown hide">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Groups <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -66,8 +66,8 @@
                   <li><a href="/groups/invite">Invite</a></li>
                 </ul>
               </li>
-              <li data-ng-show="global.authenticated"><a href="/standings">Standings</a></li>
-              <li class="dropdown" data-ng-show="global.authenticated">
+              <li><a href="/standings">Standings</a></li>
+              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Contest Info <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   <li><a href="/contest/timeline">Timeline</a></li>

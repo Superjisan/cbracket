@@ -36,9 +36,13 @@
 }
 
 .text-muted {
-  color: #8F1307;
-  text-transform: uppercase;
+  color: #999;
+/*  text-transform: uppercase;*/
   font-size: 12px;
+}
+
+.home .text-muted {
+  color: #ccc;
 }
 
 .btn-codersbracket {
