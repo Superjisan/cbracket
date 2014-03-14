@@ -12,8 +12,8 @@ module.exports = function(m) {
     },
     group: {
       name: String,
-      id: ObjectId,
-      ownerId: ObjectId
+      _id: ObjectId,
+      owner: ObjectId
     },
     accepted: {
       type: Boolean,
