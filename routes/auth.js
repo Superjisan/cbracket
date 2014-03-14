@@ -87,7 +87,12 @@ exports.verify_email = function(req,res) {
         req.flash('error', err.message);
         return res.render('index', { error_flash: req.flash('error')});
       } else {
-        req.flash('success', "Your email is verified. Welcome " + user.display_name + ". You can <a href='/login'>login now</a>.");
+        var flashmsg = "Your email is verified. Welcome " + user.display_name + ".";
+        if (!req.user) {
+          flashmsg += " You can <a href='/login'>login now</a>."
+        }
+        
+        req.flash('success', flashmsg);
         return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
     });
