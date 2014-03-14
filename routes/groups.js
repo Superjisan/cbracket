@@ -30,10 +30,6 @@ exports.invite = function(req, res){
 };
 
 exports.create = function(req, res) {
-  if (!req.user) {
-    return res.send(400, { msg: 'You must be logged in.' });
-  }
-
   if (!req.body.name) {
     return res.send(400, { msg: 'Name is required' });
   }
@@ -51,10 +47,6 @@ exports.sendInvite = function(req, res) {
   var user = req.user;
   var groupId;
   var email;
-
-  if (!user) {
-    return res.send(400, { msg: 'You must be logged in.' });
-  }
 
   if (!req.body.email) {
     return res.send(400, { msg: 'No email was given.' });
@@ -190,11 +182,7 @@ exports.acceptInvite = function(req, res) {
 
 };
 
-exports.managePage = function(req, res) {
-  if (!req.user) {
-    return res.render('groups/manage', {error_flash:'You must be signed in to view this page.'});
-  }
-
+exports.getManage = function(req, res) {
   async.parallel({
     getBrackets: function(done){
       done();
@@ -207,9 +195,9 @@ exports.managePage = function(req, res) {
   }, function(err, data) {
     res.render('groups/manage', data);
   });
-}
+};
 
-exports.manage = function(req, res) {
+exports.postManage = function(req, res) {
   if (!req.body.group || !req.body.bracket) {
     return res.send(400, { msg: "A group and braket must be chosen" });
   }
@@ -221,6 +209,6 @@ exports.manage = function(req, res) {
       return res.send(400, { msg: "Error assigning bracket." });
     }
 
-    res.send(200, { msg: "The bracket has been assigned" })
+    res.send(200, { msg: "The bracket has been assigned" });
   });
-}
+};
