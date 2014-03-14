@@ -6,31 +6,32 @@ Groups
 
 {% block content %}
 
-<div class="container" ng-controller="GroupInviteCtrl">
-  <div class='row' style='margin-bottom: 20px'>
-  <h1>Groups</h1>
-  <p>Invite your friends via email</p>
-  {% if error_flash %}
-    <div class='alert alert-danger'>{{error_flash}}</div>
-  {% endif %}
-  {% raw %}
-  <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
-  <form ng-submit="submit()" name="groupInviteForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
-    <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
-      <label for='group'>Group</label>
-      <select ng-model="group" ng-required="true" name="group" class="form-control" ng-options="g.name for g in groups">
-      </select>
-      <p ng-show="groupInviteForm.$dirty && groupInviteForm.email.$invalid" class="error">Invalid email</p>
-    </div>
-    <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
-      <label for='email'>Friend's Email</label>
-      <input ng-model="email" ng-required="true" type="email" name="email" placeholder="Email" class="form-control">
-      <p ng-show="groupInviteForm.$dirty && groupInviteForm.email.$invalid" class="error">Invalid email</p>
-    </div>
-    <button ng-disabled="groupInviteForm.$invalid" type="submit" class="btn btn-primary">Invite</button>
-  </form>
-  {% endraw %}
-  </div>
-</div>
+      <div class="container" ng-controller="GroupInviteCtrl">
+        <div class='row' style='margin-bottom: 20px'>
+          <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+            <h1>Invite friends to your Groups</h1><hr>
+            {% if error_flash %}
+              <div class='alert alert-danger'>{{error_flash}}</div>
+            {% endif %}
+            {% raw %}
+            <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+            <div ng-show="groups.length === 0"><br><strong>No groups found.</strong> You must <a href='/groups'>create a group</a> before you can invite your friends to it.</div>
+            <form ng-submit="submit()" name="groupInviteForm" role="form" method="post" style="max-width: 300px;"  ng-show="groups.length > 0" novalidate><br>
+              <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
+                <label for='group'>Group</label>
+                <select ng-model="group" ng-required="true" name="group" class="form-control" ng-options="g.name for g in groups">
+                </select>
+              </div>
+              <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
+                <label for='email'>Friend's Email</label>
+                <input ng-model="email" ng-required="true" type="email" name="email" placeholder="Email" class="form-control">
+                <p ng-show="groupInviteForm.email.$dirty && groupInviteForm.email.$invalid" class="error">Invalid email</p>
+              </div>
+              <button type="submit" class="btn btn-warning noround">Invite</button>
+            </form>
+            {% endraw %}
+          </div>
+        </div>
+      </div>
 
 {% endblock %}
