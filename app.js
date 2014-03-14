@@ -54,7 +54,6 @@ app.use(passport.session());
 app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public-src', express.static(__dirname + '/public-src'));
-// app.use(express.static(path.join(__dirname, 'public-src')));
 
 // development only
 if ('development' == app.get('env')) {
@@ -88,10 +87,12 @@ app.get('/code_bracket/:id', routes.view_code_bracket);
 app.post('/save_bracket', routes.save_bracket);
 app.post('/waitlist', routes.subscribe);
 app.get('/teamsbysid.js', routes.teamsbysid);
-
+app.get('/donate', user.donate_page);
+app.post('/donate', user.donate)
 //static pages
 app.get('/contest/timeline', routes.timeline);
 app.get('/contest/rules', routes.contest_rules);
+app.get('/contest/prizes', routes.contest_prizes);
 app.get('/contact', routes.contact);
 
 
@@ -252,9 +253,6 @@ db.once('open', function callback () {
         }
     ));
 });
-
-// passport.use(new LocalStrategy(models.User.authenticate()));
-
 
 app.get('/auth/facebook', passport.authenticate('facebook', {
     scope: ['email', 'user_about_me'],

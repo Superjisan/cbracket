@@ -20,7 +20,7 @@ exports.index = function(req, res){
   noCacheFix(res);
   res.render('index', {
     homepage: true,
-    user: req.user,
+    user: req.user ? JSON.stringify(req.user) : 'null',
     error_flash: req.flash('error'),
     success_flash: req.flash('success')
   });
@@ -39,6 +39,11 @@ exports.timeline = function (req,res) {
 exports.contest_rules = function (req,res) {
   noCacheFix(res);
   res.render('contest_rules');
+};
+
+exports.contest_prizes = function (req,res) {
+  noCacheFix(res);
+  res.render('contest_prizes');
 };
 
 exports.show_page = function (req,res) {

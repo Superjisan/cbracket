@@ -3,7 +3,7 @@
 
 html {
   font: 14px "Open Sans", Helvetica, Arial, sans-serif;
-  height: 100%;
+/*  height: 100%;*/
 /*  background: white;*/
 }
 body {
@@ -15,7 +15,7 @@ body {
 body.home {
     background: #f34c0f; /* Old browsers */
     background: -moz-linear-gradient(top, #f34c0f 50%, #e23710 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710)); /* Chrome,Safari4+ */
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(50%,#f34c0f), color-stop(100%,#e23710));*/ /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #f34c0f 50%,#e23710 100%); /* IE10+ */
@@ -108,14 +108,19 @@ a {
 }
 
 #fssig {
-  margin-top: 10px;
+  display: none;
+}
+
+body.home #fssig {
+/*  margin-top: 10px;*/
+  display:block;
   position: relative;
 
   #sig_start_message {
     padding: 5px;
   }
   #sig_img_cont {
-    background: #C3440D;
+    background: #e23710;
     z-index: 2;
     position: relative;
     padding: 5px 0;
@@ -764,5 +769,12 @@ h1 > .by_user {
   margin-left: 10px;
   display: inline-block;
 }
+
+ul.contest_rules {
+  margin-top: 5px; 
+  li {
+    margin: 5px 0;
+  }
+} 
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}

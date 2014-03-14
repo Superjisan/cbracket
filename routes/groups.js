@@ -3,6 +3,7 @@
  */
 
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Types.ObjectId;
 var mailer = require('../modules/mailer');
 var fs = require('fs');
 var path = require('path');
@@ -184,15 +185,19 @@ exports.acceptInvite = function(req, res) {
 
 exports.getManage = function(req, res) {
   async.parallel({
-    getBrackets: function(done){
-      done();
+    brackets: function(done){
+      models.Bracket.find({user_id: req.user_id}, function(err, collection){
+        console.log('collection', collection);
+        done();
+      });
     },
-    getGroups: function(done){
-      models.User.findOne({ _id: req.user._id }, {groups:'*'}, function(err){
-        done(err);
+    groups: function(done){
+      models.User.findOne({ _id: req.user._id }, {groups:1}, function(err, userModel){
+        done(err, userModel.groups);
       });
     }
   }, function(err, data) {
+    console.log('data', data);
     res.render('groups/manage', data);
   });
 };

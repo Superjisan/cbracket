@@ -35,7 +35,8 @@ module.exports = function(m) {
     }],
     facebook : {},
     twitter: {},
-    provider : String
+    provider : String,
+    stripe_id: String
   });
 
   userSchema.index({email: 1, 'groups.name': 1}, {unique: true});
