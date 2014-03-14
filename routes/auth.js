@@ -124,12 +124,12 @@ exports.login = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
-    if (!user.verified) {
-      req.flash('error', "Your account is not verified yet. Check your email for the verification link. <a href='/verify/resend'>Resend Verification Email</a>");
-      res.redirect('/');
-    }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
+      if (!req.user.verified) {
+        req.flash('error', "Your account is not verified yet. Check your email for the verification link. <a href='/verify/resend'>Resend Verification Email</a>");
+        res.redirect('/');
+      }
       // return res.redirect('/users/' + user.username);
       if (forwardpath) {
         res.redirect(forwardpath);
