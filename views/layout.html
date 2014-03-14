@@ -48,7 +48,7 @@
               <span class="sr-only">Toggle navigation</span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
-              <span class="icon-bar"></spa
+              <span class="icon-bar"></span>
             </button>
             <!-- <a class="navbar-brand" href="/"><tt>Coder's Bracket</tt></a> -->
           </div>
@@ -74,28 +74,23 @@
                   <li><a href="/contest/timeline">Timeline</a></li>
                   <li><a href="/contest/rules">Rules</a></li>
                   <li><a href="/contest/prizes">Prizes</a></li>
-                  <!-- <li><a href="/contest/rules">Rules</a></li> -->
-                  <!-- <li><a href="/contest/sponsors">Sponsors</a></li> -->
                 </ul>
               </li>
               <!-- <li><a href="http://www.fullstackacademy.com">Fullstack Academy</a></li> -->
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-              <!-- <li><a href="#">Link</a></li> -->
-              <li class="dropdown" data-ng-show="global.authenticated">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{global.user.name.first}}<b class="caret"></b></a>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> {{ user|login_or_user }} <b class="caret"></b></a>
                 <ul class="dropdown-menu" >
+                {% if user %}
                   <li><a href='/account'>My Account</a></li>
                   <li class="divider"></li>
                   <li><a href="/logout">Log Out</a></li>
-                </ul>
-              </li>
-              <li class="dropdown" data-ng-hide="global.authenticated">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" >Log in or Register<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li><a href="/login">Log In</a></li>
-                    <li><a href="/register">Create Account</a></li>
+                {% else %}
+                  <li><a href="/login">Log In</a></li>
+                  <li><a href="/register">Create Account</a></li>
+                {% endif %}
                 </ul>
               </li>
             </ul>
