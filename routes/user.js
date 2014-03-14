@@ -58,5 +58,5 @@ exports.donate = function(req, res){
 };
 
 exports.donate_page = function(req, res){
-  res.render('donation', {user: req.user ? JSON.stringify(req.user) : 'null'});
+  res.render('donation', {user: req.user ? req.user : false});
 };
