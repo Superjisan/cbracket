@@ -1,73 +1,71 @@
 {% extends "layout.html" %}
 
 {% block title %}
-Login at CodersBracket
+Make a Donation
 {% endblock%}
 
 {% block content %}
+  <div class='row'>
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
 
+      <h1>Make a Donation</h1>
+      <p>Your donation will help great non-profits strenghten their causes to advance STEM education. As a thank you, you will get some awesome prizes for donors only. Thank you for your help!</p>
 
-<div data-ng-controller="UsersCtrl">
-  <form method="POST" action="/donate" data-ng-show="global.authenticated">
-    <span class="payment-errors"></span>
-    <div class="form-row">
-      <label>
-        <span>Currency</span>
-        <input type="text" size="20" name="currency"/>
-      </label>
+      <div class='donate_form' data-ng-controller="UsersCtrl">
+        <form method="POST" action="/donate" data-ng-show="global.authenticated">
+          <span class="payment-errors"></span>
+          <div class="form-row">
+            <label>
+              <span>Amount</span>
+              <input type="text" size="20" name="amount"/>
+            </label>
+          </div>
+          <button type="submit">Submit Payment</button>
+        </form>
+        <form method="POST" action="/donate" id="payment-form" data-ng-hide="global.authenticated">
+          <span class="payment-errors"></span>
+
+          <div class="form-row">
+            <label>
+              <span>Card Number</span>
+              <input type="text" size="20" data-stripe="number" id='input_card_number' class="form-control" />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Currency</span>
+              <input type="text" size="20" name="currency" class="form-control" />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Amount</span>
+              <input type="text" size="20" name="amount" class="form-control" />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span>CVC</span>
+              <input type="text" size="4" data-stripe="cvc" class="form-control" />
+            </label>
+          </div>
+
+          <div class="form-row">
+            <label>
+              <span>Expiration (MM/YYYY)</span>
+              <input type="text" size="2" data-stripe="exp-month"/>
+            </label>
+            <span> / </span>
+            <input type="text" size="4" data-stripe="exp-year"/>
+          </div>
+          <br>
+          <button type="submit" class='btn btn-warning'>Make Donation</button>
+        </form>
+      </div>
     </div>
-
-    <div class="form-row">
-      <label>
-        <span>Amount</span>
-        <input type="text" size="20" name="amount"/>
-      </label>
-    </div>
-    <button type="submit">Submit Payment</button>
-  </form>
-  <form method="POST" action="/donate"id="payment-form" data-ng-hide="global.authenticated">
-    <span class="payment-errors"></span>
-
-    <div class="form-row">
-      <label>
-        <span>Card Number</span>
-        <input type="text" size="20" data-stripe="number"/>
-      </label>
-    </div>
-
-
-    <div class="form-row">
-      <label>
-        <span>Currency</span>
-        <input type="text" size="20" name="currency"/>
-      </label>
-    </div>
-
-    <div class="form-row">
-      <label>
-        <span>Amount</span>
-        <input type="text" size="20" name="amount"/>
-      </label>
-    </div>
-    <div class="form-row">
-      <label>
-        <span>CVC</span>
-        <input type="text" size="4" data-stripe="cvc"/>
-      </label>
-    </div>
-
-    <div class="form-row">
-      <label>
-        <span>Expiration (MM/YYYY)</span>
-        <input type="text" size="2" data-stripe="exp-month"/>
-      </label>
-      <span> / </span>
-      <input type="text" size="4" data-stripe="exp-year"/>
-    </div>
-
-    <button type="submit">Submit Payment</button>
-  </form>
-</div>
+  </div>
 {% endblock %}
 
 {% block bottomscripts %}
@@ -87,7 +85,7 @@ Login at CodersBracket
 
   <script type="text/javascript">
     // This identifies your website in the createToken call below
-    Stripe.setPublishableKey('pk_test_RqiSLBD86I6Ur0YkYVt24fmL');
+    Stripe.setPublishableKey('pk_tg1zjaGO6H3EKQAF4afVV4jmmLJua');
 
     var stripeResponseHandler = function(status, response) {
       var $form = $('#payment-form');
@@ -119,9 +117,3 @@ Login at CodersBracket
       });
   </script>
 {% endblock %}
-
-
-<!-- test secret key: sk_test_ryxfaW2IwOI9GRmlJCbf1jzX -->
-<!-- test publishable key: pk_test_RqiSLBD86I6Ur0YkYVt24fmL -->
-<!-- live secret key sk_live_IIzBfRWBYkdwUUasTNkaVYiu -->
-<!-- live publishable key pk_live_g4IJe2DtfMRmtEwoTrtPuMHM -->
