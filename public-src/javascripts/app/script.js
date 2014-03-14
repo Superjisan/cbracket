@@ -241,6 +241,10 @@ var setupBracketEvents = function (bracket) {
     e.preventDefault();
   };
 
+  $("#saveBracketNewUser input").blur(function(e) {
+    ga('send', 'event', 'modal_registration', 'form', $(this).attr('name'));
+  });
+
   $("#saveBracketNewUser").on("submit", function(event) {
     event.preventDefault();
     // $(this).serialize();
@@ -251,6 +255,9 @@ var setupBracketEvents = function (bracket) {
     var email = this.email.value;
     var nickname = this.nickname.value;
     var password = this.password.value;
+
+    ga('send', 'event', 'editor', 'save_bracket', 'new_user');
+
 
     var params = {
       first_name: first_name,
@@ -266,6 +273,11 @@ var setupBracketEvents = function (bracket) {
       if (data.show_login) {
         window.location="/login?forwardpath="+window.location.pathname;
       } else {
+
+        // change the Anonymous User
+        if($("#saveBracketModal input[name='bracket_name']").val().match(/^Anonymous User/)) {
+          $("#saveBracketModal input[name='bracket_name']").val((nickname || first_name) + "'s Code Bracket");
+        }
         $('#saveBracketModal').modal();
         $('#is_new_user').val("yes");
         $('#bracket_name').focus();
