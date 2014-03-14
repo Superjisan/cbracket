@@ -14,20 +14,43 @@ var groupsModule = require('../modules/groups');
 var passport = require('passport');
 
 exports.index = function(req, res){
-  res.render('groups/index', {user: req.user});
+  var locals = {user: req.user, bootstrapData: {}};
+  models.Bracket.find({user_id: req.user._id}, function(err, brackets){
+    brackets = brackets.map(function(bracket){
+      return {name: bracket.name, _id: bracket._id.toString()};
+    });
+    locals.bootstrapData.brackets = brackets;
+    res.render('groups/index', locals);
+  });
 };
 
-exports.invite = function(req, res){
+exports.getInvite = function(req, res){
   if (!req.user) {
     return res.render('groups/invite', { error_flash: 'You must be logged in.' });
   }
 
   var locals = { user: req.user, bootstrapData: {}};
-  userModule.getGroups(req.user._id, function(err, groups){
-    console.log('groups', groups);
+
+  models.User.findOne({_id: req.user._id }, {groups:1}, function(err, user){
+    var groups;
+    if (user) {
+      groups = user.groups.map(function(group){
+        return {name: group.name, _id: group._id.toString()};
+      });
+    }
     locals.bootstrapData.groups = groups;
     res.render('groups/invite', locals);
   });
+
+  /** Use if can only invite ppl to group you created ***
+  models.Group.find({user: req.user._id }, {name:1, _id:1}, function(err, groups){
+    groups = groups.map(function(group){
+      return {name: group.name, _id: group._id.toString()};
+    });
+    locals.bootstrapData.groups = groups;
+    res.render('groups/invite', locals);
+  });
+  */
 };
 
 exports.create = function(req, res) {
@@ -35,7 +58,7 @@ exports.create = function(req, res) {
     return res.send(400, { msg: 'Name is required' });
   }
 
-  groupsModule.create(req.user._id, { name: req.body.name}, function(err){
+  groupsModule.create({owner: req.user._id,  name: req.body.name}, req.body.bracket._id, function(err){
     if (err) {
       return res.send(400);
     }
@@ -44,7 +67,7 @@ exports.create = function(req, res) {
   });
 };
 
-exports.sendInvite = function(req, res) {
+exports.postInvite = function(req, res) {
   var user = req.user;
   var groupId;
   var email;
@@ -80,17 +103,16 @@ exports.viewInvite = function(req, res) {
 
   async.waterfall([
     function verifyToken(done) {
-      groupsModule.getGroupInviteToken(token, function(err, inviteToken){
+      groupsModule.verifyGroupInviteToken(token, function(err, inviteToken){
         if (err) {
-         if (err.code === 'invalidToken') {
-           locals.error_flash = "This token is invalid.";
-         }
-        } else {
-          locals.group = inviteToken.group.name;
-          locals.sender = inviteToken.sender;
-          locals.email = inviteToken.email;
-          locals.bootstrapData.token = inviteToken.token;
+         return done(err);
         }
+
+        locals.group = inviteToken.group.name;
+        locals.sender = inviteToken.sender;
+        locals.email = inviteToken.email;
+        locals.bootstrapData.token = inviteToken.token;
+
         done(err, inviteToken);
       });
     },
@@ -119,25 +141,12 @@ exports.acceptInvite = function(req, res) {
   var token = req.params.token;
 
   async.waterfall([
-    function verifyToken(done){
-      groupsModule.getGroupInviteToken(token, function(err, inviteToken){
-        if (!err && !inviteToken) {
-          err = new Error('This token is invalid');
-          err.code = 'invalidToken';
-        }
-        done(err, inviteToken);
-      });
-    },
-    function updateToken(inviteToken, done) {
-      console.log('updateToken');
-      inviteToken.set('accepted', true);
-      inviteToken.save(function(err){
-        done(err, inviteToken);
-      });
+    function markAccepted(done){
+      groupsModule.acceptInviteToken(token, done);
     },
     function updateAccount(inviteToken, done) {
       console.log('updateAccount');
-      groupsModule.addUser(inviteToken, function(err, userModel){
+      groupsModule.addUserFromInvite(inviteToken, function(err, userModel){
         done(err, inviteToken, !userModel);
       });
     },
@@ -159,18 +168,17 @@ exports.acceptInvite = function(req, res) {
         if (err) {
           return done(err);
         }
-        groupsModule.addUser(inviteToken, function(err, userModel){
+        groupsModule.addUserFromInvite(inviteToken, function(err, userModel){
           if (err) {
             return done(err);
           }
           req.login(userModel, function(err){
-            done(err);
+            done(err, inviteToken);
           });
         });
       });
     }
   ], function(err, inviteToken) {
-    console.log('acceptInvite', err);
     var msg = 'An error occured. Please try again at a later time';
     if (err) {
       console.log('acceptInvite', err);
@@ -184,21 +192,30 @@ exports.acceptInvite = function(req, res) {
 };
 
 exports.getManage = function(req, res) {
+  var locals = {user: req.user, bootstrapData:{}};
   async.parallel({
     brackets: function(done){
-      models.Bracket.find({user_id: req.user_id}, function(err, collection){
-        console.log('collection', collection);
-        done();
+      models.Bracket.find({user_id: req.user._id}, function(err, brackets){
+        brackets = brackets.map(function(bracket){
+          return {name: bracket.name, _id: bracket._id.toString()};
+        });
+        done(err, brackets);
       });
     },
     groups: function(done){
-      models.User.findOne({ _id: req.user._id }, {groups:1}, function(err, userModel){
-        done(err, userModel.groups);
+      models.User.findOne({_id: req.user._id }, {groups:1}, function(err, user){
+        var groups;
+        if (user) {
+          groups = user.groups.map(function(group){
+            return {name: group.name, _id: group._id.toString()};
+          });
+        }
+        done(err, groups);
       });
     }
   }, function(err, data) {
-    console.log('data', data);
-    res.render('groups/manage', data);
+    locals.bootstrapData = data;
+    res.render('groups/manage', locals);
   });
 };
 
@@ -209,7 +226,7 @@ exports.postManage = function(req, res) {
   var group = req.body.group;
   var bracket = req.body.bracket;
 
-  groupsModule.assignBracket(bracket._id, group._id, function(err){
+  groupsModule.assignBracket(req.user._id, bracket._id, group._id, function(err){
     if (err) {
       return res.send(400, { msg: "Error assigning bracket." });
     }

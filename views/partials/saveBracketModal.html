@@ -2,12 +2,12 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <form id='saveBracketForm' action="/save_bracket" method='post'>
-      <div class="modal-body">
-        <div  id='regmessage'>
-        <h4>Congrats, your registration was successful.</h4>
-        <p>Check your email box for the link to verify your email. Your bracket will not be eligible to win the Code Bracket Contest unless you have a valid email on file!</p>
-        </div>
-        <br>
+        <div class="modal-body">
+          <div  id='regmessage'>
+            <h4>Congrats, your registration was successful.</h4>
+            <p>Check your email box for the link to verify your email. Your bracket will not be eligible to win the Code Bracket Contest unless you have a valid email on file!</p>
+          </div>
+          <br>
           <div class='form-group'>
             <div class="form-group">
               <label for="bracket_name">Name Your Bracket</label>
@@ -15,12 +15,23 @@
               <input type="hidden" name='is_new_user' id='is_new_user' value='no'>
             </div>
           </div>
-      </div>
-      <div class="modal-footer">
-        <span style='font-size: 22px; margin: 15px 10px 0 0;' id='save_bracket_spinner'><i class="fa fa-spinner fa-spin"></i></span>
-        <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-        <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Save Bracket">
-      </div>
+          {% if groups && groups.length > 0 %}
+           <div class="form-group">
+            <label for="bracket_name">Assign To Group</label>
+            <select class="form-control input-lg" name='groupId' id="groupId">
+              <option value="">-- Select Group --</option>
+            {% for group in groups %}
+              <option value="{{group._id}}">{{group.name}}</option>
+            {% endfor %}
+            </select>
+          </div>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+          <span style='font-size: 22px; margin: 15px 10px 0 0;' id='save_bracket_spinner'><i class="fa fa-spinner fa-spin"></i></span>
+          <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
+          <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Save Bracket" />
+        </div>
       </form>
     </div>
   </div>

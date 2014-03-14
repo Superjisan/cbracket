@@ -6,7 +6,7 @@ app.controller('GroupManageCtrl', function($scope, $http){
   $scope.bracket = $scope.brackets[0];
 
   $scope.submit = function() {
-    $http.post("/groups/manage", { group: $scope.group, email: $scope.email }).
+    $http.post("/groups/manage", { group: $scope.group, bracket: $scope.bracket }).
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;

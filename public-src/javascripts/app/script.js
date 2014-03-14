@@ -32,18 +32,18 @@ var setupEvents = function () {
   //     var image_bottom = $(window).height() - $('#text-editor-animate').height() - front_buttons_bottom - 70;
   //     return image_bottom;
   //   };
-  // 
+  //
   //   var image_bottom = getImgBottom();
   //   $('#text-editor-animate').animate({
   //     bottom: image_bottom + "px"
   //   }, 1000);
-  // 
+  //
   //   $(window).resize(function () {
   //     var image_bottom = getImgBottom()+15;
   //     $('#text-editor-animate').css('bottom', image_bottom + "px");
   //   });
   // });
-  
+
   $(function() {
     var orig;
     // $('#watch_tutorial_btn').hover(function() {
@@ -61,7 +61,7 @@ var setupEvents = function () {
     e.preventDefault();
     showHowToVideo();
   });
-  
+
   $('#waitlist_form').submit(function(e){
     var email = $('#email').val();
     if (!!email) {
@@ -122,7 +122,7 @@ var showHowToVideo = function() {
 };
 
 var setupBracketEvents = function (bracket) {
-  
+
   $('#open_help').click(function() {
     ga('send', 'event', 'editor', 'open_help');
 
@@ -171,18 +171,18 @@ var setupBracketEvents = function (bracket) {
       });
     }, 500);
   };
-  
+
   $('#modify_code_btn').click(function(e) {
-    ga('send', 'event', 'editor', 'modify_code');    
+    ga('send', 'event', 'editor', 'modify_code');
     expandEditor();
     $('#bracket_status').slideUp();
   });
 
   $('#menu-expandeditor').click(function() {
-    ga('send', 'event', 'editor', 'expand_editor');    
+    ga('send', 'event', 'editor', 'expand_editor');
     expandEditor();
   });
-  
+
   $('.menu-set-font').click(function() {
     ga('send', 'event', 'editor', 'change_font', this.id);
 
@@ -197,9 +197,9 @@ var setupBracketEvents = function (bracket) {
         editor.setFontSize("16px");
         break;
     }
-    
+
   });
-  
+
   $('#menu-showdocs').click(function() {
     ga('send', 'event', 'editor', 'show_docs');
 
@@ -283,15 +283,16 @@ var setupBracketEvents = function (bracket) {
     var bracket_code = editor.getValue();
     var winner = {sid: bracket.winner.sid, name: bracket.winner.name};
     var is_new_user = this.is_new_user.value;
-
+    var groupId = this.groupId ? this.groupId.value: null;
     ga('send', 'event', 'editor', 'save_bracket', 'form', bracket_code.length);
-    
+
     var params = {
       bracket_data: bracket_data,
       bracket_name: bracket_name,
       bracket_code: bracket_code,
       bracket_winner: winner,
-      is_new_user: is_new_user
+      is_new_user: is_new_user,
+      groupId: groupId
     };
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {
@@ -336,7 +337,7 @@ var setupBracketEvents = function (bracket) {
 //     });
 //   }, 400);
 // };
-// 
+//
 
 var captureClick = function(type, label) {
   return function() {
@@ -348,7 +349,7 @@ var captureClick = function(type, label) {
 
     ga('send', 'event', 'guiders', type, label);
   };
-}; 
+};
 
 var activateGuidersForBracketEditor = function() {
   guiders.createGuider({
@@ -376,7 +377,7 @@ var activateGuidersForBracketEditor = function() {
     title: "Editor Actions",
     width: 500,
     // overlay: true,
-    // highlight: 
+    // highlight:
     xButton: true
   });
 

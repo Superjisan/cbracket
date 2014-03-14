@@ -7,73 +7,70 @@ function GroupModule() {}
 
 GroupModule.prototype = {
 
-  create: function(userId, groupData, cb) {
-    groupData.ownerId = userId;
-    async.waterfall([
-      function findUser(done) {
-        models.User.findOne({_id: userId}, done);
-      },
-      function saveGroup(userModel, done) {
-        userModel.groups.push(groupData);
-        userModel.save(function(err){
-          if (err) {
-            console.log('saveGroup', err);
-          }
-          return cb(err);
-        });
-      }
-    ]);
-  },
-
-  inviteByEmail: function(userId, groupId, email, secureLink, cb) {
-    if (typeof secureLink === 'function') {
-      cb = secureLink;
-      secureLink = true;
+  create: function(groupData, bracketId, cb) {
+    if (typeof bracketId === 'function') {
+      cb = bracketId;
+      bracketId = null;
     }
 
-    console.log(userId, groupId, email);
-
     async.waterfall([
-      function findUser(done) {
-        models.User.findOne({_id: userId, "groups._id": groupId}, function(err, userModel){
-          if (!err && !userModel) {
-            err = new Error('user not found');
-          }
-          done(err, userModel);
-        });
+      function createGroup(done){
+        models.Group.create(groupData, done);
       },
-      function updateGroups(userModel, done){
-        userModel.save(function(err){
-          done(err, userModel);
-        });
+      function saveGroupToUser(group, done){
+        var update;
+
+        group = group.toObject();
+
+        if (bracketId) {
+          group.bracket = bracketId;
+        }
+
+        update = { $push: {groups: group } };
+        models.User.findOneAndUpdate({ _id: groupData.owner}, update, done);
       },
-      function sendEmail(userModel, done) {
-        var group = userModel.groups.id(groupId);
-        var inviteToken = new models.InviteToken({
-          sender: userModel.name.first,
-          email: email,
-          group: { name: group.name, id: group._id, ownerId: group.ownerId }
-        });
-        var link = (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/groups/invite/" + inviteToken.token;
-
-        inviteToken.save(function(err){
-          if (err) {
-            return done(err);
-          }
-
-          console.log('sendEmail', email, userModel.name.first, group.name, link);
-          mailer.sendGroupInviteEmail(email, userModel.name.first, group.name, link, done);
-        });
-      }
     ], function(err){
       if (err) {
-        console.log('inviteByEmail', err);
+        console.log(err);
       }
       cb(err);
     });
   },
 
-  getGroupInviteToken: function(token, cb) {
+  inviteByEmail: function(user, groupId, email, secureLink, cb) {
+    if (typeof secureLink === 'function') {
+      cb = secureLink;
+      secureLink = true;
+    }
+
+    console.log(user, groupId, email);
+
+    async.waterfall([
+      function getGroup(done) {
+        models.Group.findOne({_id: groupId}, done);
+      },
+      function createInviteToken(group, done){
+        models.InviteToken.create({
+          sender: user.name.first,
+          email: email,
+          group: { name: group.name, _id: group._id, user: group.user }
+        }, done);
+      },
+      function sendEmail(inviteToken, done){
+        var link = (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/groups/invite/" + inviteToken.token;
+
+        console.log('sendEmail', email, inviteToken.sender, inviteToken.group.name, link);
+        mailer.sendGroupInviteEmail(email, inviteToken.sender, inviteToken.group.name, link, done);
+      }
+    ], function(err){
+        if (err) {
+          console.log('inviteByEmail', err);
+        }
+        cb(err);
+    });
+  },
+
+  verifyGroupInviteToken: function(token, cb) {
     if (!token) {
       var err = new Error("no token provided");
       err.code = 'invalidToken';
@@ -95,27 +92,41 @@ GroupModule.prototype = {
     });
   },
 
-  addUser: function(inviteToken, cb) {
+  acceptInviteToken: function(token, cb) {
+    if (!token) {
+      var err = new Error("no token provided");
+      err.code = 'invalidToken';
+      console.log(err);
+      return cb(err);
+    }
+
+    var update = { $set: {'accepted': true} };
+    models.InviteToken.findOneAndUpdate({ token: token }, update, function(err, inviteToken){
+      if (!err && !inviteToken) {
+        err = new Error("token not found");
+        err.code = 'invalidToken';
+      }
+      if (err) {
+        console.log(err);
+      }
+      cb(err, inviteToken);
+    });
+  },
+
+  addUserFromInvite: function(inviteToken, cb) {
     var update = { $push: {groups: inviteToken.group.toObject() } };
     models.User.findOneAndUpdate({ email: inviteToken.email }, update, function(err, userModel){
       cb(err, userModel);
     });
   },
 
-  assignBracket: function(bracketId, groupId, cb) {
-    models.User.findOne({'groups._id': groupId}, function(err, group){
+  assignBracket: function(userId, bracketId, groupId, cb) {
+    var update = { $set: {'groups.$.bracket': bracketId} };
+    models.User.findOneAndUpdate({_id: userId, 'groups._id': groupId }, update, function(err){
       if (err) {
         console.log('assignBracket', err);
-        return cb(err);
       }
-
-      group.set('bracket', bracketId);
-      group.save(function(err){
-        if (err) {
-          console.log('save bracket', err);
-        }
-        cb(err);
-      });
+      cb(err);
     });
   }
 };
