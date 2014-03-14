@@ -8,7 +8,7 @@ module.exports = function(grunt) {
     './public-src/javascripts/app/controllers/CreateGroupCtrl.js',
     './public-src/javascripts/app/controllers/GroupInviteCtrl.js',
     './public-src/javascripts/app/controllers/ViewGroupInviteCtrl.js',
-    './public-src/javascripts/app/controllers/GroupManageCtrl.js'
+    './public-src/javascripts/app/controllers/GroupManageCtrl.js',
     './public-src/javascripts/app/controllers/headers.js',
     './public-src/javascripts/app/controllers/users.js',
     './public-src/javascripts/app/services/global.js'
