@@ -57,6 +57,7 @@ var setupEvents = function () {
   });
 
   $('#watch_tutorial_btn').click(function(e) {
+    ga('send', 'event', 'tutorial_video', 'watch');
     e.preventDefault();
     showHowToVideo();
   });
@@ -123,6 +124,8 @@ var showHowToVideo = function() {
 var setupBracketEvents = function (bracket) {
   
   $('#open_help').click(function() {
+    ga('send', 'event', 'editor', 'open_help');
+
     $('#help_doc').slideToggle();
     if ($('#open_help > i').hasClass('fa-chevron-right')) {
       $('#open_help > i').removeClass('fa-chevron-right').addClass('fa-chevron-down');
@@ -131,6 +134,8 @@ var setupBracketEvents = function (bracket) {
     }
   });
   $('#startbutton, #btn-generatebracket').click(function(e) {
+    ga('send', 'event', 'editor', 'generate_bracket');
+
     e.preventDefault();
 
     // clear bracket with default HTML
@@ -168,15 +173,19 @@ var setupBracketEvents = function (bracket) {
   };
   
   $('#modify_code_btn').click(function(e) {
+    ga('send', 'event', 'editor', 'modify_code');    
     expandEditor();
     $('#bracket_status').slideUp();
   });
 
   $('#menu-expandeditor').click(function() {
+    ga('send', 'event', 'editor', 'expand_editor');    
     expandEditor();
   });
   
   $('.menu-set-font').click(function() {
+    ga('send', 'event', 'editor', 'change_font', this.id);
+
     switch(this.id) {
       case "menu-font-small":
         editor.setFontSize("12px");
@@ -192,9 +201,12 @@ var setupBracketEvents = function (bracket) {
   });
   
   $('#menu-showdocs').click(function() {
+    ga('send', 'event', 'editor', 'show_docs');
+
     $('#documentation_overlay').fadeIn();
   });
   $('#close_documentation_overlay').click(function() {
+    ga('send', 'event', 'editor', 'close_docs');
     $('#documentation_overlay').fadeOut();
   });
   var center_msg = function () {
@@ -262,6 +274,7 @@ var setupBracketEvents = function (bracket) {
   });
 
   $("#saveBracketForm").on("submit", function(event) {
+
     event.preventDefault();
     $('#save_bracket_spinner').show();
     // $(this).serialize();
@@ -270,6 +283,8 @@ var setupBracketEvents = function (bracket) {
     var bracket_code = editor.getValue();
     var winner = {sid: bracket.winner.sid, name: bracket.winner.name};
     var is_new_user = this.is_new_user.value;
+
+    ga('send', 'event', 'editor', 'save_bracket', 'form', bracket_code.length);
     
     var params = {
       bracket_data: bracket_data,
@@ -290,6 +305,8 @@ var setupBracketEvents = function (bracket) {
   });
 
   $('#menu-reset').click(function() {
+    ga('send', 'event', 'editor', 'reset');
+
     editor.setValue("function (game, team1, team2) {\n  \n}", 1);
     editor.focus();
   });
@@ -302,6 +319,7 @@ var setupBracketEvents = function (bracket) {
     editor.setValue(code,1);
   }
   $('.example_menu a').click( function () {
+    ga('send', 'event', 'editor', 'example_code', this.id);
     setEditorCode($('#'+this.id+'-code').text());
   });
 };
@@ -320,9 +338,22 @@ var setupBracketEvents = function (bracket) {
 // };
 // 
 
+var captureClick = function(type, label) {
+  return function() {
+    if(type === "next") {
+      guiders.next();
+    } else if(type === "close") {
+      guiders.hideAll();
+    }
+
+    ga('send', 'event', 'guiders', type, label);
+  };
+}; 
+
 var activateGuidersForBracketEditor = function() {
   guiders.createGuider({
-    buttons: [{name: "Next"}],
+    buttons: [{name: "Next", onclick: captureClick('next', 'welcome')}],
+    onClose: captureClick('close', 'welcome'),
     description: $("#welcome-guider").text(),
     id: "g-welcome",
     next: "g-buttons",
@@ -335,7 +366,8 @@ var activateGuidersForBracketEditor = function() {
 
   guiders.createGuider({
     attachTo: "#editor-btns",
-    buttons: [{name: "Next"}],
+    buttons: [{name: "Next", onclick: captureClick('next', 'editor-buttons')}],
+    onClose: captureClick('close', 'editor-buttons'),
     description: $("#action-guider").text(),
     id: "g-buttons",
     next: "g-editorwindow",
@@ -350,15 +382,16 @@ var activateGuidersForBracketEditor = function() {
 
   guiders.createGuider({
     attachTo: "#editor_container",
-    buttons: [{name: "Get Started!", onclick: guiders.hideAll}],
+    buttons: [{name: "Get Started!", onclick: captureClick('close', 'editor-container')}],
+    onClose: captureClick('close', 'editor-container'),
     description: $("#editor-guider").text(),
     id: "g-editorwindow",
     position: 3,
     // overlay: true,
     // highlight: "#code_editor_col",
     title: "Editor Window",
-    width: 450,
-    xButton: true
+    width: 450
+    // xButton: true
   });
 };
 
