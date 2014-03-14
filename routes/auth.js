@@ -87,7 +87,12 @@ exports.verify_email = function(req,res) {
         req.flash('error', err.message);
         return res.render('index', { error_flash: req.flash('error')});
       } else {
-        req.flash('success', "Your email is verified. Welcome " + user.display_name + ". You can <a href='/login'>login now</a>.");
+        var flashmsg = "Your email is verified. Welcome " + user.display_name + ".";
+        if (!req.user) {
+          flashmsg += " You can <a href='/login'>login now</a>."
+        }
+        
+        req.flash('success', flashmsg);
         return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
     });
@@ -124,12 +129,12 @@ exports.login = function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/login'); }
-    if (!user.verified) {
-      req.flash('error', "Your account is not verified yet. Check your email for the verification link. <a href='/verify/resend'>Resend Verification Email</a>");
-      res.redirect('/');
-    }
     req.logIn(user, function(err) {
       if (err) { return next(err); }
+      if (!req.user.verified) {
+        req.flash('error', "Your account is not verified yet. Check your email for the verification link. <a href='/verify/resend'>Resend Verification Email</a>");
+        res.redirect('/');
+      }
       // return res.redirect('/users/' + user.username);
       if (forwardpath) {
         res.redirect(forwardpath);
