@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 // var mongoUri = process.env.MONGOLAB_URI ||
 //   process.env.MONGOHQ_URL ||
 //   'mongodb://localhost/hackersbracket';
-// 
+//
 // mongoose.connect(mongoUri);
 // var db = mongoose.connection;
 // db.on('error', console.error.bind(console, 'connection error:'));
@@ -17,7 +17,8 @@ var mongoose = require('mongoose');
   var VerifyTokenModule = require('./verifyToken')(mongoose);
   var ResetTokenModule = require('./resetToken')(mongoose);
   var InviteTokenModule = require('./inviteToken')(mongoose);
-  
+  var GroupModel = require('./group')(mongoose);
+
   module.exports = {
     // connection: db,
     "Team": TeamModule.model,
@@ -27,8 +28,9 @@ var mongoose = require('mongoose');
     "Game": GameModule.model,
     "VerifyToken": VerifyTokenModule.model,
     "ResetToken": ResetTokenModule.model,
-    "InviteToken": InviteTokenModule.model
+    "InviteToken": InviteTokenModule.model,
+    "Group": GroupModel.model
   };
-  
+
 // });
 

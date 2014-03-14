@@ -18,40 +18,40 @@
            opacity: 0 !important;
        }
     </style>
-    
+
     <div class="btn-group pull-right" style='margin-top: 25px;'>
       <div class="btn-group hide">
         <button type="button" class="btn btn-default noround" id='btn-savebracket'><i class="fa fa-files-o"></i> Clone</button>
       </div>
-      
+
       <span class='st_sharethis_large' displayText='ShareThis'></span>
       <span class='st_facebook_large' displayText='Facebook'></span>
       <span class='st_twitter_large' displayText='Tweet'></span>
       <span class='st_linkedin_large' displayText='LinkedIn'></span>
       <span class='st_pinterest_large' displayText='Pinterest'></span>
       <span class='st_email_large' displayText='Email'></span>
-      
+
     </div>
     <h1>
       {% if bracket.name %}{{bracket.name}}{% else %}Your Bracket{% endif %}
       <div class='by_user'>{% if user.nickname %}By {{user.nickname}}{% else %}{% if user.name.first %}{{user.first.name}}{% endif %}{% endif %}</div>
-      
+
     </h1>
-      
+
     <hr>
     <div class='row' id='view_bracket_row'>
       <div class='col-lg-4 col-md-2'>
         <h3 class='col_title'>Bracket Code <a href='#' class="btn noround hide" title='Expand Code' id='btn_expand_code'><i class='fa fa-arrows-alt'></i></a></h3>
         <div id='editor_container' class='view_page_editor_container'>
           <div id='editor' class='view_page_editor'>{{bracket.code}}</div>
-        </div> <!-- end editor_container -->        
+        </div> <!-- end editor_container -->
       </div>
       <div class='col-lg-8 col-md-10'>
         <h3 class='col_title'>The Bracket <a href='#' class="btn noround hide" title='Expand Bracket' id='btn_expand_bracket'><i class='fa fa-arrows-alt'></i></a></h3>
         <div id='bracket-wrap' style='padding: 20px; border: 1px dashed black; '>
           <div id='bracket' class='view_page_bracket'></div>
         </div> <!-- end bracket-wrap -->
-        
+
         {% include "./partials/bracket_drawing_boxes.html" %}
         <div class='clearfix'></div>
       </div>
@@ -61,17 +61,17 @@
 {% block bottomscripts %}
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script src='/javascripts/teamsbysid2013.js'></script>
-  
+
   <script>
   var editor = setupAceEditor();
   editor.setReadOnly(true);
   var teamsbysid = getTeamsBySid();
   var bracketObj = {{bracket|json|safe}};
   var bracketData = eval(bracketObj.data[0]);
-  
+
   var teams = {{teams|json|safe}};
   var bracket = new Bracket(bracketData,teams);
-  debugger;
+  //debugger;
   bracket.winner = bracketObj.winner.sid;
   var html = bracket.generateBracketHtml();
   $('#bracket').html(html);

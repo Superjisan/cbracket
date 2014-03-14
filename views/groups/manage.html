@@ -1,14 +1,14 @@
 {% extends "../layout.html" %}
 
 {% block title %}
-Create New Group
+Manage Groups
 {% endblock%}
 
 {% block content %}
 
-<div class="container" ng-controller="CreateGroupCtrl">
+<div class="container" ng-controller="GroupManageCtrl">
   <div class='row' style='margin-bottom: 20px'>
-  <h1>Create New Group</h1>
+  <h1>Manage Groups</h1>
   {% if error_flash %}
     <div class='alert alert-danger'>{{error_flash}}</div>
   {% else %}
@@ -16,16 +16,16 @@ Create New Group
   <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
   <form ng-submit="submit()" name="createGroupForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
     <div class="form-group">
-      <label for='name'>Group Name</label>
-      <input ng-required="true" ng-model="name" type="text" name="name" placeholder="Group Name" class="form-control">
-    </div>
-    <div class="form-group">
-      <label for='name'>Assign Bracket</label>
-      <select ng-model="bracket" name="bracket" class="form-control" ng-options="b.name for b in brackets">
-        <option value="">-- Assign Later --</option>
+      <label for='group'>Group</label>
+      <select ng-model="group" ng-required="true" name="group" class="form-control" ng-options="g.name for g in groups">
       </select>
     </div>
-    <button ng-disabled="createGroupForm.$invalid" type="submit" class="btn btn-primary">Create</button>
+    <div class="form-group">
+      <label for='bracket'>Assign Bracket</label>
+      <select ng-model="bracket" ng-required="true" name="bracket" class="form-control" ng-options="b.name for b in brackets">
+      </select>
+    </div>
+    <button ng-disabled="createGroupForm.$invalid" type="submit" class="btn btn-primary">Assign</button>
   </form>
   {% endraw %}
   {% endif %}

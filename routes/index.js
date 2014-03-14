@@ -7,7 +7,10 @@ var mongoose = require('mongoose');
 var mailer = require('../modules/mailer');
 var fs = require('fs');
 var path = require('path');
+var async = require('async');
 var userModule = require('../modules/user');
+var groupsModule = require('../modules/groups');
+var ObjectId = mongoose.Types.ObjectId;
 
 function noCacheFix(res) {
   // see here: http://stackoverflow.com/questions/18811286/nodejs-express-cache-and-304-status-code
@@ -20,7 +23,7 @@ exports.index = function(req, res){
   noCacheFix(res);
   res.render('index', {
     homepage: true,
-    user: req.user ? JSON.stringify(req.user) : 'null',
+    user: req.user ? req.user : 'null',
     error_flash: req.flash('error'),
     success_flash: req.flash('success')
   });
@@ -63,21 +66,44 @@ exports.show_page = function (req,res) {
 exports.code_bracket = function(req,res) {
   var Bracket = require('../modules/bracket');
   var bracket = new Bracket();
-  bracket.getTeams().addBack(function(err,teams) {
-    var html = bracket.generateBracketHtml(teams);
-    var theuser;
-    if (req.user) {
-      theuser = req.user;
+  var theuser;
+
+  if (req.user) {
+    theuser = req.user;
+  }
+
+  async.parallel({
+    teams: function(done){
+      bracket.getTeams().addBack(function(err,teams) {
+       // var html = bracket.generateBracketHtml(teams);
+        var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
+          return t1.name.localeCompare(t2.name);
+        });
+        var selectedteams = teams.slice(0,128);
+        done(err, {sorted:sorted_teams, selected: selectedteams});
+      });
+    },
+    groups: function(done) {
+      if (!theuser) {
+        return done(null);
+      }
+      models.User.findOne({_id: req.user._id }, {groups:1}, function(err, user){
+        var groups;
+        if (user) {
+          groups = user.groups.map(function(group){
+            return {name: group.name, _id: group._id.toString()};
+          });
+        }
+        done(err, groups);
+      });
     }
-    var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
-      return t1.name.localeCompare(t2.name);
-    });
-    var selectedteams = teams.slice(0,128);
+  }, function(err, data){
     res.render('code_bracket', {
       user: theuser,
-      sorted_teams: sorted_teams,
-      teams: selectedteams,
-      bracket_html: function() {return html;},
+      sorted_teams: data.teams.sorted,
+      teams: data.teams.selected,
+      groups: data.groups,
+     // bracket_html: function() {return html;},
       error_flash: req.flash('error'),
       success_flash: req.flash('success')
     });
@@ -151,38 +177,49 @@ exports.save_bracket = function(req,res) {
     bracket_name = "";
   }
 
-  if (!!bracket_data && !!req.user) {
-    models.Bracket.create({
-      name: bracket_name,
-      data: bracket_data,
-      code: bracket_code,
-      user_id: req.user._id,
-      winner: bracket_winner
-    }, function(err,obj) {
-      if (err) {
-        console.error(err.message);
-      }
-
-      if (is_new_user == "no") {
-        // new users already have a success flash message from the 
-        // successful registration
-        req.flash('success', "Your bracket '"+obj.name+",' was saved!");
-      }
-      
-      res.writeHead(200, {'Content-type': 'application/json'});
-      res.end(JSON.stringify({bracket:obj}));
-
-      // res.redirect('code_bracket/'+obj._id.toString());
-      // res.render('view_bracket', {
-      //   user: theuser,
-      //   sorted_teams: sorted_teams,
-      //   teams: selectedteams,
-      //   bracket_html: function() {return html;},
-      //   error_flash: req.flash('error'),
-      //   success_flash: req.flash('success')
-      // });
-    });
+  if (!bracket_data || !req.user) {
+    return res.send(400);
   }
+
+  async.waterfall([
+    function createBracket(done){
+      models.Bracket.create({
+        name: bracket_name,
+        data: bracket_data,
+        code: bracket_code,
+        user_id: req.user._id,
+        winner: bracket_winner
+      }, function(err, bracket) {
+        if (err) {
+          console.error(err.message);
+        }
+
+        if (is_new_user == "no") {
+          // new users already have a success flash message from the
+          // successful registration
+          req.flash('success', "Your bracket '"+bracket.name+",' was saved!");
+        }
+
+        done(err, bracket);
+      });
+    },
+    function assignBracketToGroup(bracket, done){
+      if (!req.body.groupId) {
+        return done(null);
+      }
+
+      groupsModule.assignBracket(req.user._id, bracket._id, req.body.groupId, function(err){
+        done(err, bracket);
+      });
+    }
+  ], function(err, bracket){
+    if (err) {
+      console.log(err);
+      return res.send(400);
+    }
+
+    res.send(200, {bracket: bracket});
+  });
 };
 
 exports.subscribe = function (req,res) {
@@ -255,8 +292,6 @@ exports.updateAccount = function(req, res) {
 
   var updates = req.body.user;
   var password = req.body.password;
-
-  console.log(req.user, updates, password);
 
   userModule.update(req.user._id, updates, password, function(err){
     var msg = '';

@@ -105,7 +105,7 @@ function ensureAuthenticated(req, res, next) {
 app.get('/mybrackets', ensureAuthenticated, routes.mybrackets);
 
 //authentication routes
-app.get('/verify/resend', auth.resend_verify);
+app.get('/verify/resend', ensureAuthenticated, auth.resend_verify);
 app.get('/verify/:token', auth.verify_email);
 app.get('/register', auth.register_page);
 app.post('/register', auth.register);
@@ -120,12 +120,14 @@ app.get('/reset-password/:token', auth.resetPasswordPage);
 app.post('/reset-password', auth.resetPassword);
 app.get('/account', ensureAuthenticated, routes.account);
 app.post('/account', ensureAuthenticated, routes.updateAccount);
-app.get('/groups', groups.index);
-app.post('/groups', groups.create);
-app.get('/groups/invite', ensureAuthenticated, groups.invite);
-app.post('/groups/invite', ensureAuthenticated, groups.sendInvite);
+app.get('/groups', ensureAuthenticated, groups.index);
+app.post('/groups', ensureAuthenticated, groups.create);
+app.get('/groups/invite', ensureAuthenticated, groups.getInvite);
+app.post('/groups/invite', ensureAuthenticated, groups.postInvite);
 app.get('/groups/invite/:token', groups.viewInvite);
 app.post('/groups/invite/:token', groups.acceptInvite);
+app.get('/groups/manage', ensureAuthenticated, groups.getManage);
+app.post('/groups/manage', ensureAuthenticated, groups.postManage);
 // global.allteams = [];
 
 
@@ -156,7 +158,7 @@ db.once('open', function callback () {
         done(err, user);
     });
   });
-  
+
     var FACEBOOK_APP_ID = "558806480893968";
     var FACEBOOK_APP_SECRET = "76c52123d1fa888874221542716e7596";
 

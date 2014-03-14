@@ -28,16 +28,19 @@ module.exports = function(m) {
     verified: Boolean,
     birthdate: Date,
     groups: [{
-      ownerId: ObjectId,
-      name: String,
-      password: String,
-      invites: [{
-        email: String,
-        accepted: Boolean
-      }],
-      members: [{
-        id: ObjectId
-      }]
+      owner: {
+        type: ObjectId,
+        ref: 'User',
+        required: true
+      },
+      name: {
+        type: String,
+        required: true
+      },
+      bracket: {
+        type: ObjectId,
+        ref: 'Bracket'
+      }
     }],
     facebook : {},
     twitter: {},

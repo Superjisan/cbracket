@@ -1,9 +1,12 @@
-app.controller('CreateGroupCtrl', function($scope, $http){
-  var brackets = bootstrapData.brackets || [];
-  $scope.brackets = brackets;
+app.controller('GroupManageCtrl', function($scope, $http){
+  $scope.groups = bootstrapData.groups || [];
+  $scope.group = $scope.groups[0];
+
+  $scope.brackets = bootstrapData.brackets || [];
   $scope.bracket = $scope.brackets[0];
+
   $scope.submit = function() {
-    $http.post("/groups", { name: $scope.name, bracket: $scope.bracket }).
+    $http.post("/groups/manage", { group: $scope.group, bracket: $scope.bracket }).
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;

@@ -8,6 +8,7 @@ module.exports = function(grunt) {
     './public-src/javascripts/app/controllers/CreateGroupCtrl.js',
     './public-src/javascripts/app/controllers/GroupInviteCtrl.js',
     './public-src/javascripts/app/controllers/ViewGroupInviteCtrl.js',
+    './public-src/javascripts/app/controllers/GroupManageCtrl.js',
     './public-src/javascripts/app/controllers/headers.js',
     './public-src/javascripts/app/controllers/users.js',
     './public-src/javascripts/app/services/global.js'
@@ -22,9 +23,9 @@ module.exports = function(grunt) {
 
   var libSrc = [
     './public-src/javascripts/lib/async.js',
-    './public-src/javascripts/lib/jquery.elastic.source.js',
     './public-src/javascripts/lib/guiders.js',
     './public-src/javascripts/lib/jquery.fittext.js',
+    './public-src/javascripts/lib/jquery.payment.js',
     './public-src/javascripts/lib/swig.min.js'
   ];
 
@@ -51,7 +52,8 @@ module.exports = function(grunt) {
         "loopfunc": true,
         "sub": true,
         "-W065": true,
-        "-W084": true
+        "-W084": true,
+        "evil": true
       }
     },
 

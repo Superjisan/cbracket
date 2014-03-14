@@ -28,7 +28,7 @@
 
 {% block bottomscripts %}
   <script type="text/javascript">
-    window.user = {{user|safe}};
+    window.user = {{user|json|safe}};
   </script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
   <script>

@@ -111,12 +111,6 @@ UserModule.prototype = {
     });
   },
 
-  getGroups: function(userId, cb){
-    var groups = models.User.findOne({_id: userId}, {groups: "*"}, function(err, userModel){
-      cb(err, userModel? userModel.groups : []);
-    });
-  },
-
   createTokenAndSendVerifyEmail: function(user, secureLink, cb) {
     if (typeof secureLink === 'function') {
       cb = secureLink;
@@ -145,11 +139,12 @@ UserModule.prototype = {
     models.User.register(new models.User({
       name: {first: userInfo.first_name, last: userInfo.last_name},
       nickname: userInfo.nickname,
-      email : userInfo.email
+      email : userInfo.email,
+      verified: userInfo.verified
     }), userInfo.password, function(err, user) {
       if (err) {
         if (err.message.indexOf("User already exists") >= 0) {
-          err = new Error("This email has already been registered: "+userInfo.email+". Please login or click 'Forgot Password.'")
+          err = new Error("This email has already been registered: "+userInfo.email+". Please login or click 'Forgot Password.'");
         }
       }
 
