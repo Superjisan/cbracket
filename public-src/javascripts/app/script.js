@@ -222,6 +222,14 @@ var setupBracketEvents = function (bracket) {
   $(center_msg);
   $(window).resize(center_msg);
 
+  var sizeEditor = function() {
+    var nonEditor = $("#editor-btns").height() + $("#content_container h4").height();
+    var editorHeight = $("#bracket_col").height() - nonEditor - 90;
+    $("#editor").height(editorHeight);
+  };
+  sizeEditor();
+  // $(window).resize(sizeEditor);
+
   var save_clicked = function(e) {
     if (!logged_in_user){
       showSaveBracketNewUser();
