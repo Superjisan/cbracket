@@ -47,7 +47,7 @@ exports.donate = function(req, res){
             customer: customer.id
           }, function(err, charge){
             user.save(function(err){
-              console.log(typeof charge)
+              console.log(typeof charge);
               res.render('success_receipt', {charge: charge});
             });
           });

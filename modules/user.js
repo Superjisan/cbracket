@@ -111,12 +111,6 @@ UserModule.prototype = {
     });
   },
 
-  getGroups: function(userId, cb){
-    var groups = models.User.findOne({_id: userId}, {groups: "*"}, function(err, userModel){
-      cb(err, userModel? userModel.groups : []);
-    });
-  },
-
   createTokenAndSendVerifyEmail: function(user, secureLink, cb) {
     if (typeof secureLink === 'function') {
       cb = secureLink;
