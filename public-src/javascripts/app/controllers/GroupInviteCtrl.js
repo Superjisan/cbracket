@@ -3,7 +3,7 @@ app.controller('GroupInviteCtrl', function($scope, $http){
   $scope.group = $scope.groups[0];
 
   window.csPageOptions = {
-    domain_key:'ZD3J7PVQ24VBGFGKFVUV',
+    domain_key:'32EWR3P5QM6ZMUUPH7KR',
     textarea_id:"contact_list",
     afterSubmitContacts: getContacts
   };
