@@ -6,7 +6,7 @@ Groups
 
 {% block content %}
 
-<div class="container" ng-controller="GroupInviteCtrl">
+<div class="container invite" ng-controller="GroupInviteCtrl">
   <div class='row' style='margin-bottom: 20px'>
   <h1>Groups</h1>
   <p>Invite your friends via email</p>
@@ -27,10 +27,21 @@ Groups
       <input ng-model="email" ng-required="true" type="email" name="email" placeholder="Email" class="form-control">
       <p ng-show="groupInviteForm.$dirty && groupInviteForm.email.$invalid" class="error">Invalid email</p>
     </div>
+    <a class="cs_import">Add from Address Book</a>
     <button ng-disabled="groupInviteForm.$invalid" type="submit" class="btn btn-primary">Invite</button>
   </form>
   {% endraw %}
   </div>
+
+    <!-- This textarea will be populated with the contacts returned by CloudSponge -->
+  <textarea id="contact_list" style="width:450px;height:82px;display:none"></textarea>
 </div>
 
+{% endblock %}
+
+{% block bottomscripts %}
+<!-- Set your options, including the domain_key -->
+
+<!-- Include the script at the end of the body section -->
+<script type="text/javascript" src="//api.cloudsponge.com/address_books.js"></script>
 {% endblock %}
