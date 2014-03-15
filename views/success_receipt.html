@@ -5,6 +5,19 @@ Login at CodersBracket
 {% endblock%}
 
 {% block content %}
+  <div class='row' style='margin-bottom: 20px'>
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+  
+    <h1>Donation Submitted</h1>
+    <hr>
+    <p>Thanks {{user.name.first}} for your generous donation. Your donation has been recorded in your account!</p>
+    
+    <p>You are now eligible for all the "donors-only" awards. We will be in touch with your shortly after the tournament.</p>
+    
+    <a href='/'>Go back to Home</a>.
+    </div>
+  </div>  
+    {#
     <span class="payment-errors"></span>
 
     <div class="form-row">
@@ -34,13 +47,6 @@ Login at CodersBracket
         <span>{{charge.card.type}}</span>
       </label>
     </div>
-
-{% endblock %}
-
-{% block bottomscripts %}
-    <script>
-      $(function () {
-        $('#emailinput').focus();
-      })
-    </script>
+    #}
+    
 {% endblock %}

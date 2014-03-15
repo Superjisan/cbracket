@@ -26,6 +26,7 @@ module.exports = function(m) {
     },
     nickname: String,
     verified: Boolean,
+    donated_amount: Number,
     birthdate: Date,
     groups: [{
       owner: {

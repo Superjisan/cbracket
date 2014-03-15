@@ -7,7 +7,6 @@ Make a Donation
 {% block content %}
   <div class='row'>
     <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
-
       <h1>Make a Donation</h1>
       <hr>
       <p>Your donation will help great non-profits strenghten their causes to advance STEM education. As a thank you, you will get some awesome prizes for donors only. Thank you for your help!</p>
@@ -31,13 +30,6 @@ Make a Donation
           <form method="POST" action="/donate" id="payment-form" data-ng-hide="global.authenticated">
             <span class="payment-errors"></span>
 
-            <div class="form-row">
-              <label>
-                <span>Card Number</span>
-                <input type="text" size="20" data-stripe="number" id='input_card_number' class="form-control" />
-              </label>
-            </div>
-
             <div class="form-row hide">
               <label>
                 <span>Currency</span>
@@ -46,11 +38,91 @@ Make a Donation
             </div>
 
             <div class="form-row">
+            
+            <div class="form-row">
               <label>
-                <span>Amount</span>
-                <input type="text" size="20" name="amount" class="form-control" />
+                <span>First Name</span>
+                <input type="text" size="20" data-stripe="number" id='input_card_first' value="{{user.name.first}}" class="form-control" />
               </label>
             </div>
+
+            <div class="form-row">
+              <label>
+                <span>Last Name</span>
+                <input type="text" size="20" data-stripe="number" id='input_card_last' value='{{user.name.last}}' class="form-control" />
+              </label>
+            </div>
+            {% raw %}
+            
+              <label>
+                <span>Amount</span>
+                <input type="hidden" size="20" name="amount" id='donateAmount' value="{{donationAmount}}" class="form-control" />
+                
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model='donationAmount' value="5">
+                    $5
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model='donationAmount' value="10">
+                    $10
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model='donationAmount' value="20">
+                    $20
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model='donationAmount' value="50">
+                    $50
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-model='donationAmount' value="100">
+                    $100
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" name="optionsRadios" ng-click="showOther()">
+                    Other Amount
+                  </label>
+                </div>
+                
+                <div class="radio" id='other_amt' ng-show='useOtherVal'>
+                  <label>
+                    <div class="input-group">
+                      <span class="input-group-addon">$</span>
+                      <input type="text" name="otherAmount" id="otherAmountInput" ng-model='donationAmount' ng-blur='useOtherVal=false' class='form-control'>
+                    </div>
+                  </label>
+                </div>
+                
+                <div class="form-row" id='totalDonationBox'>
+                  <label>
+                    <span>Total Donation Amount</span>
+                  </label>
+                  <div id='totalDonationAmt'> {{ donationAmount||"20" }} </div>
+                </div>
+                
+              </label>
+            </div>
+            
+            {% endraw %}
+
+            <div class="form-row">
+              <label>
+                <span>Card Number</span>
+                <input type="text" size="20" data-stripe="number" id='input_card_number' class="form-control" />
+              </label>
+            </div>
+
             <div class="form-row">
               <label>
                 <span>CVC</span>
@@ -85,6 +157,7 @@ Make a Donation
       
     </div> <!-- end cols -->
   </div> <!-- end row -->
+  
 {% endblock %}
 
 {% block bottomscripts %}
