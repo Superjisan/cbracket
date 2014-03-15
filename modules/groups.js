@@ -37,36 +37,49 @@ GroupModule.prototype = {
     });
   },
 
-  inviteByEmail: function(user, groupId, email, secureLink, cb) {
+  inviteByEmail: function(user, groupId, emails, secureLink, cb) {
     if (typeof secureLink === 'function') {
       cb = secureLink;
       secureLink = true;
     }
 
-    console.log(user, groupId, email);
+    if (!Array.isArray(emails)) {
+      emails = [emails];
+    }
 
-    async.waterfall([
-      function getGroup(done) {
-        models.Group.findOne({_id: groupId}, done);
-      },
-      function createInviteToken(group, done){
-        models.InviteToken.create({
+    //console.log(user, groupId, emails);
+
+    models.Group.findOne({_id: groupId}, function(err, group){
+
+      if (err) {
+        console.log("error occured finding group", group);
+        return cb(err);
+      }
+
+      var q = async.queue(function(data, done){
+        models.InviteToken.create(data, function(err, inviteToken){
+          var link = (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/groups/invite/" + inviteToken.token;
+          console.log('sendEmail', inviteToken.email, inviteToken.sender, inviteToken.group.name, link);
+          mailer.sendGroupInviteEmail(inviteToken.email, inviteToken.sender, inviteToken.group.name, link, done);
+        });
+      }, 10);
+
+      q.drain = function() {
+        cb(null);
+      }
+
+      emails.forEach(function(email){
+        q.push({
           sender: user.name.first,
           email: email,
           group: { name: group.name, _id: group._id, user: group.user }
-        }, done);
-      },
-      function sendEmail(inviteToken, done){
-        var link = (secureLink ? 'https' : 'http') + "://" + process.env.APP_HOST + "/groups/invite/" + inviteToken.token;
+        }, function(err) {
+          if (err) {
+            return console.log('inviteByEmail', err);
+          }
+        });
+      });
 
-        console.log('sendEmail', email, inviteToken.sender, inviteToken.group.name, link);
-        mailer.sendGroupInviteEmail(email, inviteToken.sender, inviteToken.group.name, link, done);
-      }
-    ], function(err){
-        if (err) {
-          console.log('inviteByEmail', err);
-        }
-        cb(err);
     });
   },
 

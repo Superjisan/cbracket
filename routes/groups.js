@@ -1,7 +1,7 @@
 /*
  * GET home page.
  */
-
+var _ = require('underscore');
 var mongoose = require('mongoose');
 var ObjectId = mongoose.Types.ObjectId;
 var mailer = require('../modules/mailer');
@@ -70,9 +70,9 @@ exports.create = function(req, res) {
 exports.postInvite = function(req, res) {
   var user = req.user;
   var groupId;
-  var email;
+  var emails;
 
-  if (!req.body.email) {
+  if (!req.body.emails) {
     return res.send(400, { msg: 'No email was given.' });
   }
 
@@ -81,18 +81,26 @@ exports.postInvite = function(req, res) {
   }
 
   groupId = req.body.group._id;
-  email = req.body.email;
+  emails = req.body.emails;
 
-  if (email === req.user.email) {
-    return res.send(400, { msg: "You can't invite yourself to your own group." });
+  if (!Array.isArray(req.body.emails)) {
+    emails = [req.body.emails];
   }
 
-  groupsModule.inviteByEmail(req.user, groupId, email, false, function(err){
+  if (emails.length === 1 && emails[0] === req.user.email) {
+    return res.send(400, { msg: "You can't invite yourself to your own group." });
+  } else {
+    emails = emails.filter(function(email, index){
+      return email !== req.user.email;
+    });
+  }
+
+  groupsModule.inviteByEmail(req.user, groupId, emails, false, function(err){
     console.log('sendInvite', err);
     if (err) {
       res.send(400);
     } else {
-      res.send(200, { msg: "Your invitation was sent to " + email + ". Why not invite more friends?"});
+      res.send(200, { msg: "Your friends have been invited. Why not invite more friends?"});
     }
   });
 };
@@ -221,7 +229,7 @@ exports.getManage = function(req, res) {
 
 exports.postManage = function(req, res) {
   if (!req.body.group || !req.body.bracket) {
-    return res.send(400, { msg: "A group and braket must be chosen" });
+    return res.send(400, { msg: "A group and bracket must be chosen" });
   }
   var group = req.body.group;
   var bracket = req.body.bracket;
