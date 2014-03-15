@@ -64,7 +64,7 @@ a {
     margin-top: -10px;
     box-shadow: 1px 1px 15px rgba(20,20,20,.4);
   }
-  
+
 }
 
 #thanks {
@@ -226,7 +226,7 @@ $view_editor_background: #FFFFFF;
 }
 
 #help_section {
-  
+
 }
 #open_help {
   background: rgba(199, 2, 2,.5);
@@ -242,7 +242,7 @@ $view_editor_background: #FFFFFF;
 }
 
 #help_section {
-  
+
 }
 
 #help_doc {
@@ -250,12 +250,12 @@ $view_editor_background: #FFFFFF;
   background: white;
   color: black;
   padding: 10px;
-  
+
   .title {
     margin-bottom: 10px; font-size: 18px;
     font-weight: bold;
   }
-  
+
   .subtitle {
     font-weight: bold;
     margin: 20px 0 8px; font-size: 16px;
@@ -273,7 +273,7 @@ $view_editor_background: #FFFFFF;
   width: 100%;
   height: 100%;
   margin: 0 auto 10px;
-  
+
 /*  border-radius: 20px;*/
 /*  position: absolute;*/
 /*  background: #0D1E3C;*/
@@ -344,7 +344,7 @@ $view_editor_background: #FFFFFF;
 .edit_page_editor_container {
 /*  background-color: $editor_background !important;*/
   background: url(/images/grid1.png) !important;
-  
+
 }
 .edit_page_editor {
 /*  background-color: $view_editor_background !important;*/
@@ -382,6 +382,10 @@ $view_editor_background: #FFFFFF;
   width: auto;
 /*  max-width: 2*$rounds*100px + 200px;*/
   padding: 0 15px;
+
+  .invite .cs_import {
+    display: block;
+  }
 }
 .container .text-muted {
   margin: 20px 0;
@@ -532,24 +536,24 @@ $winner_box_width: 5*$each_round_pct;
   left: percentage(0.5 - $winner_box_width/2);
   background: white;
   top: percentage(0.5 - 0.05);
-  
+
   .ff-team {
     font-size: $font_size + 3px;
     position: absolute;
     bottom: 0;
     font-weight: bold;
   }
-  
+
   #ff-rd1-team1 {
     text-align: left;
     left: 0;
   }
-  
+
   #ff-rd1-team2 {
     text-align: right;
     right: 0;
   }
-  
+
   #ff-rd2 {
     position: absolute;
     bottom: -2*$line_height;
@@ -562,13 +566,13 @@ $winner_box_width: 5*$each_round_pct;
     text-align: center;
     padding: 13px 5px;
     letter-spacing: -0.5px;
-    
+
   }
-  
+
   #ff-rd2-span {
     display:none;
   }
-  
+
 }
 
 @for $i from 0 through ($rounds - 1) {
@@ -630,7 +634,7 @@ $winner_box_width: 5*$each_round_pct;
     display: block;
     background: rgba(255,255,255,.9) !important;
   }
-  
+
   #close_documentation_overlay {
     display: block;
     font-size: 18px;
@@ -771,11 +775,11 @@ h1 > .by_user {
 }
 
 ul.contest_rules {
-  margin-top: 5px; 
+  margin-top: 5px;
   li {
     margin: 5px 0;
   }
-} 
+}
 
 h3.panel-title {
   font-weight: bold;
@@ -790,7 +794,7 @@ h3.panel-title {
 .donate_form {
   margin: 40px auto 0 auto;
   width: 600px;
-  
+
   .form-row {
     margin-bottom: 10px;
   }

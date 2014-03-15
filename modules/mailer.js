@@ -58,9 +58,9 @@ var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
   }, done);
 };
 
-var sendGroupInviteEmail = function(to, senderName, groupName, inviteLink, done) {
+var sendGroupInviteEmail = function(email, senderName, groupName, inviteLink, done) {
   sendTemplateMail("group_invite", {
-    to: to,
+    to: email,
     senderName: senderName,
     groupName: groupName,
     link: inviteLink
