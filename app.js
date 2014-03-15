@@ -79,6 +79,10 @@ if ('production' == app.get('env')) {
 
 }
 
+function ensureAuthenticated(req, res, next) {
+ if (req.isAuthenticated()) { return next(); }
+ res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is
+};
 
 // passport config
 app.get('/', routes.index);
@@ -87,7 +91,7 @@ app.get('/code_bracket/:id', routes.view_code_bracket);
 app.post('/save_bracket', routes.save_bracket);
 app.post('/waitlist', routes.subscribe);
 app.get('/teamsbysid.js', routes.teamsbysid);
-app.get('/donate', user.donate_page);
+app.get('/donate', ensureAuthenticated, user.donate_page);
 app.post('/donate', user.donate)
 //static pages
 app.get('/contest/timeline', routes.timeline);
@@ -96,10 +100,6 @@ app.get('/contest/prizes', routes.contest_prizes);
 app.get('/contact', routes.contact);
 
 
-function ensureAuthenticated(req, res, next) {
- if (req.isAuthenticated()) { return next(); }
- res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is
-};
 
 //logged in pages
 app.get('/mybrackets', ensureAuthenticated, routes.mybrackets);

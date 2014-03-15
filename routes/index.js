@@ -23,7 +23,7 @@ exports.index = function(req, res){
   noCacheFix(res);
   res.render('index', {
     homepage: true,
-    user: req.user ? req.user : 'null',
+    user: req.user ? req.user : false,
     error_flash: req.flash('error'),
     success_flash: req.flash('success')
   });

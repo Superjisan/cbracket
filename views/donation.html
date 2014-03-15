@@ -9,68 +9,87 @@ Make a Donation
     <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
 
       <h1>Make a Donation</h1>
+      <hr>
       <p>Your donation will help great non-profits strenghten their causes to advance STEM education. As a thank you, you will get some awesome prizes for donors only. Thank you for your help!</p>
-
       <div class='donate_form' data-ng-controller="UsersCtrl">
-        <form method="POST" action="/donate" data-ng-show="global.authenticated">
-          <span class="payment-errors"></span>
-          <div class="form-row">
-            <label>
-              <span>Amount</span>
-              <input type="text" size="20" name="amount"/>
-            </label>
-          </div>
-          <button type="submit">Submit Payment</button>
-        </form>
-        <form method="POST" action="/donate" id="payment-form" data-ng-hide="global.authenticated">
-          <span class="payment-errors"></span>
+      
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Make a Donation</h3>
+        </div>
+        <div class="panel-body">
+          <form method="POST" action="/donate" data-ng-show="global.authenticated">
+            <span class="payment-errors"></span>
+            <div class="form-row">
+              <label>
+                <span>Amount</span>
+                <input type="text" size="20" name="amount"/>
+              </label>
+            </div>
+            <button type="submit">Submit Payment</button>
+          </form>
+          <form method="POST" action="/donate" id="payment-form" data-ng-hide="global.authenticated">
+            <span class="payment-errors"></span>
 
-          <div class="form-row">
-            <label>
-              <span>Card Number</span>
-              <input type="text" size="20" data-stripe="number" id='input_card_number' class="form-control" />
-            </label>
-          </div>
+            <div class="form-row">
+              <label>
+                <span>Card Number</span>
+                <input type="text" size="20" data-stripe="number" id='input_card_number' class="form-control" />
+              </label>
+            </div>
 
-          <div class="form-row">
-            <label>
-              <span>Currency</span>
-              <input type="text" size="20" name="currency" class="form-control" />
-            </label>
-          </div>
+            <div class="form-row hide">
+              <label>
+                <span>Currency</span>
+                <input type="text" size="20" name="currency" value='USD' class="form-control" />
+              </label>
+            </div>
 
-          <div class="form-row">
-            <label>
-              <span>Amount</span>
-              <input type="text" size="20" name="amount" class="form-control" />
-            </label>
-          </div>
-          <div class="form-row">
-            <label>
-              <span>CVC</span>
-              <input type="text" size="4" data-stripe="cvc" class="form-control" />
-            </label>
-          </div>
+            <div class="form-row">
+              <label>
+                <span>Amount</span>
+                <input type="text" size="20" name="amount" class="form-control" />
+              </label>
+            </div>
+            <div class="form-row">
+              <label>
+                <span>CVC</span>
+                <input type="text" size="4" data-stripe="cvc" class="form-control" />
+              </label>
+            </div>
 
-          <div class="form-row">
-            <label>
-              <span>Expiration (MM/YYYY)</span>
-              <input type="text" size="2" data-stripe="exp-month"/>
-            </label>
-            <span> / </span>
-            <input type="text" size="4" data-stripe="exp-year"/>
-          </div>
-          <br>
-          <button type="submit" class='btn btn-warning'>Make Donation</button>
-        </form>
+            <div class="form-row">
+              <label>
+                <span>Expiration (MM/YYYY)</span>
+                <input type="text" size="2" data-stripe="exp-month"/>
+              </label>
+              <span> / </span>
+              <input type="text" size="4" data-stripe="exp-year"/>
+            </div>
+            <br>
+            <button type="submit" class='btn btn-warning'>Make Donation</button>
+          </form>
+
+        </div>
       </div>
-    </div>
-  </div>
+      
+      </div> <!-- end donate_form -->
+      <br>
+      <h3 id='ngo_header'>Your Donation Will Benefit</h3>
+      <hr>
+      <div id='ngo_logos'>
+        <a href="http://www.code.org"><img src="http://code.org/images/logo.png"></a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="http://www.codenow.org"><img src="http://codenow.org/wp-content/themes/CodeNOW/library/images/logo.png"></a>
+      </div>
+      
+    </div> <!-- end cols -->
+  </div> <!-- end row -->
 {% endblock %}
 
 {% block bottomscripts %}
 <script type="text/javascript">
-      window.user = {{user|safe}};
+      window.user = {{user|json|safe}};
     </script>
     <script>
       $(function () {
