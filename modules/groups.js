@@ -153,6 +153,21 @@ GroupModule.prototype = {
       }
       cb(err);
     });
+  },
+
+  getMembers: function(groupId, cb) {
+    if (!groupId) {
+      var err = new Error('group id is undefined');
+      console.log(err);
+      return cb(err);
+    }
+
+    models.User.find({'groups._id': groupId}, {name:1, groups:1, nickname: 1})
+      .select({'groups': { $elemMatch: { _id: groupId } } })
+      .populate('groups.bracket', { name: 1})
+      .exec(function(err, members){
+        cb(err, members);
+      });
   }
 };
 

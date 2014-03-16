@@ -64,7 +64,7 @@ exports.create = function(req, res) {
     function createGroup(done) {
       groupsModule.create({owner: req.user._id,  name: req.body.name}, req.body.bracket._id, function(err, group){
         if (err) {
-          return res.send(400);
+          return done(err);
         }
         console.log('created group: ', group);
         done(err, group);
@@ -100,45 +100,29 @@ exports.view = function(req, res) {
     return res.send(400, { msg: 'Groups are required' });
   }
 
-  var locals = {user: req.user, bootstrapData:{}};
+  var locals = {user: req.user};
   var groupId = req.params.id;
 
   async.parallel({
-    group: function(done){
-      models.User.findOne({ _id: req.user._id, 'groups._id': groupId }, { groups: 1 })
-        .populate('groups.bracket')
-        .exec(function(err, user){
-          var group;
-
-          if (!err && !user) {
-            err = new Error("group not found");
-          }
-
-          if (err) {
-            console.log('error viewing group', groupId, err);
-          }
-
-          group = (user && user.groups) ? user.groups.id(groupId) : null;
-
-          done(err, group);
+    group: function(done) {
+      models.Group.findById(groupId, 'name', function(err, group) {
+        if (!err && !group) {
+          err = new Error("group not found");
+        }
+        done(err, group);
       });
     },
-    brackets: function(done){
-      models.Bracket.find({user_id: req.user._id}, function(err, brackets){
-        brackets = brackets.map(function(bracket){
-          return {name: bracket.name, _id: bracket._id.toString()};
-        });
-        done(err, brackets);
-      });
+    members: function(done) {
+      groupsModule.getMembers(groupId, done);
     }
-  }, function(err, data) {
-      if (err) {
-        console.log('error viewing group', groupId, err);
-        return res.send(400);
-      }
-      console.log(data);
-      locals.bootstrapData = data;
-      res.render('groups/view', locals);
+  }, function(err, data){
+    if (err) {
+      locals.error_flash = "An error occured";
+    } else {
+      locals.group = data.group;
+      locals.members = data.members;
+    }
+    res.render('groups/view', locals);
   });
 };
 

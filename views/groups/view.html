@@ -1,5 +1,4 @@
 {% extends "../layout.html" %}
-{% set group = bootstrapData.group %}
 
 {% block title %}
 Manage Group {{group.name}}
@@ -9,6 +8,9 @@ Manage Group {{group.name}}
 
 <div class="container" ng-controller="GroupManageCtrl">
   <div class='row'>
+    {% if error_flash %}
+      <div class='alert alert-danger'>{{error_flash}}</div>
+    {% else %}
     <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
       <h1 style='margin-bottom: 20px;'>{{group.name}}</h1>
       {% if members.length > 0 %}
@@ -25,18 +27,23 @@ Manage Group {{group.name}}
         {% for member in members %}
             <tr>
               <td>{{loop.index}}</td>
-              <td><a href="/groups/{{group._id}}">{{member.name}}</a></td>
-              <td>{% if member.group.bracket %}{{ member.group.bracket.name }}{% endif %}</td>
+              <td><a href="#">{{member.display_name}}</a></td>
+              <td>
+                {% if member.groups && member.groups[0] && member.groups[0].bracket %}
+                  <a href="/code_bracket/{{member.groups[0].bracket.id}}">{{ member.groups[0].bracket.name }}</a>
+                {% endif %}
+              </td>
               <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->
             </tr>
         {% endfor %}
         </tbody>
       </table>
-      <a class="btn btn-warning noround" href="/groups/{{group._id}}/settings">Settings</a>
+      <a class="btn btn-warning noround" href="/groups/{{group.id}}/settings">Settings</a>
       {% else %}
         <p>Your group doesn't have any members yet. <a href='/groups/{{group._id.toString()}}/settings'>Invite</a> your friends from the settings page</p>
       {% endif %}
     </div>
+    {% endif %}
   </div>
 </div>
 
