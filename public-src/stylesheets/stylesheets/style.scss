@@ -799,7 +799,23 @@ h3.panel-title {
   .form-row {
     margin-bottom: 10px;
   }
+  
 }
 
+#totalDonationBox {
+}
+
+#totalDonationAmt {
+  font-size: 20px;
+  font-weight: normal;
+  
+  &:before {
+    content: "$";
+  }
+}
+
+#otherAmountInput {
+  width: 80px;
+}
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}
