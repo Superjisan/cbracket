@@ -383,8 +383,9 @@ $view_editor_background: #FFFFFF;
 /*  max-width: 2*$rounds*100px + 200px;*/
   padding: 0 15px;
 
-  .invite .cs_import {
+  .cs_import {
     display: block;
+    margin-bottom: 15px;
   }
 }
 .container .text-muted {
