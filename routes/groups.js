@@ -108,6 +108,53 @@ exports.view = function(req, res) {
       models.User.findOne({ _id: req.user._id, 'groups._id': groupId }, { groups: 1 })
         .populate('groups.bracket')
         .exec(function(err, user){
+          var group;
+
+          if (!err && !user) {
+            err = new Error("group not found");
+          }
+
+          if (err) {
+            console.log('error viewing group', groupId, err);
+          }
+
+          group = (user && user.groups) ? user.groups.id(groupId) : null;
+
+          done(err, group);
+      });
+    },
+    brackets: function(done){
+      models.Bracket.find({user_id: req.user._id}, function(err, brackets){
+        brackets = brackets.map(function(bracket){
+          return {name: bracket.name, _id: bracket._id.toString()};
+        });
+        done(err, brackets);
+      });
+    }
+  }, function(err, data) {
+      if (err) {
+        console.log('error viewing group', groupId, err);
+        return res.send(400);
+      }
+      console.log(data);
+      locals.bootstrapData = data;
+      res.render('groups/view', locals);
+  });
+};
+
+exports.settings = function(req, res) {
+  if (!req.params.id) {
+    return res.send(400, { msg: 'Groups are required' });
+  }
+
+  var locals = {user: req.user, bootstrapData:{}};
+  var groupId = req.params.id;
+
+  async.parallel({
+    group: function(done){
+      models.User.findOne({ _id: req.user._id, 'groups._id': groupId }, { groups: 1 })
+        .populate('groups.bracket')
+        .exec(function(err, user){
           if (!err && !user) {
             err = new Error("group not found");
           }
@@ -134,9 +181,9 @@ exports.view = function(req, res) {
       }
 
       locals.bootstrapData = data;
-      res.render('groups/view', locals);
+      res.render('groups/settings', locals);
   });
-};
+}
 
 exports.update = function(req, res) {
   if (!req.body.group || !req.body.group._id) {
