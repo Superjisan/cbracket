@@ -13,14 +13,14 @@ var userModule = require('../modules/user');
 var groupsModule = require('../modules/groups');
 var passport = require('passport');
 
-exports.index = function(req, res){
+exports.getCreate = function(req, res){
   var locals = {user: req.user, bootstrapData: {}};
   models.Bracket.find({user_id: req.user._id}, function(err, brackets){
     brackets = brackets.map(function(bracket){
       return {name: bracket.name, _id: bracket._id.toString()};
     });
     locals.bootstrapData.brackets = brackets;
-    res.render('groups/index', locals);
+    res.render('groups/create', locals);
   });
 };
 
@@ -30,7 +30,7 @@ exports.getInvite = function(req, res){
   }
 
   var locals = { user: req.user, bootstrapData: {}};
-
+  console.log('invite');
   models.User.findOne({_id: req.user._id }, {groups:1}, function(err, user){
     var groups;
     if (user) {
@@ -58,14 +58,112 @@ exports.create = function(req, res) {
     return res.send(400, { msg: 'Name is required' });
   }
 
-  groupsModule.create({owner: req.user._id,  name: req.body.name}, req.body.bracket._id, function(err){
+  var emails = req.body.emails;
+
+  async.waterfall([
+    function createGroup(done) {
+      groupsModule.create({owner: req.user._id,  name: req.body.name}, req.body.bracket._id, function(err, group){
+        if (err) {
+          return res.send(400);
+        }
+        console.log('created group: ', group);
+        done(err, group);
+      });
+    },
+    function inviteFriends(group, done) {
+      if (!emails) {
+        return done(null);
+      }
+
+      groupsModule.inviteByEmail(req.user, group._id, emails, false, function(err){
+        if (err) {
+          console.log('sendInvite', err);
+        }
+        done(err);
+      });
+    }
+  ], function(err){
+      var msg = 'Your group has been created';
+      if (err && err.code !== 'selfInvite') {
+        return res.send(400);
+      } else if (!err && emails) {
+        msg += ' and your invites have been sent.';
+      } else{
+        msg += '.';
+      }
+      return res.send(200, { msg: msg });
+  });
+};
+
+exports.view = function(req, res) {
+  if (!req.params.id) {
+    return res.send(400, { msg: 'Groups are required' });
+  }
+
+  var locals = {user: req.user, bootstrapData:{}};
+  var groupId = req.params.id;
+
+  async.parallel({
+    group: function(done){
+      models.User.findOne({ _id: req.user._id, 'groups._id': groupId }, { groups: 1 })
+        .populate('groups.bracket')
+        .exec(function(err, user){
+          if (!err && !user) {
+            err = new Error("group not found");
+          }
+
+          if (err) {
+            console.log('error viewing group', groupId, err);
+          }
+
+          done(err, user && user.groups ? user.groups.id(groupId) : null);
+      });
+    },
+    brackets: function(done){
+      models.Bracket.find({user_id: req.user._id}, function(err, brackets){
+        brackets = brackets.map(function(bracket){
+          return {name: bracket.name, _id: bracket._id.toString()};
+        });
+        done(err, brackets);
+      });
+    }
+  }, function(err, data) {
+      if (err) {
+        console.log('error viewing group', groupId, err);
+        return res.send(400);
+      }
+
+      locals.bootstrapData = data;
+      res.render('groups/view', locals);
+  });
+}
+
+exports.update = function(req, res) {
+  if (!req.body.group || !req.body.group._id) {
+    res.send(400, { msg: 'You must choose a group' });
+  }
+
+  var group = req.body.group;
+  var update = { $set: {}};
+
+  if (req.body.group.name) {
+    update.$set['groups.$.name'] = req.body.group.name;
+  }
+
+  if (req.body.bracket) {
+    update.$set['groups.$.bracket'] = req.body.bracket._id;
+  }
+
+  // TODO: Verify that user owns bracket
+  models.User.findOneAndUpdate({_id: req.user._id, 'groups._id': group._id}, update, function(err){
     if (err) {
+      console.log('update group error', err);
       return res.send(400);
     }
 
-    return res.send(200, { msg: 'Your group has been created.' });
+    return res.send(200, { msg: 'Your group has been updated.' });
   });
-};
+}
 
 exports.postInvite = function(req, res) {
   var user = req.user;
@@ -83,22 +181,13 @@ exports.postInvite = function(req, res) {
   groupId = req.body.group._id;
   emails = req.body.emails;
 
-  if (!Array.isArray(req.body.emails)) {
-    emails = [req.body.emails];
-  }
-
-  if (emails.length === 1 && emails[0] === req.user.email) {
-    return res.send(400, { msg: "You can't invite yourself to your own group." });
-  } else {
-    emails = emails.filter(function(email, index){
-      return email !== req.user.email;
-    });
-  }
-
   groupsModule.inviteByEmail(req.user, groupId, emails, false, function(err){
-    console.log('sendInvite', err);
+    var errorMsg = "An error occured";
+
     if (err) {
-      res.send(400);
+      console.log('sendInvite', err);
+      errorMsg = (err.code === 'selfInvite') ? err.message : errorMsg;
+      res.send(400, { msg: errorMsg });
     } else {
       res.send(200, { msg: "Your friends have been invited. Why not invite more friends?"});
     }
@@ -116,10 +205,14 @@ exports.viewInvite = function(req, res) {
          return done(err);
         }
 
-        locals.group = inviteToken.group.name;
-        locals.sender = inviteToken.sender;
-        locals.email = inviteToken.email;
-        locals.bootstrapData.token = inviteToken.token;
+        if (inviteToken.accepted) {
+          locals.error_flash = "You have already accepted this invitation";
+        } else {
+          locals.group = inviteToken.group.name;
+          locals.sender = inviteToken.sender;
+          locals.email = inviteToken.email;
+          locals.bootstrapData.token = inviteToken.token;
+        }
 
         done(err, inviteToken);
       });
@@ -199,7 +292,7 @@ exports.acceptInvite = function(req, res) {
 
 };
 
-exports.getManage = function(req, res) {
+exports.getIndex = function(req, res) {
   var locals = {user: req.user, bootstrapData:{}};
   async.parallel({
     brackets: function(done){
@@ -211,19 +304,22 @@ exports.getManage = function(req, res) {
       });
     },
     groups: function(done){
-      models.User.findOne({_id: req.user._id }, {groups:1}, function(err, user){
-        var groups;
-        if (user) {
-          groups = user.groups.map(function(group){
-            return {name: group.name, _id: group._id.toString()};
-          });
-        }
-        done(err, groups);
+      models.User.findOne({_id: req.user._id }, {groups:1})
+        .populate('groups.bracket')
+        .exec(function(err, user){
+          var groups;
+          if (user) {
+            groups = user.groups.map(function(group){
+              console.log(group);
+              return {name: group.name, _id: group._id.toString(), bracket: group.bracket};
+            });
+          }
+          done(err, groups);
       });
     }
   }, function(err, data) {
     locals.bootstrapData = data;
-    res.render('groups/manage', locals);
+    res.render('groups/index', locals);
   });
 };
 
