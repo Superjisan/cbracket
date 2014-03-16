@@ -27,13 +27,15 @@ GroupModule.prototype = {
         }
 
         update = { $push: {groups: group } };
-        models.User.findOneAndUpdate({ _id: groupData.owner}, update, done);
+        models.User.findOneAndUpdate({ _id: groupData.owner}, update, function(err){
+          done(err, group);
+        });
       },
-    ], function(err){
+    ], function(err, group){
       if (err) {
         console.log(err);
       }
-      cb(err);
+      cb(err, group);
     });
   },
 
@@ -47,6 +49,16 @@ GroupModule.prototype = {
       emails = [emails];
     }
 
+    if (emails.length === 1 && emails[0] === user.email) {
+      var err = new Error();
+      err.code = 'selfInvite',
+      err.message = "You can't invite yourself to your own group.";
+      return cb(err);
+    } else {
+      emails = emails.filter(function(email, index){
+        return email !== user.email;
+      });
+    }
     //console.log(user, groupId, emails);
 
     models.Group.findOne({_id: groupId}, function(err, group){

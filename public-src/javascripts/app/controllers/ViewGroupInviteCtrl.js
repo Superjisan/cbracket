@@ -5,6 +5,7 @@ app.controller('ViewGroupInviteCtrl', function($scope, $http){
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;
+        $scope.accepted = true;
       }).
       error(function(data, status, headers, config){
         $scope.status = false;
@@ -17,6 +18,7 @@ app.controller('ViewGroupInviteCtrl', function($scope, $http){
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;
+        $scope.accepted = true;
       }).
       error(function(data, status, headers, config){
         $scope.status = false;

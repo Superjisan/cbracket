@@ -1,17 +1,18 @@
-app.controller('GroupInviteCtrl', function($scope, $http){
-  $scope.groups = bootstrapData.groups || [];
-  $scope.group = $scope.groups[0];
+app.controller('GroupInviteCtrl', function($scope, $http, invite){
+  $scope.group = bootstrapData.group;
 
-  window.csPageOptions = {
-    domain_key:'32EWR3P5QM6ZMUUPH7KR',
-    textarea_id:"contact_list",
-    afterSubmitContacts: getContacts
-  };
+  invite.init(setEmails);
 
-  function getContacts(contacts, source, owner) {
-    $scope.emails = _.map(contacts, function(contact){
-        return contact.primaryEmail();
-    });
+  function reset() {
+    $scope.emails = null;
+    $scope.email = null;
+    $scope.name = '';
+    $scope.bracket = '';
+    $scope.groupInviteForm.$setPristine();
+  }
+
+  function setEmails(emails) {
+    $scope.emails = emails;
   }
 
   $scope.submit = function() {

@@ -1,35 +1,39 @@
 {% extends "../layout.html" %}
 
 {% block title %}
-Create New Group
+Manage Groups
 {% endblock%}
 
 {% block content %}
 
-<div class="container" ng-controller="CreateGroupCtrl">
-  <div class='row' style='margin-bottom: 20px'>
+<div class="container" ng-controller="GroupManageCtrl">
+  <div class='row'>
     <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
-      <h1>Create New Group</h1><hr>
-      {% if error_flash %}
-        <div class='alert alert-danger'>{{error_flash}}</div>
+      <h1 style='margin-bottom: 20px;'>My Groups</h1>
+      {% set groups = bootstrapData.groups %}
+      {% if groups.length > 0 %}
+      <table class='table table-striped'>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Bracket</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+        {% for group in groups %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td><a href="/groups/{{group._id}}">{{group.name}}</a></td>
+              <td>{% if group.bracket %}{{ group.bracket.name }}{% endif %}</td>
+              <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
       {% else %}
-      {% raw %}
-      <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
-      <form ng-submit="submit()" name="createGroupForm" role="form" method="post" style="max-width: 350px;" novalidate><br>
-        <div class="form-group">
-          <label for='name'>Group Name</label>
-          <input ng-required="true" ng-model="name" type="text" name="name" placeholder="e.g. My College Buddies" class="form-control">
-        </div>
-        <div class="form-group">
-          <label for='name'>Which of your brackets do you want to enter in this group?</label>
-          <select ng-model="bracket" name="bracket" class="form-control" ng-options="b.name for b in brackets">
-            <option value="">-- Assign Later --</option>
-          </select>
-        </div>
-        <br>
-        <button  type="submit" class="btn btn-warning noround">Create Group</button>
-      </form>
-      {% endraw %}
+        <p>You don't have any groups yet. <a href='/groups/create'>Make one!</a></p>
       {% endif %}
     </div>
   </div>
