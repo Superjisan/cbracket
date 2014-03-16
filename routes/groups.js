@@ -136,7 +136,7 @@ exports.view = function(req, res) {
       locals.bootstrapData = data;
       res.render('groups/view', locals);
   });
-}
+};
 
 exports.update = function(req, res) {
   if (!req.body.group || !req.body.group._id) {
@@ -163,7 +163,7 @@ exports.update = function(req, res) {
 
     return res.send(200, { msg: 'Your group has been updated.' });
   });
-}
+};
 
 exports.postInvite = function(req, res) {
   var user = req.user;

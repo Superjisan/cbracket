@@ -51,7 +51,7 @@ GroupModule.prototype = {
 
     if (emails.length === 1 && emails[0] === user.email) {
       var err = new Error();
-      err.code = 'selfInvite',
+      err.code = 'selfInvite';
       err.message = "You can't invite yourself to your own group.";
       return cb(err);
     } else {
@@ -78,7 +78,7 @@ GroupModule.prototype = {
 
       q.drain = function() {
         cb(null);
-      }
+      };
 
       emails.forEach(function(email){
         q.push({

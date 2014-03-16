@@ -5,14 +5,13 @@ app.service('invite', function(){
     'localhost': 'Q67TJEGRKLJQHHEUYZXM'
   };
 
-
-  this.domainKey = domainKeys[window.location.hostname] || domainKeys['www.codersbracket.com'],
+  this.domainKey = domainKeys[window.location.hostname] || domainKeys['www.codersbracket.com'];
 
   this.getEmails = function(contacts) {
     return _.map(contacts, function(contact){
       return contact.primaryEmail();
     });
-  }
+  };
 
   this.init = function(cb) {
     var self = this;
@@ -24,5 +23,5 @@ app.service('invite', function(){
         cb(emails);
       }
     });
-  }
+  };
 });

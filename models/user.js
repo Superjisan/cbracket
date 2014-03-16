@@ -50,7 +50,7 @@ module.exports = function(m) {
   });
 
   userSchema.index({email: 1, 'groups.name': 1}, {unique: true});
-  userSchema.index({email: 1, 'groups.name': 1}, {'groups.bracket': 1}, {unique: true});
+  userSchema.index({email: 1, 'groups.name': 1, 'groups.bracket': 1}, {unique: true});
 
   userSchema.plugin(passportLocalMongoose, {
     usernameField: "email",

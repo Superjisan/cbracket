@@ -89,9 +89,9 @@ exports.verify_email = function(req,res) {
       } else {
         var flashmsg = "Your email is verified. Welcome " + user.display_name + ".";
         if (!req.user) {
-          flashmsg += " You can <a href='/login'>login now</a>."
+          flashmsg += " You can <a href='/login'>login now</a>.";
         }
-        
+
         req.flash('success', flashmsg);
         return res.render('index', { success_flash: req.flash('success'), homepage: true });
       }
