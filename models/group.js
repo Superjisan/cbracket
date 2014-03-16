@@ -1,7 +1,7 @@
 module.exports = function(m) {
   var mongoose = m || require('mongoose');
   var Schema = mongoose.Schema;
-  var ObjectId = Schema.Types.ObjectId
+  var ObjectId = Schema.Types.ObjectId;
 
   var groupSchema = new Schema({
     name: {
