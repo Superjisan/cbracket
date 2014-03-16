@@ -223,8 +223,9 @@ var setupBracketEvents = function (bracket) {
   $(window).resize(center_msg);
 
   var sizeEditor = function() {
-    var nonEditor = $("#editor-btns").height() + $("#content_container h4").height();
-    var editorHeight = $("#bracket_col").height() - nonEditor - 90;
+    // var windowHeight = $(window).height();
+    var nonEditor = $("#editor-btns").height() + $("#content_container h4").height() + $('#generate_button').height();
+    var editorHeight = $("#bracket_col").height() - nonEditor - 200;
     $("#editor").height(editorHeight);
   };
   sizeEditor();

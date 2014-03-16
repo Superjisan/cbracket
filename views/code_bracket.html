@@ -12,7 +12,7 @@
           <div class='col-lg-3 col-md-4 col-sm-4' id='code_editor_col'>
             <div id='content_container'>
               <!-- <a href='#' class='pull-right'><i class='fa fa-question-circle'></i> Get Help</a> -->
-              <h4 style='letter-spacing:-1px; margin-bottom: 10px;'><strong>Step 1. Write Game Picking Function</strong></h4>
+              <h4 style='letter-spacing:-1px; margin-bottom: 10px;'><strong>Game Picking Function</strong></h4>
               <!-- <h5>Write your game picking function.</h5> -->
 
               <div id='editor-btns' class="btn-group " style='margin-bottom: 8px;'>
@@ -49,6 +49,7 @@
                         <li><a href="#" class='menu-set-font' id='menu-font-large'>Large</a></li>
                       </ul>
                     </li>
+                    {#
                     <li class="dropdown-submenu hide">
                       <a tabindex="-1" href="#">Examples</a>
                       <ul class="dropdown-menu">
@@ -64,6 +65,7 @@
                         <li><a href="#">Second level</a></li>
                       </ul>
                     </li>
+                    #}
                   </ul>
                 </div>
               </div>
@@ -87,12 +89,12 @@
                 </div> <!-- end editor_container -->
               </div> <!-- end editor_help_container -->
               <!-- <h4 style='letter-spacing:-1px;'><strong>Step 2.</strong></h4> -->
-<!--               <div id='generate_button'>
+             <div id='generate_button'>
                 <a href='#' class='btn btn-warning btn-codersbracket' id="startbutton" data-loading-text="Generating Bracket...">
                   Generate Bracket
                 </a>
-              </div>
- -->              <br>
+             </div>
+              <br>
             </div> <!-- end content_container -->
           </div> <!-- end left column -->
           <div class='col-lg-9 col-md-8 col-sm-8' id='bracket_col'>
@@ -211,7 +213,9 @@
 
   $('#bracket').html(html);
   setupBracketEvents(bracket);
+  {% if brackets.length === 0 %}
   activateGuidersForBracketEditor();
+  {% endif %}
 </script>
 
 {% endblock %}

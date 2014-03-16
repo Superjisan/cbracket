@@ -181,7 +181,7 @@ $view_editor_background: #FFFFFF;
 
 #editor {
     width: 100%;
-    height: 400px;
+/*    height: 400px;*/
     margin: 0px auto;
     font-size: 14px;
     line-height: 150%;
@@ -191,28 +191,28 @@ $view_editor_background: #FFFFFF;
 
 @media (max-width: 750px) {
   #editor {
-    height: 300px !important; // overrride resize at start
+    height: 300px; // overrride resize at start
     font-size: 13px;
   }
 }
 
 @media (min-width:750px) and (max-width: 970px) {
   #editor {
-    // height: 400px;
+    height: 400px;
     font-size: 13px;
   }
 }
 
 @media (min-width:970px) and (max-width: 1170px) {
   #editor {
-    // height: 400px;
+    height: 400px;
     font-size: 14px;
   }
 }
 
 @media (min-width:1170px) {
   #editor {
-    // height: 500px;
+    height: 500px;
     font-size: 14px;
   }
 }
@@ -315,6 +315,11 @@ $view_editor_background: #FFFFFF;
   }
 }
 
+#btn-generatebracket{
+/*  text-shadow: 1px 1px 1px #333;*/
+  color:#333;
+  font-weight: bold !important;
+}
 #view_bracket_row {
   h3.col_title {
     margin-top: 0;

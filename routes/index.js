@@ -96,14 +96,23 @@ exports.code_bracket = function(req,res) {
         }
         done(err, groups);
       });
-    }
+    },
+    brackets: function(done) {
+      if (!theuser) {
+        return done(null);
+      }
+      models.Bracket.find({user_id: req.user._id }, function(err, brackets){
+        done(err, brackets);
+      });
+    },
+    
   }, function(err, data){
     res.render('code_bracket', {
       user: theuser,
       sorted_teams: data.teams.sorted,
       teams: data.teams.selected,
       groups: data.groups,
-     // bracket_html: function() {return html;},
+      brackets: data.brackets,
       error_flash: req.flash('error'),
       success_flash: req.flash('success')
     });
