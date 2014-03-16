@@ -1,0 +1,36 @@
+{% extends "../layout.html" %}
+{% set group = bootstrapData.group %}
+
+{% block content %}
+  <div class="container">
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+      <div  ng-controller="ViewGroupCtrl">
+        <h1>Group "{{ group.name }}"</h1>
+        <hr />
+          {% raw %}
+          <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+          {% endraw %}
+          <div ng-show="errorFlash" class='alert alert-danger ng-cloak' ng-bind-html="errorFlash"></div>
+        <br>
+        <form ng-submit="submit()" name="updateGroupForm" role="form" style="max-width: 400px;">
+          <div class="form-group">
+            <label for='email'>Name</label><br>
+            <input ng-model="group.name" type="text" name="name" placeholder='Group Name' class="form-control">
+          </div>
+          <div class="form-group">
+            <label for='bracket'>Assign Bracket</label>
+            <select ng-model="bracket" name="bracket" class="form-control" ng-options="b.name for b in brackets">
+              <option value="">-- Assign Bracket --</option>
+            </select>
+          </div>
+          <button ng-disabled="!updateGroupForm.$dirty" type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+      {% include "../partials/inviteToGroupForm.html" %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block bottomscripts %}
+<script type="text/javascript" src="//api.cloudsponge.com/address_books.js"></script>
+{% endblock %}

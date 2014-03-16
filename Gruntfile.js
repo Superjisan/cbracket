@@ -1,17 +1,19 @@
 module.exports = function(grunt) {
   var appSrc = [
     './public-src/javascripts/app/main.js',
+    './public-src/javascripts/app/services/global.js',
+    './public-src/javascripts/app/services/invite.js',
     './public-src/javascripts/app/directives/equals.js',
     './public-src/javascripts/app/controllers/ForgotPasswordCtrl.js',
     './public-src/javascripts/app/controllers/ResetPasswordCtrl.js',
     './public-src/javascripts/app/controllers/MyAccountCtrl.js',
     './public-src/javascripts/app/controllers/CreateGroupCtrl.js',
     './public-src/javascripts/app/controllers/GroupInviteCtrl.js',
+    './public-src/javascripts/app/controllers/ViewGroupCtrl.js',
     './public-src/javascripts/app/controllers/ViewGroupInviteCtrl.js',
     './public-src/javascripts/app/controllers/GroupManageCtrl.js',
     './public-src/javascripts/app/controllers/headers.js',
-    './public-src/javascripts/app/controllers/users.js',
-    './public-src/javascripts/app/services/global.js'
+    './public-src/javascripts/app/controllers/users.js'
   ];
 
   var scriptSrc = [

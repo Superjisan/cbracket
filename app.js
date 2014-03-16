@@ -120,14 +120,15 @@ app.get('/reset-password/:token', auth.resetPasswordPage);
 app.post('/reset-password', auth.resetPassword);
 app.get('/account', ensureAuthenticated, routes.account);
 app.post('/account', ensureAuthenticated, routes.updateAccount);
-app.get('/groups', ensureAuthenticated, groups.index);
+app.get('/groups', ensureAuthenticated, groups.getIndex);
+app.get('/groups/create', ensureAuthenticated, groups.getCreate);
 app.post('/groups', ensureAuthenticated, groups.create);
-app.get('/groups/invite', ensureAuthenticated, groups.getInvite);
+app.put('/groups', ensureAuthenticated, groups.update);
 app.post('/groups/invite', ensureAuthenticated, groups.postInvite);
 app.get('/groups/invite/:token', groups.viewInvite);
 app.post('/groups/invite/:token', groups.acceptInvite);
-app.get('/groups/manage', ensureAuthenticated, groups.getManage);
 app.post('/groups/manage', ensureAuthenticated, groups.postManage);
+app.get('/groups/:id', ensureAuthenticated, groups.view);
 // global.allteams = [];
 
 
