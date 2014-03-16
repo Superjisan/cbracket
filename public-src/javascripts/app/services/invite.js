@@ -16,7 +16,7 @@ app.service('invite', function(){
 
   this.init = function(cb) {
     var self = this;
-console.log('init');
+
     cloudsponge.init({
       domain_key: this.domainKey,
       afterSubmitContacts: function(contacts, source, owner) {
