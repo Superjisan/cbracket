@@ -27,12 +27,12 @@ Create New Group
           </select>
         </div-->
         <div class="form-group" ng-class="{ 'error' : createGroupForm.email.$invalid }">
-          <label for='email'>Invite Your Friends</label>
-          <textarea ng-model="email" type="email" name="email" placeholder="Your friend's emails here" class="form-control"></textarea>
-          <p ng-show="createGroupForm.email.$dirty && createGroupForm.email.$invalid" class="error">Invalid email</p>
+          <label for='emailList'>Invite Your Friends</label>
+          <textarea rows="10" ng-model="emailList" name="emailList" placeholder="Your friend's emails here" class="form-control"></textarea>
+          <small>sperate multiple emails with a comma</small>
         </div>
         <a class="cs_import">Add from Address Book</a>
-        <button  type="submit" class="btn btn-warning noround">Create Group</button>
+        <button type="submit" class="btn btn-warning noround">Create Group</button>
       </form>
       {% endraw %}
       {% endif %}

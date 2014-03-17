@@ -73,6 +73,10 @@ GroupModule.prototype = {
       secureLink = true;
     }
 
+    if (!emails || !emails.length) {
+      return cb(null);
+    }
+
     if (!Array.isArray(emails)) {
       emails = [emails];
     }
