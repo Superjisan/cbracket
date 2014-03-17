@@ -11,6 +11,8 @@ UserModule.prototype = {
     if (typeof secureLink === 'function') {
       cb = secureLink;
       secureLink = true;
+    } else {
+      secureLink = secureLink === "true";
     }
 
     var resetToken = new models.ResetToken({ email: email });
@@ -115,6 +117,8 @@ UserModule.prototype = {
     if (typeof secureLink === 'function') {
       cb = secureLink;
       secureLink = true;
+    } else {
+      secureLink = secureLink === "true";
     }
 
     var verificationToken = new models.VerifyToken({_userId: user._id});

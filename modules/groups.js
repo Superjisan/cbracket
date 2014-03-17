@@ -71,6 +71,8 @@ GroupModule.prototype = {
     if (typeof secureLink === 'function') {
       cb = secureLink;
       secureLink = true;
+    } else {
+      secureLink = secureLink === "true";
     }
 
     if (!emails || !emails.length) {
