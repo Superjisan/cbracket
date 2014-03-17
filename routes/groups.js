@@ -78,11 +78,11 @@ exports.create = function(req, res) {
         if (err) {
           console.log('sendInvite', err);
         }
-        done(err);
+        done(err, group);
       });
     }
-  ], function(err){
-      var msg = 'Your group has been created';
+  ], function(err, group){
+      var msg = '';
       if (err && err.code !== 'selfInvite') {
         return res.send(400);
       } else if (!err && emails) {
@@ -90,6 +90,7 @@ exports.create = function(req, res) {
       } else{
         msg += '.';
       }
+      msg = 'Your group <a href="/groups/'+group._id + '">'+group.name+'</a> has been created' + msg;
       return res.send(200, { msg: msg });
   });
 };
@@ -216,7 +217,7 @@ exports.postInvite = function(req, res) {
 
   groupId = req.body.group._id;
   emails = req.body.emails;
-
+  console.log('env.SECURE_URL', env.SECURE_URL);
   groupsModule.inviteByEmail(req.user, groupId, emails, env.SECURE_URL, function(err){
     var errorMsg = "An error occured";
 
@@ -323,7 +324,7 @@ exports.acceptInvite = function(req, res) {
       return res.send(400, { msg: msg });
     }
 
-    return res.send(200, { msg: 'You are now in the "' + inviteToken.group.name + '" group.' });
+    return res.send(200, { msg: 'You are now in the " <a href="/groups/'+ inviteToken.group._id +'">' + inviteToken.group.name + '</a>" group.' });
   });
 
 };

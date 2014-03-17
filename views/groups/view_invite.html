@@ -14,7 +14,7 @@ You're Invited
     {% else %}
     <h1>You've been invited to join "{{group}}"</h1>
     {% raw %}
-    <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+    <div ng-show="responseText" ng-bind-html="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'></div>
     {% endraw %}
       {% if user %}
         <span ng-show="!accepted">

@@ -14,7 +14,7 @@ Create New Group
         <div class='alert alert-danger'>{{error_flash}}</div>
       {% else %}
       {% raw %}
-      <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
+      <div ng-show="responseText" ng-bind-html="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'></div>
       <form ng-submit="submit()" name="createGroupForm" role="form" method="post" style="max-width: 350px;" novalidate><br>
         <div class="form-group">
           <label for='name'>Group Name</label>
