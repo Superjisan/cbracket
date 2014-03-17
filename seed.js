@@ -244,7 +244,6 @@ var fileScrape = function(dataInfoObj, callback) {
             } else {
               grittyScrapeHtml(grittyUrl, html);
             }
-            // console.log("test");
             callback();
           });
         }
@@ -284,13 +283,13 @@ var fileScrape = function(dataInfoObj, callback) {
             }
             
             sid++;
-            console.log("saving team: " + theteam.name);
+            // console.log("saving team: " + theteam.name);
 
             var newteam = theteam;
             q.push({team: newteam, run: function(team, callback){
               var teamObj = models.Team.create(team, function(err, savedteam) {
                 if (err) {console.log(err);}
-                console.log("saved team: " + team.name);
+                // console.log("saved team: " + team.name);
                 callback();
               });
             }});
