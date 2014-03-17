@@ -122,6 +122,21 @@ var showHowToVideo = function() {
 };
 
 var setupBracketEvents = function (bracket) {
+  
+  $('#add_to_group').click(function(e){
+    e.preventDefault();
+    
+    if ($('#add_to_group i.fa').hasClass('fa-chevron-right')) {
+      $('#add_to_group i.fa').removeClass('fa-chevron-right');
+      $('#add_to_group i.fa').addClass('fa-chevron-down');
+      $('#assign_to_group').slideDown();
+    } else {
+      $('#add_to_group i.fa').addClass('fa-chevron-right');
+      $('#add_to_group i.fa').removeClass('fa-chevron-down');
+      $('#assign_to_group').slideUp();
+    }
+    
+  })
 
   $('#open_help').click(function() {
     ga('send', 'event', 'editor', 'open_help');

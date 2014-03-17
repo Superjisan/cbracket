@@ -32,6 +32,21 @@ a {
   }
 }
 
+#add_to_group {
+  font: normal 17px "Open Sans", Arial, sans-serif;
+  margin-bottom: 15px;
+  display: block;
+  text-decoration: none;
+/*  color: black;*/
+  i {
+    color: black;
+  }
+}
+
+#assign_to_group {
+  display:none;
+}
+
 .cb_input {
   width: 380px;
   display: inline-block;
