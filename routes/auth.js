@@ -4,6 +4,7 @@ var mailer = require('../modules/mailer');
 var userModule = require('../modules/user');
 var url = require('url');
 var async = require('async');
+var env = process.env;
 // var FacebookStrategy = require('passport-facebook').Strategy
 // var TwitterStrategy = require('passport-twitter').Strategy
 
