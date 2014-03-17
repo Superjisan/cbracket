@@ -12,6 +12,7 @@ var models = require('../models/connect');
 var userModule = require('../modules/user');
 var groupsModule = require('../modules/groups');
 var passport = require('passport');
+var env = process.env;
 
 exports.getCreate = function(req, res){
   var locals = {user: req.user, bootstrapData: {}};

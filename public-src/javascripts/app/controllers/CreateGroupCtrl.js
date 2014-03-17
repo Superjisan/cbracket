@@ -14,15 +14,21 @@ app.controller('CreateGroupCtrl', function($scope, $http, invite){
   }
 
   function setEmails(emails) {
+    combineLists(emails);
+    $scope.$digest();
+  }
+
+  function combineLists(emails) {
     var oldList = $scope.emailList ? $scope.emailList.split(',') : [];
     var newList = _.isArray(emails) && emails.length ? oldList.concat(emails) : oldList;
 
     $scope.emails = newList;
     $scope.emailList = newList.join(', ');
-    $scope.$digest();
   }
 
   $scope.submit = function() {
+    combineLists();
+
     $http.post("/groups", { name: $scope.name, bracket: $scope.bracket, emails: $scope.emails  }).
       success(function(data, status, headers, config){
         $scope.status = true;

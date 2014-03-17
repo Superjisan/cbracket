@@ -10,21 +10,26 @@ app.controller('GroupInviteCtrl', function($scope, $http, invite){
   }
 
   function setEmails(emails) {
+    combineLists(emails);
+    $scope.$digest();
+  }
+
+  function combineLists(emails) {
     var oldList = $scope.emailList ? $scope.emailList.split(',') : [];
     var newList = _.isArray(emails) && emails.length ? oldList.concat(emails) : oldList;
 
     $scope.emails = newList;
     $scope.emailList = newList.join(', ');
-    $scope.$digest();
   }
 
   $scope.submit = function() {
+    combineLists();
+
     $http.post("/groups/invite", { group: $scope.group, emails: $scope.emails }).
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;
-        $scope.email = null;
-        $scope.emails = null;
+        reset();
       }).
       error(function(data, status, headers, config){
         $scope.status = false;
