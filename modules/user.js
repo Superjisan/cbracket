@@ -87,20 +87,28 @@ UserModule.prototype = {
         models.User.findOne({_id: userId}, done);
       },
       function updateUser(userModel, done) {
-        userModel.set(updates);
+        if (userModel) {
+          userModel.set(updates);
 
-        if (password) {
-          userModel.setPassword(password, function(err){
-            done(err, userModel);
-          });
+          if (password) {
+            userModel.setPassword(password, function(err){
+              done(err, userModel);
+            });
+          } else {
+            done(null, userModel);
+          }
         } else {
-          done(null, userModel);
+          done()
         }
       },
       function saveUser(userModel, done) {
-        userModel.save(function(err){
-          done(err);
-        });
+        if (userModel) {
+          userModel.save(function(err){
+            done(err);
+          });
+        } else {
+          done();
+        }
       }
     ], function(err){
       if (err) {
