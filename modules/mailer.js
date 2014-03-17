@@ -16,7 +16,7 @@ var email = function (options, done) {
     done = function () {};
   }
   smtpTransport.sendMail({
-     from: "Coders Bracket <mail@codersbracket.com>", // sender address
+     from: "Coder's Bracket <mail@codersbracket.com>", // sender address
      to: options.to, // comma separated list of receivers
      subject: options.subject, // Subject line
      html: options.html // plaintext body
@@ -45,7 +45,7 @@ var sendTemplateMail = function (emailTemplate, emailData, done) {
 var sendVerifyEmail = function(user, verify_url, done) {
   sendTemplateMail("verify_email", {
     to: user.email,
-    subject: "CodersBracket - Verify your email",
+    subject: "Coder's Bracket - Verify your email",
     user: user,
     verify_url: verify_url
   }, done);
@@ -61,6 +61,7 @@ var sendForgotPasswordEmail = function(to, resetPasswordLink, done) {
 var sendGroupInviteEmail = function(email, senderName, groupName, inviteLink, done) {
   sendTemplateMail("group_invite", {
     to: email,
+    subject: "You're invited to "+senderName+"'s Coders Bracket Pool",
     senderName: senderName,
     groupName: groupName,
     link: inviteLink
