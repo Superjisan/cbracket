@@ -39,4 +39,11 @@ module.exports = function (swig) {
   // nickname.safe = true;
   swig.setFilter('nickname', nickname);
 
+  var shorten = function (teamname) {
+    return teamname.replace("State","St.");
+  }; 
+
+  // nickname.safe = true;
+  swig.setFilter('shorten', shorten);
+
 };

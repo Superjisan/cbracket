@@ -79,10 +79,10 @@
                 <div id='editor_container' class='edit_page_editor_container'>
                   <div id='editor' class='edit_page_editor'>function(game, team1, team2){
 
-  if (team1.seed < team2.seed) {
-    team1.winsGame();
-  } else {
+  if (team1.seed > team2.seed) {
     team2.winsGame();
+  } else {
+    team1.winsGame();
   }
 
 }</div>
@@ -122,10 +122,10 @@
             </div><!-- end bracket-wrap -->
 
             <div class='sample-code' id='byseed-code'>
-  if (team1.seed < team2.seed) {
-    team1.winsGame();
-  } else {
+  if (team1.seed > team2.seed) {
     team2.winsGame();
+  } else {
+    team1.winsGame();
   }
             </div>
             <div class='sample-code' id='leastlosses-code'>

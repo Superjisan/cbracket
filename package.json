@@ -32,6 +32,8 @@
     "passport-facebook": "~1.0.3",
     "passport-twitter": "~1.0.2",
     "stripe": "~2.4.2",
-    "underscore": "~1.6.0"
+    "underscore": "~1.6.0",
+    "cheerio": "~0.13.1",
+    "request": "~2.34.0"
   }
 }
