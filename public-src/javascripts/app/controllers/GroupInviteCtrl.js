@@ -4,25 +4,22 @@ app.controller('GroupInviteCtrl', function($scope, $http, invite){
   invite.init(setEmails);
 
   function reset() {
-    $scope.emails = null;
-    $scope.email = null;
-    $scope.name = '';
-    $scope.bracket = '';
+    $scope.emails = [];
+    $scope.emailList = '';
     $scope.groupInviteForm.$setPristine();
   }
 
   function setEmails(emails) {
-    $scope.emails = emails;
+    var oldList = $scope.emailList ? $scope.emailList.split(',') : [];
+    var newList = _.isArray(emails) && emails.length ? oldList.concat(emails) : oldList;
+
+    $scope.emails = newList;
+    $scope.emailList = newList.join(', ');
+    $scope.$digest();
   }
 
   $scope.submit = function() {
-    var emails = $scope.emails || [];
-
-    if ($scope.email) {
-      emails.push($scope.email);
-    }
-
-    $http.post("/groups/invite", { group: $scope.group, emails: emails }).
+    $http.post("/groups/invite", { group: $scope.group, emails: $scope.emails }).
       success(function(data, status, headers, config){
         $scope.status = true;
         $scope.responseText = data.msg;

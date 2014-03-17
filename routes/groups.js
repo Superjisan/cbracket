@@ -71,11 +71,9 @@ exports.create = function(req, res) {
       });
     },
     function inviteFriends(group, done) {
-      if (!emails) {
-        return done(null);
-      }
+      console.log(emails, '<<');
 
-      groupsModule.inviteByEmail(req.user, group._id, emails, false, function(err){
+      groupsModule.inviteByEmail(req.user, group._id, emails, env.SECURE_URL, function(err){
         if (err) {
           console.log('sendInvite', err);
         }
@@ -218,7 +216,7 @@ exports.postInvite = function(req, res) {
   groupId = req.body.group._id;
   emails = req.body.emails;
 
-  groupsModule.inviteByEmail(req.user, groupId, emails, false, function(err){
+  groupsModule.inviteByEmail(req.user, groupId, emails, env.SECURE_URL, function(err){
     var errorMsg = "An error occured";
 
     if (err) {

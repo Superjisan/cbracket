@@ -58,6 +58,7 @@ app.use('/public-src', express.static(__dirname + '/public-src'));
 // development only
 if ('development' == app.get('env')) {
   env.APP_HOST = '127.0.0.1:3000';
+  env.SECURE_URL = false;
   swig.setDefaults({ cache: false });
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 } else {
@@ -65,6 +66,8 @@ if ('development' == app.get('env')) {
 }
 
 if ('production' == app.get('env')) {
+  env.SECURE_URL = true;
+
   app.use(express.errorHandler());
 
   // SSL redirect

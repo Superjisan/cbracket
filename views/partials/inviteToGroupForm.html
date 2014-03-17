@@ -5,12 +5,12 @@
   <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
   <form ng-submit="submit()" name="groupInviteForm" role="form" method="post" style="max-width: 300px;" novalidate><br>
     <div class="form-group" ng-class="{ 'error' : groupInviteForm.email.$invalid }">
-      <label for='email'>Friend's Email</label>
-      <input ng-model="email" type="email" name="email" placeholder="Email" class="form-control">
-      <p ng-show="groupInviteForm.email.$dirty && groupInviteForm.email.$invalid" class="error">Invalid email</p>
+      <label for='emailList'>Friend's Email</label>
+      <textarea rows="10" ng-model="emailList" name="emailList" placeholder="Your friend's emails here" class="form-control"></textarea>
+      <small>sperate multiple emails with a comma</small>
     </div>
     <a class="cs_import">Add from Address Book</a>
-    <button ng-disabled="groupInviteForm.$invalid" type="submit" class="btn btn-primary">Invite</button>
+    <button ng-disabled="groupInviteForm.$pristine" type="submit" class="btn btn-primary">Invite</button>
   </form>
 </div>
 {% endraw %}

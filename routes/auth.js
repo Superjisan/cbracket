@@ -163,7 +163,7 @@ exports.sendForgotPasswordEmail = function(req, res) {
 
   var email = req.body.email;
 
-  userModule.sendForgotPasswordEmail(email, false, function(err){
+  userModule.sendForgotPasswordEmail(email, env.SECURE_URL, function(err){
     if (err) {
       return res.send(400, {msg: 'An error occurred while sending the email. Please try again'});
     }
