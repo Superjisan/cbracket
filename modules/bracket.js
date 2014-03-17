@@ -17,7 +17,7 @@ Bracket.prototype.getHtml = function () {
 
 Bracket.prototype.getTeams = function () {
   var models = require('../models/connect.js');
-  return models.Team.find({official_rank:{$exists: true }}, null, {sort: {official_rank: 1}}).exec(); //promise
+  return models.Team.find({name:{$exists: true }}, null, {sort: {official_rank: 1}}).exec(); //promise
 };
 
 Bracket.prototype.generateBracketHtml = function (teams) {

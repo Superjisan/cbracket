@@ -318,6 +318,7 @@ var setupBracketEvents = function (bracket) {
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {
       $('#saveBracketModal').modal('hide');
+      // debugger;
       if (!!data.bracket) {
         window.location = "/code_bracket/"+data.bracket._id;
       }
@@ -380,7 +381,7 @@ var activateGuidersForBracketEditor = function() {
     id: "g-welcome",
     next: "g-buttons",
     overlay: true,
-    title: "Welcome to the Code Bracket Editor",
+    title: "Welcome to the Coder's Bracket",
     width: 600,
     xButton: true
   }).show();

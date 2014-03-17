@@ -31,7 +31,7 @@ var teamSchema = new Schema({
 
 */
 
-var refreshData = true;
+var refreshData = false;
 var refreshNonGritty = false;
 off_columns = ['name','conf','games_played','pts_game','field_goals_made','field_goals_attempted','field_goal_pct','free_throws_made','free_throws_attempted','free_throw_pct','threes_made','threes_attempted','three_point_pct'];
 def_columns = ['name','conf','games_played','total_reb','off_reb','def_reb','reb_per_game','total_steals','steals_per_game','total_blocks','blocks_per_game'];
@@ -167,7 +167,7 @@ var grittyScrapeHtml = function(dataInfoObj, html) {
       }
     });
   });
-  console.log("done -scrapping gritty html");
+  // console.log("done -scrapping gritty html");
   
 };
 
@@ -252,7 +252,7 @@ var fileScrape = function(dataInfoObj, callback) {
   },
   function(err, results) {
     console.log('done with all async stuff')
-    // db.once('open', function() {
+    db.once('open', function() {
       db.db.dropCollection('teams', function(err) {
         if (err) console.log(err);
         
@@ -297,7 +297,7 @@ var fileScrape = function(dataInfoObj, callback) {
           }
         }
       });
-    // });
+    });
     // process.exit();
       // results is now equals to: {one: 1, two: 2}
   });

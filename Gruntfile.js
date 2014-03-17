@@ -17,7 +17,7 @@ module.exports = function(grunt) {
   ];
 
   var scriptSrc = [
-    './public-src/javascripts/app/modules/teamsbysid2013.js',
+    './public-src/javascripts/app/modules/teamsbysid14.js',
     './public-src/javascripts/app/modules/bracket.js',
     './public-src/javascripts/app/modules/game.js',
     './public-src/javascripts/app/script.js',
