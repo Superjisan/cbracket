@@ -175,18 +175,24 @@ exports.update = function(req, res) {
   }
 
   var group = req.body.group;
-  var update = { $set: {}};
-
-  if (req.body.group.name) {
-    update.$set['groups.$.name'] = req.body.group.name;
-  }
+  var updateUser;
 
   if (req.body.bracket) {
-    update.$set['groups.$.bracket'] = req.body.bracket._id;
+    updateUser = { $set: {'groups.$.bracket': req.body.bracket._id} };
   }
 
   // TODO: Verify that user owns bracket
-  models.User.findOneAndUpdate({_id: req.user._id, 'groups._id': group._id}, update, function(err){
+  async.parallel([
+    function updateUserBracket(done){
+      if (!updateUser) {
+        return done(null);
+      }
+      models.User.findOneAndUpdate({_id: req.user._id, 'groups._id': group._id}, updateUser, done);
+    },
+    function updateGroup(done) {
+      groupsModule.update(group, done);
+    }
+  ], function(err){
     if (err) {
       console.log('update group error', err);
       return res.send(400);

@@ -39,6 +39,34 @@ GroupModule.prototype = {
     });
   },
 
+  update: function(group, cb) {
+    var err;
+
+    if (!group) {
+      err = new Error('No group specified');
+      return cb(err);
+    }
+
+    if (!group.name) {
+      err = new Error('No change specified');
+      return cb(err);
+    }
+
+    var groupUpdate = { $set: {'name': group.name} };
+    var membersUpdate = { $set: {'groups.$.name': group.name} };
+
+    async.parallel([
+      function updateGroup(done) {
+        models.Group.findByIdAndUpdate(group._id, groupUpdate, done);
+      },
+      function updateMembers(done) {
+        models.User.update({'groups._id': group._id}, membersUpdate, {multi:true}, done);
+      }
+    ], function(err) {
+      cb(err);
+    });
+  },
+
   inviteByEmail: function(user, groupId, emails, secureLink, cb) {
     if (typeof secureLink === 'function') {
       cb = secureLink;
