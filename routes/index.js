@@ -133,6 +133,30 @@ exports.code_bracket = function(req,res) {
     });
   });
 };
+
+var selectAndSortTeams = function(teams) {
+  var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
+    return t1.name.localeCompare(t2.name);
+  });
+  var selectedteams = teams.slice(0,128);
+  
+  var shortenfilter = function(team){
+    team.name = team.name.replace("State","St.");
+    team.name = team.name.replace("Virginia Commonwealth","VCU");
+    if (team.name == "North Carolina") {
+      team.name = "UNC";
+    } else {
+      team.name = team.name.replace("North Carolina","NC");
+    }
+    team.name = team.name.replace("Saint","St.");
+    team.name = team.name.replace("Milwaukee","Mil");
+    return team;
+  };
+  var filteredteams = selectedteams.map(shortenfilter);
+  var sortedfilteredteams = sorted_teams.map(shortenfilter);
+  return {selected: filteredteams, sorted: sortedfilteredteams};
+};
+
 exports.view_code_bracket = function(req,res) {
   noCacheFix(res);
 
@@ -159,15 +183,12 @@ exports.view_code_bracket = function(req,res) {
         var Bracket = require('../modules/bracket');
         var bracket = new Bracket();
         bracket.getTeams().addBack(function(err,teams) {
-          var sorted_teams = teams.slice(0,128).sort(function(t1,t2) {
-            return t1.name.localeCompare(t2.name);
-          });
-          var selectedteams = teams.slice(0,128);
+          var selectedandsorted = selectAndSortTeams(teams);
           res.render('view_code_bracket', {
             bracket: data[0],
             user: theuser,
-            teams: selectedteams,
-            sorted_teams: sorted_teams,
+            teams: selectedandsorted.selected,
+            sorted_teams: selectedandsorted.sorted,
             error_flash: req.flash('error'),
             success_flash: req.flash('success')
           });
