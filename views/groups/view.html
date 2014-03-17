@@ -1,36 +1,50 @@
 {% extends "../layout.html" %}
-{% set group = bootstrapData.group %}
+
+{% block title %}
+Manage Group {{group.name}}
+{% endblock%}
 
 {% block content %}
-  <div class="container">
-    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
-      <div  ng-controller="ViewGroupCtrl">
-        <h1>Group "{{ group.name }}"</h1>
-        <hr />
-          {% raw %}
-          <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
-          {% endraw %}
-          <div ng-show="errorFlash" class='alert alert-danger ng-cloak' ng-bind-html="errorFlash"></div>
-        <br>
-        <form ng-submit="submit()" name="updateGroupForm" role="form" style="max-width: 400px;">
-          <div class="form-group">
-            <label for='email'>Name</label><br>
-            <input ng-model="group.name" type="text" name="name" placeholder='Group Name' class="form-control">
-          </div>
-          <div class="form-group">
-            <label for='bracket'>Assign Bracket</label>
-            <select ng-model="bracket" name="bracket" class="form-control" ng-options="b.name for b in brackets">
-              <option value="">-- Assign Bracket --</option>
-            </select>
-          </div>
-          <button ng-disabled="!updateGroupForm.$dirty" type="submit" class="btn btn-primary">Update</button>
-        </form>
-      </div>
-      {% include "../partials/inviteToGroupForm.html" %}
-    </div>
-  </div>
-{% endblock %}
 
-{% block bottomscripts %}
-<script type="text/javascript" src="//api.cloudsponge.com/address_books.js"></script>
+<div class="container" ng-controller="GroupManageCtrl">
+  <div class='row'>
+    {% if error_flash %}
+      <div class='alert alert-danger'>{{error_flash}}</div>
+    {% else %}
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+      <h1 style='margin-bottom: 20px;'>{{group.name}}</h1>
+      {% if members.length > 0 %}
+      <table class='table table-striped'>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Name</th>
+            <th>Bracket</th>
+            <!-- <th>Actions</th> -->
+          </tr>
+        </thead>
+        <tbody>
+        {% for member in members %}
+            <tr>
+              <td>{{loop.index}}</td>
+              <td><a href="#">{{member.display_name}}</a></td>
+              <td>
+                {% if member.groups && member.groups[0] && member.groups[0].bracket %}
+                  <a href="/code_bracket/{{member.groups[0].bracket.id}}">{{ member.groups[0].bracket.name }}</a>
+                {% endif %}
+              </td>
+              <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->
+            </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+      <a class="btn btn-warning noround" href="/groups/{{group.id}}/settings">Settings</a>
+      {% else %}
+        <p>Your group doesn't have any members yet. <a href='/groups/{{group._id.toString()}}/settings'>Invite</a> your friends from the settings page</p>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
 {% endblock %}

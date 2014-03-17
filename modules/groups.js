@@ -39,6 +39,34 @@ GroupModule.prototype = {
     });
   },
 
+  update: function(group, cb) {
+    var err;
+
+    if (!group) {
+      err = new Error('No group specified');
+      return cb(err);
+    }
+
+    if (!group.name) {
+      err = new Error('No change specified');
+      return cb(err);
+    }
+
+    var groupUpdate = { $set: {'name': group.name} };
+    var membersUpdate = { $set: {'groups.$.name': group.name} };
+
+    async.parallel([
+      function updateGroup(done) {
+        models.Group.findByIdAndUpdate(group._id, groupUpdate, done);
+      },
+      function updateMembers(done) {
+        models.User.update({'groups._id': group._id}, membersUpdate, {multi:true}, done);
+      }
+    ], function(err) {
+      cb(err);
+    });
+  },
+
   inviteByEmail: function(user, groupId, emails, secureLink, cb) {
     if (typeof secureLink === 'function') {
       cb = secureLink;
@@ -153,6 +181,21 @@ GroupModule.prototype = {
       }
       cb(err);
     });
+  },
+
+  getMembers: function(groupId, cb) {
+    if (!groupId) {
+      var err = new Error('group id is undefined');
+      console.log(err);
+      return cb(err);
+    }
+
+    models.User.find({'groups._id': groupId}, {name:1, groups:1, nickname: 1})
+      .select({'groups': { $elemMatch: { _id: groupId } } })
+      .populate('groups.bracket', { name: 1})
+      .exec(function(err, members){
+        cb(err, members);
+      });
   }
 };
 

@@ -64,7 +64,7 @@ exports.create = function(req, res) {
     function createGroup(done) {
       groupsModule.create({owner: req.user._id,  name: req.body.name}, req.body.bracket._id, function(err, group){
         if (err) {
-          return res.send(400);
+          return done(err);
         }
         console.log('created group: ', group);
         done(err, group);
@@ -96,6 +96,37 @@ exports.create = function(req, res) {
 };
 
 exports.view = function(req, res) {
+  if (!req.params.id) {
+    return res.send(400, { msg: 'Groups are required' });
+  }
+
+  var locals = {user: req.user};
+  var groupId = req.params.id;
+
+  async.parallel({
+    group: function(done) {
+      models.Group.findById(groupId, 'name', function(err, group) {
+        if (!err && !group) {
+          err = new Error("group not found");
+        }
+        done(err, group);
+      });
+    },
+    members: function(done) {
+      groupsModule.getMembers(groupId, done);
+    }
+  }, function(err, data){
+    if (err) {
+      locals.error_flash = "An error occured";
+    } else {
+      locals.group = data.group;
+      locals.members = data.members;
+    }
+    res.render('groups/view', locals);
+  });
+};
+
+exports.settings = function(req, res) {
   if (!req.params.id) {
     return res.send(400, { msg: 'Groups are required' });
   }
@@ -134,9 +165,9 @@ exports.view = function(req, res) {
       }
 
       locals.bootstrapData = data;
-      res.render('groups/view', locals);
+      res.render('groups/settings', locals);
   });
-};
+}
 
 exports.update = function(req, res) {
   if (!req.body.group || !req.body.group._id) {
@@ -144,18 +175,24 @@ exports.update = function(req, res) {
   }
 
   var group = req.body.group;
-  var update = { $set: {}};
-
-  if (req.body.group.name) {
-    update.$set['groups.$.name'] = req.body.group.name;
-  }
+  var updateUser;
 
   if (req.body.bracket) {
-    update.$set['groups.$.bracket'] = req.body.bracket._id;
+    updateUser = { $set: {'groups.$.bracket': req.body.bracket._id} };
   }
 
   // TODO: Verify that user owns bracket
-  models.User.findOneAndUpdate({_id: req.user._id, 'groups._id': group._id}, update, function(err){
+  async.parallel([
+    function updateUserBracket(done){
+      if (!updateUser) {
+        return done(null);
+      }
+      models.User.findOneAndUpdate({_id: req.user._id, 'groups._id': group._id}, updateUser, done);
+    },
+    function updateGroup(done) {
+      groupsModule.update(group, done);
+    }
+  ], function(err){
     if (err) {
       console.log('update group error', err);
       return res.send(400);

@@ -69,24 +69,14 @@ module.exports = function(m) {
   });
 
   userSchema.virtual('display_name').get(function () {
-    var displayname = [], first, last, nick, email;
-    if (first = fn.dig(this.name,'first')) {
-      displayname.push(first);
+    var displayName = this.email;
+
+    if (this.nickname) {
+      displayName = this.nickname;
+    } else if(this.name && this.name.first && this.name.last) {
+      displayName = this.name.first + " " + this.name.last;
     }
-    if (last = fn.dig(this.name,'last')) {
-      displayname.push(last);
-    }
-    if (!displayname.length) {
-      if (nick = this.nickname) {
-        displayname.push(nick);
-      }
-    }
-    if (!displayname.length) {
-      if (email = this.email) {
-        displayname.push(email);
-      }
-    }
-    return displayname.join(" ");
+    return displayName;
   });
 
   userSchema.virtual('hometown').get(function () {

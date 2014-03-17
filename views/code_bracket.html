@@ -27,7 +27,7 @@
                     <li><a href="#" id='byseed'>By the Seed</a></li>
                     <li><a href="#" id='leastlosses'>Least Losses</a></li>
                     <li><a href="#" id='randombracket'>Random Bracket</a></li>
-                    <li><a href="#" id='illiniwin'>The Illini Win!</a></li>
+                    <li><a href="#" id='illiniwin'>Hard-code Kentucky Win</a></li>
                     <li><a href="#" id='halfnhalf'>Half-n-Half (Seed & Random)</a></li>
                     <li><a href="#" id='laterseed'>Seeds Weighted Higher in Later Rounds</a></li>
                   </ul>
@@ -101,9 +101,11 @@
             <h4><strong>Your Code Bracket</strong></h4>
             <div id='bracket_status' class='alert alert-success clearfix'>
               <div>Done! Save your bracket to enter the $2,000 cash prize.</div>
-              <div style='text-align: center; margin-top: 14px;'>
+              <div style='margin-top: 14px;'>
                 <a href='#' id='save_bracket_btn' class='btn btn-success btn-lg noround'>Save Your Bracket</a>
-                <a href='/groups/create' class='btn btn-warning btn-lg noround' style='margin-right: 10px;'>Make a Bracket Pool</a>
+                {% if user %}
+                  <a href='/groups/create' class='btn btn-warning btn-lg noround' style='margin-right: 10px;'>Make a Bracket Pool</a>
+                {% endif %}
               </div>
             </div>
             <div id='bracket-wrap'>
@@ -143,18 +145,17 @@
   }
             </div>
             <div  class='sample-code' id='illiniwin-code'>
-  // if team name equals "Illinois", team wins
-  if (team1.name == "Illinois") {
+  // if Kentucky, win. Else, go by Seed
+  var winner_team = "Kentucky";
+  
+  if (team1.name == winner_team) {
     team1.winsGame();
-  } else if (team2.name == "Illinois") {
+  } else if (team2.name == winner_team) {
+    team2.winsGame();
+  } else if (team1.seed > team2.seed) {
     team2.winsGame();
   } else {
-    // if team name not Illinois, random selection
-    if (Math.random() <= 0.5) {
-      team1.winsGame();
-    } else {
-      team2.winsGame();
-    }
+    team1.winsGame();
   }
             </div>
             <div class='sample-code' id='halfnhalf-code'>
