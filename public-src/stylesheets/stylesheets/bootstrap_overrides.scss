@@ -17,11 +17,16 @@
   text-transform: uppercase;
   color: #fff;
   letter-spacing: 0px;
-  padding: 20px 18px;
+  padding: 20px 15px;
   padding-top: 23px;
   &:hover{
     color: #000;
   }
+}
+.dropdown-header {
+  text-transform:uppercase;
+  font-weight: bold;
+  font-size: 10px;
 }
 
 .navbar-inverse .navbar-nav>.active>a, .navbar-nav .navbar-nav>.active>a {

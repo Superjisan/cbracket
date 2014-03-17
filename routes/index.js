@@ -34,6 +34,11 @@ exports.contact = function(req, res){
   res.render('contact');
 };
 
+exports.about = function(req, res){
+  noCacheFix(res);
+  res.render('about');
+};
+
 exports.timeline = function (req,res) {
   noCacheFix(res);
   res.render('timeline');
