@@ -318,6 +318,7 @@ var setupBracketEvents = function (bracket) {
 
     $.post('/save_bracket', params, function(data, textStatus, xhr) {
       $('#saveBracketModal').modal('hide');
+      // debugger;
       if (!!data.bracket) {
         window.location = "/code_bracket/"+data.bracket._id;
       }

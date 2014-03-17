@@ -262,7 +262,8 @@ exports.save_bracket = function(req,res) {
       console.log(err);
       return res.send(400);
     }
-
+    // console.log('-----------------');
+    // console.log(bracket);
     res.send(200, {bracket: bracket});
   });
 };
