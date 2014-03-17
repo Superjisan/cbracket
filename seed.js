@@ -167,7 +167,7 @@ var grittyScrapeHtml = function(dataInfoObj, html) {
       }
     });
   });
-  console.log("done -scrapping gritty html");
+  // console.log("done -scrapping gritty html");
   
 };
 

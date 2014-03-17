@@ -110,7 +110,7 @@ exports.code_bracket = function(req,res) {
     },
     brackets: function(done) {
       if (!theuser) {
-        return done(null);
+        return done(null,[]);
       }
       models.Bracket.find({user_id: req.user._id }, function(err, brackets){
         done(err, brackets);
