@@ -9,7 +9,7 @@
       {% else %}
       {% set group = bootstrapData.group %}
         <div  ng-controller="ViewGroupCtrl">
-          <h1>Group "{{ group.name }}"</h1>
+          <h2>Pool Settings for "{{ group.name }}"</h2>
           <hr />
             {% raw %}
             <div ng-show="responseText" ng-class="status ? 'alert-success' : 'alert-danger'" class='alert ng-cloak'>{{ responseText }}</div>
@@ -18,11 +18,11 @@
           <br>
           <form ng-submit="submit()" name="updateGroupForm" role="form" style="max-width: 400px;">
             <div class="form-group">
-              <label for='email'>Name</label><br>
+              <label for='email'>Pool Name</label><br>
               <input ng-model="group.name" type="text" name="name" placeholder='Group Name' class="form-control">
             </div>
             <div class="form-group">
-              <label for='bracket'>Assign Bracket</label>
+              <label for='bracket'>Assign Bracket to Pool</label>
               <select ng-model="bracket" name="bracket" class="form-control" ng-options="b.name for b in brackets">
                 <option value="">-- Assign Bracket --</option>
               </select>
@@ -30,6 +30,7 @@
             <button ng-disabled="!updateGroupForm.$dirty" type="submit" class="btn btn-primary">Update</button>
           </form>
         </div>
+        <br>
         {% include "../partials/inviteToGroupForm.html" %}
       {% endif %}
     </div>
