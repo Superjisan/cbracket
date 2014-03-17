@@ -128,6 +128,7 @@ app.post('/groups/invite', ensureAuthenticated, groups.postInvite);
 app.get('/groups/invite/:token', groups.viewInvite);
 app.post('/groups/invite/:token', groups.acceptInvite);
 app.post('/groups/manage', ensureAuthenticated, groups.postManage);
+app.get('/groups/:id/settings', ensureAuthenticated, groups.settings);
 app.get('/groups/:id', ensureAuthenticated, groups.view);
 // global.allteams = [];
 
