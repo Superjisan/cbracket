@@ -80,7 +80,7 @@ exports.code_bracket = function(req,res) {
           return t1.name.localeCompare(t2.name);
         });
         var selectedteams = teams.slice(0,128);
-        
+
         var shortenfilter = function(team){
           team.name = team.name.replace("State","St.");
           team.name = team.name.replace("Virginia Commonwealth","VCU");
@@ -120,7 +120,7 @@ exports.code_bracket = function(req,res) {
         done(err, brackets);
       });
     },
-    
+
   }, function(err, data){
     res.render('code_bracket', {
       user: theuser,
@@ -139,7 +139,7 @@ var selectAndSortTeams = function(teams) {
     return t1.name.localeCompare(t2.name);
   });
   var selectedteams = teams.slice(0,128);
-  
+
   var shortenfilter = function(team){
     team.name = team.name.replace("State","St.");
     team.name = team.name.replace("Virginia Commonwealth","VCU");
@@ -250,7 +250,7 @@ exports.save_bracket = function(req,res) {
     },
     function assignBracketToGroup(bracket, done){
       if (!req.body.groupId) {
-        return done(null);
+        return done(null, bracket);
       }
 
       groupsModule.assignBracket(req.user._id, bracket._id, req.body.groupId, function(err){
