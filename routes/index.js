@@ -84,7 +84,11 @@ exports.code_bracket = function(req,res) {
         var shortenfilter = function(team){
           team.name = team.name.replace("State","St.");
           team.name = team.name.replace("Virginia Commonwealth","VCU");
-          team.name = team.name.replace("North Carolina","NC");
+          if (team.name == "North Carolina") {
+            team.name = "UNC";
+          } else {
+            team.name = team.name.replace("North Carolina","NC");
+          }
           team.name = team.name.replace("Saint","St.");
           team.name = team.name.replace("Milwaukee","Mil");
           return team;
