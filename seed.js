@@ -31,7 +31,7 @@ var teamSchema = new Schema({
 
 */
 
-var refreshData = true;
+var refreshData = false;
 var refreshNonGritty = false;
 off_columns = ['name','conf','games_played','pts_game','field_goals_made','field_goals_attempted','field_goal_pct','free_throws_made','free_throws_attempted','free_throw_pct','threes_made','threes_attempted','three_point_pct'];
 def_columns = ['name','conf','games_played','total_reb','off_reb','def_reb','reb_per_game','total_steals','steals_per_game','total_blocks','blocks_per_game'];
