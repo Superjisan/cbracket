@@ -85,8 +85,14 @@ if ('production' == app.get('env')) {
 
 function ensureAuthenticated(req, res, next) {
  if (req.isAuthenticated()) { return next(); }
- res.redirect('/login?forwardpath='+req.originalUrl)  //Or whatever your main page is
-};
+ res.redirect('/login?forwardpath='+req.originalUrl);
+}
+
+function ensureAdmin(req, res, next) {
+ if (req.isAuthenticated() && req.user.auth_level>9) { return next(); }
+ req.flash('error', "Not authorized to view this page");
+ res.redirect('/login?forwardpath='+req.originalUrl);
+}
 
 // passport config
 app.get('/', routes.index);
@@ -135,6 +141,8 @@ app.post('/groups/invite/:token', groups.acceptInvite);
 app.post('/groups/manage', ensureAuthenticated, groups.postManage);
 app.get('/groups/:id/settings', ensureAuthenticated, groups.settings);
 app.get('/groups/:id', ensureAuthenticated, groups.view);
+
+app.get('/admin-stats', ensureAdmin, routes.admin_stats);
 // global.allteams = [];
 
 

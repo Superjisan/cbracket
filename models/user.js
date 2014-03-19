@@ -45,6 +45,7 @@ module.exports = function(m) {
     }],
     facebook : {},
     twitter: {},
+    auth_level: {type: Number, "default": 0},
     provider : String,
     stripe_id: String
   });

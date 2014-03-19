@@ -7,7 +7,7 @@
       </div>
       <form id='saveBracketNewUser' action="/register" method='post'>
       <div class="modal-body">
-        <p>Looks like you haven't saved a bracket on <strong>Coder's Bracket</strong> before. Tell us a little more about yourself below.</p>
+        <p>Looks like you haven't saved a bracket on <strong>Coder's Bracket</strong> before. Tell us a little more about yourself below. You'll only have to do this once.</p>
         <br>
         <!-- <h3>Who's bracket is this?</h3> -->
           <div class='form-group'>
@@ -30,6 +30,8 @@
               <label for="regform_password">Choose Password*</label>
               <input type="password" class="form-control input-lg" name='password' id="regform_password" placeholder="Password">
             </div>
+            
+            {#
             <div class="form-group">
               <label for="regform_favteam">Your Favorite Team</label>
               <select class='form-control input-lg' name='fav_team' id="regform_favteam">
@@ -38,13 +40,14 @@
               {% endfor %}
               </select>
             </div>
+            #}
           </div>
       </div>
       <div class="modal-footer">
         <span style='font-size: 22px; margin: 15px 10px 0 0;' id='register_spinner'><i class="fa fa-spinner fa-spin"></i></span>
         <div style='color: red;margin-bottom: 10px;' id='register_error'>Registration Failed. Have you filled out everything?</div>
         <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancel</button>
-        <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Continue...">
+        <input type="submit" class="btn btn-success btn-lg" id='save_new_user_btn' value="Save Bracket">
       </div>
       </form>
     </div>

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+  
+{% block content %}
+  <div class='row rules_page'>
+    <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
+      <h1>Admin Page</h1>
+      <hr>
+      <table class='table'>
+        <thead>
+          <tr><th>Stat Name</th><th>Number</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>bracket_count</td><td>{{bracket_count}}</td></tr>
+          <tr><td>group_count</td><td>{{group_count}}</td></tr>
+          <tr><td>user_count</td><td>{{user_count}}</td></tr>
+        </tbody>
+      </table>
+      
+    </div>
+  </div>
+    
+{% endblock %}

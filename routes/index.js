@@ -315,6 +315,30 @@ exports.mybrackets = function(req,res) {
   });
 
 };
+exports.admin_stats = function(req,res) {
+  async.parallel({
+    bracket_count: function(done){
+      models.Bracket.count({}, function( err, count){
+        done(null, count);
+      });
+    },
+    
+    user_count: function(done){
+      models.User.count({}, function( err, count){
+        done(null, count);
+      });
+    },
+    
+    group_count: function(done){
+      models.Group.count({}, function( err, count){
+        done(null, count);
+      });
+    }
+  }, function(err, data) {
+    res.render('admin_stats', {bracket_count: data.bracket_count, user_count: data.user_count, group_count: data.group_count});
+  });
+    
+};
 
 exports.account = function(req, res) {
   var locals = {bootstrapData:{}};
