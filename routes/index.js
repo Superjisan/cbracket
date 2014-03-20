@@ -217,7 +217,7 @@ exports.save_bracket = function(req,res) {
     bracket_data = req.body.bracket_data;
   }
   if (!!req.body.bracket_winner) {
-    console.log(req.body.bracket_winner);
+    // console.log(req.body.bracket_winner);
     bracket_winner = req.body.bracket_winner;
     bracket_winner.sid = bracket_winner.sid*1;
   }
@@ -330,13 +330,13 @@ exports.score_brackets = function(req,res) {
         ptsobj = calculatePoints(master_data, bracket_data);
         bracket.round_scores = ptsobj.round_scores;
         bracket.score = ptsobj.pts;
-        console.log('would save bracket with points: ', bracket.score);
-        console.log('would save bracket with round score: ', bracket.round_scores);
-        // bracket.save(function(err) {
-        //   if (err) console.log(err);
-        // });
+        // console.log('would save bracket with points: ', bracket.score);
+        // console.log('would save bracket with round score: ', bracket.round_scores);
+        bracket.save(function(err) {
+          if (err) console.log(err);
+          res.send(200);
+        });
       }
-      res.send(200);
     });
   });
   

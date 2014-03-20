@@ -35,7 +35,7 @@ Manage Group {{group.name}}
                 {% endif %}
               </td>
               <td>
-                {% if member.groups && member.groups[0] && member.groups[0].bracket %}
+                {% if member.groups && member.groups[0] && member.groups[0].bracket && member.groups[0].bracket.score %}
                   {{ member.groups[0].bracket.score }}
                 {% endif %}
               </td>
