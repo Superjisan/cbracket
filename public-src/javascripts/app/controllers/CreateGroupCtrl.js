@@ -1,4 +1,4 @@
-app.controller('CreateGroupCtrl', function($scope, $http, invite){
+app.controller('CreateGroupCtrl', function($scope, $http, invite, $sce){
   var brackets = bootstrapData.brackets || [];
   $scope.brackets = brackets;
   $scope.bracket = '';
@@ -32,12 +32,12 @@ app.controller('CreateGroupCtrl', function($scope, $http, invite){
     $http.post("/groups", { name: $scope.name, bracket: $scope.bracket, emails: $scope.emails  }).
       success(function(data, status, headers, config){
         $scope.status = true;
-        $scope.responseText = data.msg;
+        $scope.responseText = $sce.trustAsHtml(data.msg);
         reset();
       }).
       error(function(data, status, headers, config){
         $scope.status = false;
-        $scope.responseText = data.msg || 'An error occured. Please try again';
+        $scope.responseText = $sce.trustAsHtml(data.msg) || 'An error occured. Please try again';
       });
   };
 });
