@@ -53,6 +53,7 @@
         </div> <!-- end bracket-wrap -->
 
         {% include "./partials/bracket_drawing_boxes.html" %}
+        {% include "./partials/bracket_drawing_boxes_with_results.html" %}
         <div class='clearfix'></div>
       </div>
     </div>
@@ -72,7 +73,12 @@
   var bracket = new Bracket(bracketData,teams);
   //debugger;
   bracket.winner = bracketObj.winner.sid;
-  var html = bracket.generateBracketHtml();
+  {% if false %}
+    var master_bracket = {{master|json|safe}};
+    var html = bracket.generateBracketHtml(master_bracket);
+  {% else %}
+    var html = bracket.generateBracketHtml();
+  {% endif %}
   $('#bracket').html(html);
   </script>
 {% endblock %}

@@ -189,13 +189,17 @@ exports.view_code_bracket = function(req,res) {
         var bracket = new Bracket();
         bracket.getTeams().addBack(function(err,teams) {
           var selectedandsorted = selectAndSortTeams(teams);
-          res.render('view_code_bracket', {
-            bracket: data[0],
-            user: theuser,
-            teams: selectedandsorted.selected,
-            sorted_teams: selectedandsorted.sorted,
-            error_flash: req.flash('error'),
-            success_flash: req.flash('success')
+          
+          models.MasterBracket.findOne({}, function(err,master) {
+            res.render('view_code_bracket', {
+              bracket: data[0],
+              master: master.data[0],
+              user: theuser,
+              teams: selectedandsorted.selected,
+              sorted_teams: selectedandsorted.sorted,
+              error_flash: req.flash('error'),
+              success_flash: req.flash('success')
+            });
           });
         });
       }
@@ -348,16 +352,25 @@ exports.score_brackets = function(req,res) {
       var bracket, ptsobj;
       while(i--) {
         bracket = brackets[i];
-        bracket_data = JSON.parse(bracket.data[0]);
-        ptsobj = calculatePoints(master_data, bracket_data);
-        bracket.round_scores = ptsobj.round_scores;
-        bracket.score = ptsobj.pts;
-        // console.log('would save bracket with points: ', bracket.score);
-        // console.log('would save bracket with round score: ', bracket.round_scores);
-        bracket.save(function(err) {
-          if (err) console.log(err);
-          res.send(200);
-        });
+        if (bracket && bracket.data[0] && master_data) {
+          bracket_data = JSON.parse(bracket.data[0]);
+          ptsobj = calculatePoints(master_data, bracket_data);
+          bracket.round_scores = ptsobj.round_scores;
+          bracket.score = ptsobj.pts;
+          console.log('---------------------');
+          console.log('---------------------');
+          console.log('Save bracket '+bracket._id.toString()+' with points: ', bracket.score);
+          console.log('---------------------');
+          console.log('---------------------');
+          // console.log('Save bracket with round score: ', bracket.round_scores);
+          bracket.save(function(err) {
+            if (err) console.log(err);
+            // res.end("")
+            // res.send(200);
+            // res.writeHead(200, {'Content-type': 'application/json'});
+            res.end('{"response": ""}');
+          });
+        }
       }
     });
   });
