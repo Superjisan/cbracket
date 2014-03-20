@@ -18,8 +18,9 @@ Manage Group {{group.name}}
         <thead>
           <tr>
             <th>No.</th>
-            <th>Name</th>
+            <th>Nickname</th>
             <th>Bracket</th>
+            <th>Score</th>
             <!-- <th>Actions</th> -->
           </tr>
         </thead>
@@ -27,10 +28,15 @@ Manage Group {{group.name}}
         {% for member in members %}
             <tr>
               <td>{{loop.index}}</td>
-              <td><a href="#">{{member.display_name}}</a></td>
+              <td>{{member.display_name}}</td>
               <td>
                 {% if member.groups && member.groups[0] && member.groups[0].bracket %}
                   <a href="/code_bracket/{{member.groups[0].bracket.id}}">{{ member.groups[0].bracket.name }}</a>
+                {% endif %}
+              </td>
+              <td>
+                {% if member.groups && member.groups[0] && member.groups[0].bracket %}
+                  {{ member.groups[0].bracket.score }}
                 {% endif %}
               </td>
               <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->

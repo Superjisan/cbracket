@@ -1,6 +1,84 @@
 {% extends "layout.html" %}
   
 {% block content %}
+  
+  <script>
+  var master = [
+          [
+              [0],
+              []
+          ],
+          [
+              [0],
+              [0]
+          ],
+          [
+              [0,0],
+              [0,0]
+          ],
+          [
+              [0,0,326,60],
+              [221,0,0,296]
+          ],
+          [
+              [86,314,66,134,326,109,200,60],
+              [103,221,63,226,340,151,74,296]
+          ],
+          [
+              [86,232,327,314,66,290,286,134,326,97,109,67,200,127,60,325],
+              [10,103,221,255,189,63,226,343,340,135,203,151,164,74,296,345]
+          ]
+      ];
+      
+  var bracket = [
+          [
+            [340],
+            []
+          ],[
+            [326],
+            [340]
+          ],[
+            [86,326],
+            [10,340]
+          ],[
+            [86,66,326,238],
+            [10,29,340,126]
+          ],[
+            [86,287,66,286,326,67,238,250],
+            [10,195,63,29,340,157,126,11]
+          ],[
+            [86,232,287,314,66,290,286,134,326,97,109,67,238,127,250,325],
+            [10,222,205,195,189,63,29,343,340,135,203,157,126,74,11,170]
+          ]
+      ];
+      
+      function calculatePoints(master, bracket) {
+        var round=6, p=0, pts=0;
+        var br, mr; // bracket round, master round
+        while(round--) {
+          br = bracket[round];
+          mr = master[round];
+          var pts_per_pick = 10*Math.pow(2,p++);
+          var i = br[0].length;
+          while(i--) {
+            // left side of the bracket
+            if (br[0][i] && mr[0][i] && (br[0][i] === mr[0][i])) {
+              pts+=pts_per_pick;
+            }
+            //right side of bracket
+            if (br[1][i] && mr[1][i] && (br[1][i] === mr[1][i])) {
+              pts+=pts_per_pick;
+            }
+          }
+        }
+        return pts;
+      }
+      console.log(calculatePoints(master,bracket));
+  </script>
+  
+  
+  
+  
   <div class='row rules_page'>
     <div class='col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1'>
       <h1>Admin Page</h1>
@@ -10,13 +88,128 @@
           <tr><th>Stat Name</th><th>Number</th></tr>
         </thead>
         <tbody>
-          <tr><td>bracket_count</td><td>{{bracket_count}}</td></tr>
-          <tr><td>group_count</td><td>{{group_count}}</td></tr>
-          <tr><td>user_count</td><td>{{user_count}}</td></tr>
+          {% for name, val in stats %}
+            <tr><td>{{name}}</td><td>{{val}}</td></tr>
+          {% endfor %}
         </tbody>
       </table>
       
+      <h3>Enter Winners</h3>
+      <table class='table'>
+        <thead>
+          <tr><th>Round</th><th>Left/Right</th><th>Game Spot (0-15)</th><th>Winner Team</th><th>Submit</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <select id='round' class='form-control'>
+                <option value='5'>First</option>
+                <option value='4'>Second</option>
+                <option value='3'>Sweet 16</option>
+                <option value='2'>Elite 8</option>
+                <option value='1'>Final Four</option>
+                <option value='0'>Championship</option>
+              </select>
+            </td>
+            <td>
+              <select name="leftright" id="leftright" class='form-control'>
+                <option value='0'>Left</option>
+                <option value="1">Right</option>
+              </select>
+            </td>
+            <td>
+              <input type="text" name="gamespot" value="0" id="gamespot" class='form-control'>
+            </td>
+            <td>
+              <input type="text" name="sid" value="0" id="sid" class='form-control'>
+              <select id='team' name='team'>
+                <option value=''>Name</option>
+              </select>
+            </td>
+            <td>
+              <a href='#' class='btn btn-warning noround' id='addWinner'>Enter</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div id='editor' style='height: 250px;'>
+          {% if master_bracket %}
+{{master_bracket.data[0]|beautify_master_bracket}}
+          {% else %}
+              [
+                [
+                  [0],
+                  []
+                ],[
+                  [0],
+                  [0]
+                ],[
+                  [0,0],
+                  [0,0]
+                ],[
+                  [0,0,0,0],
+                  [0,0,0,0]
+                ],[
+                  [0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0]
+                ],[
+                  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+                ]
+            ]
+          {% endif %}
+      </div>
+      <div class='alert alert-success' id='alert'></div>
+      <div><a href='#' id='submit_master_bracket' class='btn btn-warning'>Submit Master Bracket</a> <a href='#' id='calc_all' class='btn btn-warning'>Calculate All</a></div>
     </div>
   </div>
+{% endblock %}
+
+{% block bottomscripts %}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ace/1.1.01/ace.js"></script>
+  <script>
+    var editor = setupAceEditor();
+  </script>
+  <script>
+    var teamsbysid = getTeamsBySid();
+    $('#addWinner').click(function  (e) {
+      var round = $('#round').val();
+      var round_name = $('#round option:selected').text();
+      var leftright = $('#leftright').val();
+      var gamespot = $('#gamespot').val();
+      if ((round>0) && gamespot > Math.pow(2,round-1)){
+        alert('game spot for the '+round_name+' round should be <'+Math.pow(2,round-1));
+        return;
+      }
+      var sid = parseInt($('#sid').val());
+      var master_bracket = eval("("+editor.getValue()+")");
+      master_bracket[round][leftright][gamespot] = sid;
+      editor.setValue(JSON.stringify(master_bracket,null, '\t'));
+    });
+
+    var showAlertBox = function (text) {
+      $('#alert').html(text);
+      $('#alert').slideDown();
+      window.setTimeout(function() {
+        $('#alert').slideUp();
+      }, 2000);
+    };
+    $('#submit_master_bracket').click(function (e) {
+      var master_bracket = eval("("+editor.getValue()+")");
+      e.preventDefault();
+      var code = JSON.stringify(master_bracket);
+      $.post('/submit_master', {
+        code: code
+      }, function () {
+        showAlertBox('master submitted!');
+      })
+    });
     
+    $('#calc_all').click(function(e) {
+      e.preventDefault();
+      $.get('/score_brackets', {}, function(e) {
+        showAlertBox('all scores calculated!');
+      });
+    });
+  </script>
 {% endblock %}

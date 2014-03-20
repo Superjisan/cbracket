@@ -45,5 +45,13 @@ module.exports = function (swig) {
 
   // nickname.safe = true;
   swig.setFilter('shorten', shorten);
+  
+  var beautify_master_bracket = function (bracket_json) {
+    str =  bracket_json.replace(/\]\],\[\[/g,"]],\n[[");
+    return str.replace("            ", "");
+  }; 
+
+  // nickname.safe = true;
+  swig.setFilter('beautify_master_bracket', beautify_master_bracket);
 
 };

@@ -143,6 +143,8 @@ app.get('/groups/:id/settings', ensureAuthenticated, groups.settings);
 app.get('/groups/:id', ensureAuthenticated, groups.view);
 
 app.get('/admin-stats', ensureAdmin, routes.admin_stats);
+app.post('/submit_master', ensureAdmin, routes.submit_master)
+app.get('/score_brackets', ensureAdmin, routes.score_brackets)
 // global.allteams = [];
 
 

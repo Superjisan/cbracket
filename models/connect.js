@@ -13,6 +13,7 @@ var mongoose = require('mongoose');
   var GameModule = require('./game')(mongoose);
   var UserModule = require('./user')(mongoose);
   var BracketModule = require('./bracket')(mongoose);
+  var MasterBracketModule = require('./master_bracket')(mongoose);
   var SubModule = require('./subscription')(mongoose);
   var VerifyTokenModule = require('./verifyToken')(mongoose);
   var ResetTokenModule = require('./resetToken')(mongoose);
@@ -25,6 +26,7 @@ var mongoose = require('mongoose');
     "User": UserModule.model,
     "Subscription": SubModule.model,
     "Bracket": BracketModule.model,
+    "MasterBracket": MasterBracketModule.model,
     "Game": GameModule.model,
     "VerifyToken": VerifyTokenModule.model,
     "ResetToken": ResetTokenModule.model,

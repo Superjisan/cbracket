@@ -291,6 +291,57 @@ exports.subscribe = function (req,res) {
   }
 };
 
+exports.score_brackets = function(req,res) {
+  var calculatePoints = function(master, bracket) {
+    var round=6, p=0, pts=0;
+    var br, mr; // bracket round, master round
+    var round_scores = [0,0,0,0,0,0];
+    while(round--) {
+      br = bracket[round];
+      mr = master[round];
+      var pts_per_pick = 10*Math.pow(2,p++);
+      var i = br[0].length;
+      var round_pts = 0;
+      while(i--) {
+        // left side of the bracket
+        if (br[0][i] && mr[0][i] && (br[0][i] === mr[0][i])) {
+          pts+=pts_per_pick;
+          round_pts+=pts_per_pick;
+        }
+        //right side of bracket
+        if (br[1][i] && mr[1][i] && (br[1][i] === mr[1][i])) {
+          pts+=pts_per_pick;
+          round_pts+=pts_per_pick;
+        }
+      }
+      round_scores[round] = round_pts;
+    }
+    return {pts: pts, round_scores: round_scores};
+  };
+  
+  models.MasterBracket.findOne({}, function(err,master) {
+    var master_data = JSON.parse(master.data[0]);
+    models.Bracket.find({}, function(err, brackets) {
+      var i = brackets.length;
+      var bracket, ptsobj;
+      while(i--) {
+        bracket = brackets[i];
+        bracket_data = JSON.parse(bracket.data[0]);
+        ptsobj = calculatePoints(master_data, bracket_data);
+        bracket.round_scores = ptsobj.round_scores;
+        bracket.score = ptsobj.pts;
+        console.log('would save bracket with points: ', bracket.score);
+        console.log('would save bracket with round score: ', bracket.round_scores);
+        // bracket.save(function(err) {
+        //   if (err) console.log(err);
+        // });
+      }
+      res.send(200);
+    });
+  });
+  
+};
+
 exports.teamsbysid = function(req,res) {
   models.Team.find(function(err,teams) {
     var teamsBySid = {};
@@ -315,16 +366,46 @@ exports.mybrackets = function(req,res) {
   });
 
 };
+
+exports.submit_master = function(req,res) {
+  var code = req.body.code;
+  models.MasterBracket.findOne({}, function(err,bracket) {
+    if (bracket) {
+      bracket.data = code;
+      bracket.save(function(err, bracket) {
+        if(err) console.log(err);
+        res.send(200);
+      });
+    } else {
+      models.MasterBracket.create({data: code}, function(err) {
+        res.send(200);
+      });
+    }
+  });
+};
+
 exports.admin_stats = function(req,res) {
   async.parallel({
+    master_bracket: function(done){
+      models.MasterBracket.findOne({}, function(err, bracket){
+        done(null, bracket);
+      });
+    },
+    
     bracket_count: function(done){
-      models.Bracket.count({}, function( err, count){
+      models.Bracket.count({}, function(err, count){
         done(null, count);
       });
     },
     
     user_count: function(done){
       models.User.count({}, function( err, count){
+        done(null, count);
+      });
+    },
+
+    invites_count: function(done){
+      models.InviteToken.count({}, function( err, count){
         done(null, count);
       });
     },
@@ -335,9 +416,15 @@ exports.admin_stats = function(req,res) {
       });
     }
   }, function(err, data) {
-    res.render('admin_stats', {bracket_count: data.bracket_count, user_count: data.user_count, group_count: data.group_count});
-  });
-    
+    res.render('admin_stats', {stats: {
+        bracket_count: data.bracket_count,
+        user_count: data.user_count,
+        group_count: data.group_count,
+        invites_count: data.invites_count
+      },
+      master_bracket: data.master_bracket
+    });
+  });  
 };
 
 exports.account = function(req, res) {
