@@ -273,6 +273,28 @@ exports.save_bracket = function(req,res) {
   });
 };
 
+exports.email_everyone = function(req,res) {
+  models.User.find({}, function(err,users){
+    var i = users.length;
+    var user;
+    console.log('req test: '+req.params.test);
+    
+    while(i--) {
+      user = users[i];
+      if (user.email != '') {
+        test_str= '';
+        if ((!!req.query.test && user.email == "nimit.maru@gmail.com" && (test_str = "TEST")) || !req.query.test) {
+          mailer.sendTemplateMail('reminder', {
+            to: user.email,
+            subject: "Coder's Bracket - Only Few Hours Left + More Prizes" + test_str
+          });
+        }
+      }
+    }
+    res.send(200, "emails sent: "+users.length);
+  });
+};
+
 exports.subscribe = function (req,res) {
   if (!!req.body.email) {
     var email = req.body.email;
