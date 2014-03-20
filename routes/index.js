@@ -281,7 +281,7 @@ exports.email_everyone = function(req,res) {
     
     while(i--) {
       user = users[i];
-      if (user.email != '') {
+      if (user.email !== '') {
         test_str= '';
         if ((!!req.query.test && user.email == "nimit.maru@gmail.com" && (test_str = "TEST")) || !req.query.test) {
           mailer.sendTemplateMail('reminder', {
