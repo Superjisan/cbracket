@@ -1,4 +1,4 @@
-@import url(//fonts.googleapis.com/css?family=Satisfy);
+/*@import url(//fonts.googleapis.com/css?family=Satisfy);*/
 @import url(//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700);
 
 html {
@@ -491,6 +491,7 @@ $view_editor_background: #FFFFFF;
     position:absolute;
     top: -1 * $line_height;
     opacity: 0.0;
+    z-index:2;
   }
 
   .bottom {
@@ -501,6 +502,7 @@ $view_editor_background: #FFFFFF;
 
   .team {
     font-size: $font_size;
+    font-family: verdana,arial,sans-serif !important;
   }
 
   &:hover {
@@ -837,6 +839,16 @@ h3.panel-title {
 
 #otherAmountInput {
   width: 80px;
+}
+
+.correctpick {
+  color: green !important;
+  font-weight: bold !important;
+}
+
+.wrongpick {
+  font-weight: bold !important;
+  color: red !important;
 }
 
 [ng\:cloak],[ng-cloak],.ng-cloak{display:none !important}

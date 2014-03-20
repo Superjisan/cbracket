@@ -185,31 +185,42 @@ Bracket.prototype.generateBracketHtml = function (master) {
   var game, spot, leftRight, division;
   var bracket_html = $('#bracket-box').html();
   var bracket_html_results = $('#bracket-box-results').html();
+  
+  var getShouldBeWinners = function(round, leftRight, spot) {
 
-  var getShouldBeWinners = function (round, leftRight, spot) {
-    var team1ShouldBe = team2ShouldBe = false;
     
-    if (master && master[round]) {
-      if (team1ShouldBeSid = master[round][leftRight][spot]) {
-        team1ShouldBe = teamsbysid[team1ShouldBeSid];
+    var prevspot = Math.max((spot*2),0);
+    // var sid = bracket[round+1][leftOrRight][prevspot];
+    
+    // console.log("round:"+round+" leftRight:"+leftRight+" spot:"+ (prevspot));
+    // console.log("round:"+round+" leftRight:"+leftRight+" spot:"+ (1*prevspot+1));
+    var team1ShouldBe = false; var team2ShouldBe = false;
+    // debugger;
+    if (master && master[round] && master[round][leftRight]) {
+      if (master[round][leftRight][prevspot]) {
+        if (team1ShouldBeSid = master[round][leftRight][prevspot]) {
+          team1ShouldBe = teamsbysid[team1ShouldBeSid];
+        }
       }
-    
-      if (master[round][leftRight][spot+1]) {
-        if (team2ShouldBeSid = master[round][leftRight][spot+1]) {
+      if (master[round][leftRight][1*prevspot+1]) {
+        if (team2ShouldBeSid = master[round][leftRight][1*prevspot+1]) {
           team2ShouldBe = teamsbysid[team2ShouldBeSid];
         } 
       }
     }
-    return {team1: team1ShouldBe, team2: team2ShouldBe };
+    var x = {team1: team1ShouldBe, team2: team2ShouldBe };
+    console.log(x);
+    return x;
   };
   
   for (var blevel=4; blevel>=0; blevel--) {
+    var shouldBeWinners = false;
+    
     for (spot=0; spot<Math.pow(2,blevel); spot++) {
       division = Math.ceil((spot+1)/8);
       leftRight = (division <= 2)?0:1;
       round = blevel+1;
       var been_played = false;
-      var shouldBeWinners = {team1:false, team2:false};
       
       if(blevel===4) {
         // the initial first round
@@ -230,10 +241,12 @@ Bracket.prototype.generateBracketHtml = function (master) {
           teamleft2 = this.getTeamFromData(round, division, spot, 2);
           game = new Game(round, spot, division, blevel, teamleft1, teamleft2, "b"+blevel+"-"+spot+"-left");
           this.games[round].push(game);
-          shouldBeWinners = getShouldBeWinners(round, leftRight, spot);
+          shouldBeWinners = getShouldBeWinners(round+1, leftRight, spot);
         }
       }
-      if (shouldBeWinners.team1 || shouldBeWinners.team2) {
+      
+      if (shouldBeWinners && (shouldBeWinners.team1 || shouldBeWinners.team2)) {
+        console.log('yes shouldbes on team1');
         html += swig.render(bracket_html_results, { locals: { team2ShouldBe:shouldBeWinners.team2, team1ShouldBe:shouldBeWinners.team1, round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
       } else {
         html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
@@ -242,10 +255,10 @@ Bracket.prototype.generateBracketHtml = function (master) {
     
     for (spot=0; spot<Math.pow(2,blevel); spot++) {
       round = blevel+1;
+      division = Math.ceil((spot+1)/8)+2;
+      leftRight = (division <= 2)?0:1;
       if(blevel===4) {
         // the initial first round
-        division = Math.ceil((spot+1)/8)+2;
-        leftRight = (division <= 2)?0:1;
         
         teamright1 = this.getTeam(division, spot);
         if (teamright1) {
@@ -265,11 +278,11 @@ Bracket.prototype.generateBracketHtml = function (master) {
           teamright2 = this.getTeamFromData(round, division, spot, 2);
           game = new Game(round, spot, division, blevel, teamright1, teamright2, "b"+blevel+"-"+spot+"-right");
           this.games[round].push(game);
-          shouldBeWinners = getShouldBeWinners(round, leftRight, spot);
+          shouldBeWinners = getShouldBeWinners(round+1, leftRight, spot);
         }
       }
       
-      if (shouldBeWinners.team1 || shouldBeWinners.team2) {
+      if (shouldBeWinners && (shouldBeWinners.team1 || shouldBeWinners.team2)) {
         html += swig.render(bracket_html_results, { locals: { team2ShouldBe:shouldBeWinners.team2, team1ShouldBe:shouldBeWinners.team1, round: round, blevel:blevel, spot: spot, side: "right", team1:teamright1, team2:teamright2 }});
       } else {
         html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "right", team1:teamright1, team2:teamright2 }});

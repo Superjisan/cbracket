@@ -1,11 +1,15 @@
+
 {% raw %}
 <script id="bracket-box-results" type="text/x-handlebars-template">
   <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
-      <div {% if team1 %}title="{{team1.seed}}. {{team1.name}}"{% endif %} class='team top'>{% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}</div>
-      <div {% if team2 %}title="{{team2.seed}}. {{team2.name}}"{% endif %} class='team bottom'>{% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}</div>
+      <div {% if team1 %}title="{{team1.seed}}. {{team1.name}}"{% endif %} class='team top {% if team1ShouldBe && team1 %} {% if team1ShouldBe.sid == team1.sid %} correctpick {%else%} wrongpick {% endif %} {% endif %}'>
+        {% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}
+      </div>
+      <div {% if team2 %}title="{{team2.seed}}. {{team2.name}}"{% endif %} class='team bottom {% if team2ShouldBe && team2 %} {% if team2ShouldBe.sid == team2.sid %} correctpick {%else%} wrongpick {% endif %} {% endif %}'>
+        {% if team2 %}{{team2.seed}}. {{team2.name}}{%endif%}
+      </div>
   </div>
 </script>
-
 <script id="final_four_games_results" type="text/x-handlebars-template">
   <div id='ff-rd1'>
     <div class="ff-team" id='ff-rd1-team1'>{% if finalist1 %}{{finalist1.seed}}. {{finalist1.name}}{% endif %}</div>

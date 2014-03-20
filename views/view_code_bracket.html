@@ -73,12 +73,19 @@
   var bracket = new Bracket(bracketData,teams);
   //debugger;
   bracket.winner = bracketObj.winner.sid;
-  {% if false %}
-    var master_bracket = {{master|json|safe}};
+  {% if master %}
+    var master_bracket = eval({{master|json|safe}});
     var html = bracket.generateBracketHtml(master_bracket);
   {% else %}
     var html = bracket.generateBracketHtml();
   {% endif %}
+  
+  $('#bracket').html(" ");
   $('#bracket').html(html);
+  
+  // $(function() { $('.b').fadeOut().complete(function(){
+    // $('.b').fadeIn();
+  // });
+  // });  
   </script>
 {% endblock %}
