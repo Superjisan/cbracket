@@ -41,10 +41,10 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(express.cookieParser('fullstackrox!!'));
 app.use(express.session({
-  cookie: {
-    maxAge: 3600000
-  },
-  store: new MongoStore({ url: process.env.MONGOHQ_MASTER_HOST || 'mongodb://localhost/hackersbracket' })
+  // cookie: {
+  //   maxAge: 3600000
+  // },
+  store: new MongoStore({ url: process.env.MONGOHQ_URL || 'mongodb://localhost/hackersbracket' })
 }));
 // app.use(express.cookieSession({ secret: 'tobo!', cookie: { maxAge: new Date(Date.now() +     3600000), }}));
 
