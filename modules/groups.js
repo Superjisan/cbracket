@@ -202,14 +202,14 @@ GroupModule.prototype = {
       .exec(function(err, members){
         
         function compare(a,b) {
-          if (a.groups[0].bracket && a.groups[0].bracket.score && b.groups[0].bracket && b.groups[0].bracket.score) {
+          if (a.groups[0].bracket && b.groups[0].bracket) {
             if (a.groups[0].bracket.score < b.groups[0].bracket.score) {
-               return -1;
-             } else if (a.groups[0].bracket.score > b.groups[0].bracket.score) {
-              return 1;
+               return 1;
+             } else {
+              return -1;
              }
           } else {
-            return -1;
+            return 1;
           }
         }
 
