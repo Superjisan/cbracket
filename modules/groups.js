@@ -203,6 +203,9 @@ GroupModule.prototype = {
         
         function compare(a,b) {
           if (a.groups[0].bracket && b.groups[0].bracket) {
+            if (!a.groups[0].bracket.score) a.groups[0].bracket.score = 0;
+            if (!b.groups[0].bracket.score) b.groups[0].bracket.score = 0;
+            
             if (a.groups[0].bracket.score < b.groups[0].bracket.score) {
                return 1;
              } else {
