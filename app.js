@@ -109,6 +109,7 @@ app.get('/contest/rules', routes.contest_rules);
 app.get('/contest/prizes', routes.contest_prizes);
 app.get('/contact', routes.contact);
 app.get('/about', routes.about);
+app.get('/standings', routes.standings);
 
 
 

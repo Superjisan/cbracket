@@ -288,10 +288,11 @@ exports.email_everyone = function(req,res) {
       if (user.email !== '') {
         test_str= '';
         if ((!!req.query.test && user.email == "nimit.maru@gmail.com" && (test_str = "TEST")) || !req.query.test) {
-          mailer.sendTemplateMail('reminder', {
-            to: user.email,
-            subject: "Coder's Bracket - Only Few Hours Left + More Prizes" + test_str
-          });
+          //uncomment when you want to send
+          // mailer.sendTemplateMail('reminder', {
+          //   to: user.email,
+          //   subject: "Coder's Bracket - Only Few Hours Left + More Prizes" + test_str
+          // });
         }
       }
     }
@@ -460,6 +461,36 @@ exports.admin_stats = function(req,res) {
       master_bracket: data.master_bracket
     });
   });  
+};
+
+exports.standings = function(req,res) {
+  
+  async.parallel({
+    brackets: function(done) {
+      models.Bracket.find().sort({score: -1}).populate("user_id").limit(100).exec(function(err, brackets) {
+        done(null, brackets);
+      })
+    }
+  }, function(err, data) {
+    var bracketsranked = [];
+    var br;
+    
+    if (data.brackets) {
+      for(var i=0; i<data.brackets.length; i++) {
+        br = data.brackets[i];
+        br.rank = i+1;
+        if (data.brackets[i-1]) {
+          prev_br = data.brackets[i-1];
+          if (br.score === prev_br.score) {
+            br.rank = prev_br.rank;
+          }
+        }
+        bracketsranked.push(br);
+      }
+    }
+    res.render('standings', {brackets: bracketsranked})
+  });
+  
 };
 
 exports.account = function(req, res) {
