@@ -34,7 +34,7 @@
     </div>
     <h1>
       {% if bracket.name %}{{bracket.name}}{% else %}Your Bracket{% endif %}
-      <div class='by_user'>{% if user.nickname %}By {{user.nickname}}{% else %}{% if user.name.first %}{{user.first.name}}{% endif %}{% endif %}</div>
+      <div class='by_user'>{% if bracket.user_id.nickname %}By {{bracket.user_id.nickname}}{% else %}{% if bracket.user_id.name.first %}{{bracket.user_id.first.name}}{% endif %}{% endif %}</div>
 
     </h1>
 

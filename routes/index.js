@@ -181,7 +181,7 @@ exports.view_code_bracket = function(req,res) {
   }
   var id = req.params.id;
   if (!!id && isValidObjectID(id)) {
-    models.Bracket.find({_id: new mongoose.Types.ObjectId(id)}, function (err, data) {
+    models.Bracket.find({_id: new mongoose.Types.ObjectId(id)}).populate('user_id').exec(function (err, data) {
       if (data.length === 0) {
         res.render('error', {title: "Bracket Not Found", message: "Are you sure this is a valid bracket? Please visit the <a href='/code_bracket'>create bracket page</a> to build a new one.<br><br>You can always <a href='/contact'>contact us</a> if you'd like help."});
       } else {
