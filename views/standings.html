@@ -17,7 +17,7 @@
             {% for bracket in brackets %}
               <tr>
                 <td>{{bracket.rank}}</td>
-                <td><a href="/code_bracket/{{bracket._id}}">{{bracket.name}}</a></td>
+                <td><a href="/code_bracket/{{bracket._id.toString()}}">{{bracket.name}}</a></td>
                 <td>{{bracket.winner.name}}</td>
                 <td>{{bracket.user_id.nickname}}</td>
                 <td>{{bracket.score}}</td>
