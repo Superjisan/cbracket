@@ -208,9 +208,8 @@ Bracket.prototype.generateBracketHtml = function (master) {
         } 
       }
     }
-    var x = {team1: team1ShouldBe, team2: team2ShouldBe };
-    console.log(x);
-    return x;
+    
+    return {team1: team1ShouldBe, team2: team2ShouldBe };
   };
   
   for (var blevel=4; blevel>=0; blevel--) {
@@ -246,7 +245,6 @@ Bracket.prototype.generateBracketHtml = function (master) {
       }
       
       if (shouldBeWinners && (shouldBeWinners.team1 || shouldBeWinners.team2)) {
-        console.log('yes shouldbes on team1');
         html += swig.render(bracket_html_results, { locals: { team2ShouldBe:shouldBeWinners.team2, team1ShouldBe:shouldBeWinners.team1, round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
       } else {
         html += swig.render(bracket_html, { locals: { round: round, blevel:blevel, spot: spot, side: "left", team1:teamleft1, team2:teamleft2 }});
