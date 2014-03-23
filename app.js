@@ -56,6 +56,18 @@ app.use(app.router);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/public-src', express.static(__dirname + '/public-src'));
 
+app.use(function(req, res) {
+  res.status(400);
+  res.render('error', {});
+});
+
+// Handle 500
+app.use(function(error, req, res, next) {
+  res.status(500);
+  res.render('error', {title:'Internal Server Error', error: error});
+});
+
+
 // development only
 if ('development' == app.get('env')) {
   env.APP_HOST = '127.0.0.1:3000';
