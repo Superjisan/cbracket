@@ -10,9 +10,9 @@
           <tr>
             <th>No.</th>
             <th>Name</th>
-            <th>Pct'ile</th>
             <th>Winner</th>
             <th>Score</th>
+            <th>Pct'ile</th>
             <!-- <th>Actions</th> -->
           </tr>
         </thead>
@@ -21,9 +21,9 @@
             <tr>
               <td>{{loop.index}}</td>
               <td><a href="/code_bracket/{{bracket._id.toString()}}">{{bracket.name}}</a></td>
-              <td>{{bracket.ptile|default('-')}}</td>
               <td>{{bracket.winner.name|default('-')}}</td>
               <td>{{bracket.score|default('-')}}</td>
+              <td>{{bracket.ptile|default('-')}}%</td>
               <!-- <td><a href="/code_bracket/{{bracket._id.toString()}}/edit" class='btn btn-sm btn-default'>Edit</a> <a  class='btn btn-sm btn-default' href="/code_bracket/{{bracket._id.toString()}}/delete">Delete</a></td> -->
 
             </tr>

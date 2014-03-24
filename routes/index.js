@@ -386,8 +386,10 @@ exports.score_brackets = function(req,res) {
             var max = 1920;
             var numBetter=0;
             while (max-=10) {
-              if (ptiles[max] && (max > bracket.score)){
-                numBetter += ptiles[max];
+              if (max > bracket.score) {
+                if (byscore[max]) {
+                  numBetter += byscore[max];
+                }
               } else {
                 ptile = ((brackets.length - numBetter)*100/brackets.length).toFixed(1);
                 ptiles[bracket.score] = ptile;
