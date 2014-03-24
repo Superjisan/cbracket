@@ -7,6 +7,7 @@ module.exports = function(m) {
     data: { type : Array , "default" : [] },
     round_scores: { type : Array , "default" : [0,0,0,0,0,0] },
     score: { type : Number , "default" : 0 },
+    ptile: Number,
     winner: {
       sid: Number,
       name: String

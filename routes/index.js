@@ -330,15 +330,13 @@ exports.score_brackets = function(req,res) {
       var i = br[0].length;
       var round_pts = 0;
       while(i--) {
-        // left side of the bracket
-        if (br[0][i] && mr[0][i] && (br[0][i] === mr[0][i])) {
-          pts+=pts_per_pick;
-          round_pts+=pts_per_pick;
-        }
-        //right side of bracket
-        if (br[1][i] && mr[1][i] && (br[1][i] === mr[1][i])) {
-          pts+=pts_per_pick;
-          round_pts+=pts_per_pick;
+        var side = 2;
+        while (side--) {
+          // side 1 is right side, side 0 is left side
+          if (br[side][i] && mr[side][i] && (br[side][i] === mr[side][i])) {
+            pts+=pts_per_pick;
+            round_pts+=pts_per_pick;
+          }
         }
       }
       round_scores[round] = round_pts;
@@ -348,9 +346,14 @@ exports.score_brackets = function(req,res) {
   
   models.MasterBracket.findOne({}, function(err,master) {
     var master_data = JSON.parse(master.data[0]);
+    var byscore = {};
+    var ptiles = {};
+    
     models.Bracket.find({}, function(err, brackets) {
       var i = brackets.length;
       var bracket, ptsobj;
+      
+      //calculate the bracket scores
       while(i--) {
         bracket = brackets[i];
         if (bracket && bracket.data[0] && master_data) {
@@ -358,21 +361,48 @@ exports.score_brackets = function(req,res) {
           ptsobj = calculatePoints(master_data, bracket_data);
           bracket.round_scores = ptsobj.round_scores;
           bracket.score = ptsobj.pts;
-          console.log('---------------------');
-          console.log('---------------------');
-          console.log('Save bracket '+bracket._id.toString()+' with points: ', bracket.score);
-          console.log('---------------------');
-          console.log('---------------------');
-          // console.log('Save bracket with round score: ', bracket.round_scores);
-          bracket.save(function(err) {
+          byscore[ptsobj.pts] = ++byscore[ptsobj.pts] || 1;
+        } else {
+          bracket.score = 0;
+        }
+      }
+      
+      // var bracketSort = function(b1,b2) {
+      //   if (b1.score < b2.score){
+      //     return -1;
+      //   } else {
+      //     return 1;
+      //   }
+      // }
+      // brackets.sort(bracketSort);
+      
+      // calculate the precentiles
+      
+      var i = brackets.length;
+      while(i--) {
+        bracket = brackets[i];
+        if (bracket && bracket.data[0] && master_data) {
+          if (!(ptile = ptiles[bracket.score])) {
+            var max = 1920;
+            var numBetter=0;
+            while (max-=10) {
+              if (ptiles[max] && (max > bracket.score)){
+                numBetter += ptiles[max];
+              } else {
+                ptile = ((brackets.length - numBetter)*100/brackets.length).toFixed(1);
+                ptiles[bracket.score] = ptile;
+                break;
+              }
+            }
+          }
+          bracket.ptile = ptile;
+          bracket.save(function(err, b) {
+            console.log('Save bracket '+b._id.toString()+' with points: ', b.score);
             if (err) console.log(err);
-            // res.end("")
-            // res.send(200);
-            // res.writeHead(200, {'Content-type': 'application/json'});
-            res.end('{"response": ""}');
           });
         }
       }
+      res.end('{"response": ""}');
     });
   });
   
