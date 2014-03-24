@@ -159,6 +159,7 @@ app.get('/admin-stats', ensureAdmin, routes.admin_stats);
 app.post('/submit_master', ensureAdmin, routes.submit_master);
 app.get('/score_brackets', ensureAdmin, routes.score_brackets);
 app.get('/email_everyone', ensureAdmin, routes.email_everyone);
+app.get('/iowa_to_tenn', ensureAdmin, routes.iowa_to_tenn);
 // global.allteams = [];
 
 

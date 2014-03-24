@@ -367,15 +367,6 @@ exports.score_brackets = function(req,res) {
         }
       }
       
-      // var bracketSort = function(b1,b2) {
-      //   if (b1.score < b2.score){
-      //     return -1;
-      //   } else {
-      //     return 1;
-      //   }
-      // }
-      // brackets.sort(bracketSort);
-      
       // calculate the precentiles
       
       var i = brackets.length;
@@ -408,6 +399,43 @@ exports.score_brackets = function(req,res) {
     });
   });
   
+};
+
+exports.iowa_to_tenn = function(req,res) {
+  models.Bracket.find({}, function(err, brackets) {
+    var i = brackets.length;
+    var bracket, ptsobj;
+    
+    var bracketfindReplace = function(data,find,replacewith) {
+      var round = 6;
+      while(round--) {
+        var side=2;
+        while(side--) {
+          if (data[round][side].length > 0) {
+            var game = data[round][side].length;
+            while(game--) {
+              if (data[round][side][game] === find) {
+                data[round][side][game] = replacewith;
+              }
+            }
+          }
+        }
+      }
+      return data;
+    };
+    
+    while(i--) {
+      bracket = brackets[i];
+      bracket.data = bracketfindReplace(bracket.data, 126, 293);
+      bracket.save(function (err,data) {
+        if(err)console.log(err);
+        if (i===0) {
+          res.end('{"response": ""}');
+        }
+      });
+    }
+    
+  });
 };
 
 exports.teamsbysid = function(req,res) {

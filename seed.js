@@ -98,7 +98,7 @@ var officialSeedByName = [
   "Dayton",
   "Providence",
   "Nebraska",
-  "Iowa",
+  "Tennessee",
 
   "Stephen F. Austin",
   "Harvard",
