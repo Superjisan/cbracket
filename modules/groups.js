@@ -198,26 +198,30 @@ GroupModule.prototype = {
 
     models.User.find({'groups._id': groupId}, {name:1, groups:1, nickname: 1})
       .select({'groups': { $elemMatch: { _id: groupId } } })
-      .populate('groups.bracket', { name: 1, score: 1})
-      .sort({'groups.bracket.score': -1})
+      .populate('groups.bracket', { name: 1, score: 1, ptile: 1})
       .exec(function(err, members){
         
-        // function compare(a,b) {
-        //   if (a.groups[0].bracket && b.groups[0].bracket) {
-        //     if (!a.groups[0].bracket.score) a.groups[0].bracket.score = 0;
-        //     if (!b.groups[0].bracket.score) b.groups[0].bracket.score = 0;
-        //     
-        //     if (a.groups[0].bracket.score < b.groups[0].bracket.score) {
-        //        return 1;
-        //      } else {
-        //       return -1;
-        //      }
-        //   } else {
-        //     return 1;
-        //   }
-        // }
-        // 
-        // members.sort(compare);
+        function compare(a,b) {
+          if (!a.groups[0] || !a.groups[0].bracket) {
+            return 1;
+          } else if (!b.groups[0] || !b.groups[0].bracket) {
+            return -1;
+          }
+          if (a.groups[0].bracket && b.groups[0].bracket) {
+            if (!a.groups[0].bracket.score) a.groups[0].bracket.score = 0;
+            if (!b.groups[0].bracket.score) b.groups[0].bracket.score = 0;
+            
+            if (a.groups[0].bracket.score < b.groups[0].bracket.score) {
+               return 1;
+             } else {
+              return -1;
+             }
+          } else {
+            return 1;
+          }
+        }
+        
+        members.sort(compare);
         cb(err, members);
       });
   }
