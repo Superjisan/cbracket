@@ -250,8 +250,8 @@ var fileScrape = function(dataInfoObj, callback) {
       }
   },
   function(err, results) {
-    console.log('done with all async stuff')
-    db.once('open', function() {
+    console.log('done with all async stuff');
+    // db.once('open', function() {
       db.db.dropCollection('teams', function(err) {
         if (err) console.log(err);
         
@@ -295,7 +295,7 @@ var fileScrape = function(dataInfoObj, callback) {
             }});
           }
         }
-      });
+      // });
     });
     // process.exit();
       // results is now equals to: {one: 1, two: 2}

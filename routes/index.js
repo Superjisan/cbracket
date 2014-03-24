@@ -411,6 +411,8 @@ exports.iowa_to_tenn = function(req,res) {
       while(round--) {
         var side=2;
         while(side--) {
+          console.log(round, side);
+          // console.log(data);
           if (data[round][side].length > 0) {
             var game = data[round][side].length;
             while(game--) {
@@ -426,14 +428,16 @@ exports.iowa_to_tenn = function(req,res) {
     
     while(i--) {
       bracket = brackets[i];
-      bracket.data = bracketfindReplace(bracket.data, 126, 293);
-      bracket.save(function (err,data) {
-        if(err)console.log(err);
-        if (i===0) {
-          res.end('{"response": ""}');
-        }
-      });
+      if (bracket && bracket.data.length) {
+        bracket.data = JSON.stringify(bracketfindReplace(JSON.parse(bracket.data), 126, 293));
+        bracket.save(function (err,data) {
+          if(err)console.log(err);
+          if (i===0) {
+          }
+        });
+      }
     }
+    res.end('{"response": ""}');
     
   });
 };
