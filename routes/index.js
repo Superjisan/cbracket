@@ -549,7 +549,13 @@ exports.standings = function(req,res) {
             br.rank = prev_br.rank;
           }
         }
+        
+        if (br.code) {
+          br.code_lines = br.code.match(/\n/g).length;
+        }
+        
         bracketsranked.push(br);
+        
       }
     }
     res.render('standings', {brackets: bracketsranked})
