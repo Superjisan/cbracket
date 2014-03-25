@@ -550,9 +550,9 @@ exports.standings = function(req,res) {
           }
         }
         
-        if (br.code) {
-          br.code_lines = br.code.match(/\n/g).length;
-        }
+        // if (br.code) {
+        //   br.code_lines = br.code.match(/\n/g).length;
+        // }
         
         bracketsranked.push(br);
         
