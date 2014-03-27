@@ -1,0 +1,44 @@
+{% extends "default.html" %}
+
+{% block content %}
+  <table border="0" cellpadding="20" cellspacing="0" width="100%">
+    <tr>
+      <td valign="top" class="bodyContent">
+        <div mc:edit="std_content00">
+          <h2 class="h2">How's are your code brackets doing?</h2>
+          <p>The Sweet Sixteen starts today. How are your brackets doing? Since there is no one left in the race for Buffet's Billion, the next best place to bring your attention to is <a href="https://www.codersbracket.com">Coder's Bracket</a>! Check out the site-wide <a href='https://www.codersbracket.com/standings/'>standings</a>.</p>
+          <br />
+          {% if top_bracket_id %}
+            <h3>Your Brackets</h3>
+            <p>Here is your highest rated bracket. You can also check out your other brackets on Coder's Bracket on the <a href="https://www.codersbracket.com/mybrackets/">my brackets</a> page.</p>
+            <p style='text-align:center;'><center><a href='https://www.codersbracket.com/code_bracket/{{top_bracket_id}}'><img src="http://ink1001.com/p/lp/bf7916244c5e8cd6.png?id={{top_bracket_id}}&ts=1" style='width:400px;'></a></center></p>
+        
+            <h3>Your Brackets</h3>
+            <table cellspacing="0" cellpadding="10" border="0">
+            <tr><th style='text-align:left'>No</th><th style='text-align:left'>Your Bracket Name</th><th style='text-align:left'>Score</th><th style='text-align:left'>Pct'ile</th></tr>
+            {% for index,bracket in brackets %}
+              <tr>
+              <td width="60">{{index*1+1}}</td>
+              <td width="350"><a href="https://www.codersbracket.com/code_bracket/{{bracket._id.toString()}}">{{bracket.name}}</a></td>
+              <td width="100">{{bracket.score}}</td>
+              <td width="100">{{bracket.ptile}}%</td>
+              </tr>
+            {% endfor %}
+            </table>
+          {% endif %}
+          <br>
+          <h3>Support STEM education with a Donation</h3>
+          <p>Please don't forget to contribute what you can to <a href='https://www.codersbracket.com/donate'>support our non-profits</a>. You can still donate to have your top 10 brackets be counted for the prize. Remember, 100% of your donations will go to the non-profits. Check out the <a href="https://www.codersbracket.com/contest/prizes">prizes for donors</a>!</p>
+          <center><h3><a href='https://www.codersbracket.com/donate'>Donate Now</a></h3></center>
+          <br>
+          <h3>Hiring awesome JavaScript developers?</h3>
+          Coder's Bracket was built by the students and staff at <a href="http://www.fullstackacademy.com">Fullstack Academy</a>. Our students have been studying <b>JavaScript, Node.js/Express and Angular.js</b> for 12+ hours a day for 11 weeks now.<br><br>
+          Hiring day is coming up and if you are interested in getting access, please <a href='http://www.fullstackacademy.com/employers'>send us a note</a>. We are happy to tell you more about our program, curriculum and why our students are exceptional!
+          <br><br>
+          Thanks and Good Luck to all!
+        </div>
+      </td>
+    </tr>
+  </table>
+<hr>
+{% endblock %}
