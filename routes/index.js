@@ -294,7 +294,7 @@ exports.email_everyone = function(req,res) {
               // uncomment when you want to send
               mailer.sendTemplateMail('sweet16', {
                 to: user.email,
-                subject: "Coder's Bracket - The Sweet Sixteen!" + test_str,
+                subject: "Coder's Bracket - The Sweet Sixteen starts TODAY!" + test_str,
                 top_bracket_id: bracket._id.toString(),
                 brackets: brackets
               });
