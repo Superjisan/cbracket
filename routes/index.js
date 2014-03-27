@@ -289,16 +289,17 @@ exports.email_everyone = function(req,res) {
         test_str= '';
         if ((!!req.query.test && user.email == "nimit.maru@gmail.com" && (test_str = "TEST")) || !req.query.test) {
           models.Bracket.find({user_id: user._id.toString()}).sort({score: -1}).limit(5).exec(function(err, brackets) {
-            var bracket = brackets[0];
-            // uncomment when you want to send
-            mailer.sendTemplateMail('sweet16', {
-              to: user.email,
-              subject: "Coder's Bracket - The Sweet Sixteen!" + test_str,
-              top_bracket_id: bracket._id.toString(),
-              brackets: brackets
-            });
-            console.log('email sentto: ', user.email);
-            
+            if (brackets && brackets.length>0) {
+              var bracket = brackets[0];
+              // uncomment when you want to send
+              mailer.sendTemplateMail('sweet16', {
+                to: user.email,
+                subject: "Coder's Bracket - The Sweet Sixteen!" + test_str,
+                top_bracket_id: bracket._id.toString(),
+                brackets: brackets
+              });
+              // console.log('email sentto: ', user.email);
+            }
             
           });
           
