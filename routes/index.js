@@ -283,8 +283,7 @@ exports.email_everyone = function(req,res) {
     var user;
     console.log('req test: '+req.params.test);
     
-    while(i--) {
-      user = users[i];
+    async.each(users, function(user, callback) {
       if (user.email !== '') {
         test_str= '';
         if ((!!req.query.test && user.email == "nimit.maru@gmail.com" && (test_str = "TEST")) || !req.query.test) {
@@ -297,16 +296,27 @@ exports.email_everyone = function(req,res) {
                 subject: "Coder's Bracket - The Sweet Sixteen starts TODAY!" + test_str,
                 top_bracket_id: bracket._id.toString(),
                 brackets: brackets
-              });
-              // console.log('email sentto: ', user.email);
+              }, callback);
+            } else {
+              callback(null,null);
             }
             
           });
           
+        } else {
+          callback(null,null);
         }
       }
-    }
-    res.send(200, "emails sent: "+users.length);
+      
+    }, function() {
+      res.send(200, "emails sent: "+users.length);
+      // console.log('done!');
+
+    });
+    
+    // while(i--) {
+    //   user = users[i];
+    // }
   });
 };
 
