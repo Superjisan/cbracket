@@ -5,13 +5,16 @@
     <tr>
       <td valign="top" class="bodyContent">
         <div mc:edit="std_content00">
-          <h2 class="h2">How's are your code brackets doing?</h2>
+          <h2 class="h2">How are your code brackets doing?</h2>
           <p>The Sweet Sixteen starts today. How are your brackets doing? Since there is no one left in the race for Buffet's Billion, the next best place to bring your attention to is <a href="https://www.codersbracket.com">Coder's Bracket</a>! Check out the site-wide <a href='https://www.codersbracket.com/standings/'>standings</a>.</p>
           <br />
           {% if top_bracket_id %}
             <h3>Your Brackets</h3>
-            <p>Here is your highest rated bracket. You can also check out your other brackets on Coder's Bracket on the <a href="https://www.codersbracket.com/mybrackets/">my brackets</a> page.</p>
-            <p style='text-align:center;'><center><a href='https://www.codersbracket.com/code_bracket/{{top_bracket_id}}'><img src="http://ink1001.com/p/lp/bf7916244c5e8cd6.png?id={{top_bracket_id}}&ts=1" style='width:400px;'></a></center></p>
+            <p>Here is your <a href='https://www.codersbracket.com/code_bracket/{{top_bracket_id}}'>highest rated bracket</a>. You can also check out your other brackets on Coder's Bracket on the <a href="https://www.codersbracket.com/mybrackets/">my brackets</a> page.</p>
+            <p style='text-align:center;'>
+              <center><a href='https://www.codersbracket.com/code_bracket/{{top_bracket_id}}'><img src="http://ink1001.com/p/lp/bf7916244c5e8cd6.png?id={{top_bracket_id}}&ts=1" style='width:400px;'></a></center>
+              <span style='text-align:center; font-size: 11px;'><center>DynamicBracket Powered By <b><a href='http://www.movableink.com'>Movable Ink</a></b></center></span>
+            </p>
         
             <h3>Your Brackets</h3>
             <table cellspacing="0" cellpadding="10" border="0">
