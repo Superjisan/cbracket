@@ -183,17 +183,11 @@ Bracket.prototype.generateBracketHtml = function (master) {
   var teamIndex;
   var teamleft1, teamleft2, teamright1, teamright2, division, round;
   var game, spot, leftRight, division;
-  var bracket_html = $('#bracket-box').html();
-  var bracket_html_results = $('#bracket-box-results').html();
+  var bracket_html = $('#bracket_box').html();
+  var bracket_html_results = $('#bracket_box_results').html();
   
   var getShouldBeWinners = function(round, leftRight, spot) {
-
-    
     var prevspot = Math.max((spot*2),0);
-    // var sid = bracket[round+1][leftOrRight][prevspot];
-    
-    // console.log("round:"+round+" leftRight:"+leftRight+" spot:"+ (prevspot));
-    // console.log("round:"+round+" leftRight:"+leftRight+" spot:"+ (1*prevspot+1));
     var team1ShouldBe = false; var team2ShouldBe = false;
     // debugger;
     if (master && master[round] && master[round][leftRight]) {
@@ -290,6 +284,7 @@ Bracket.prototype.generateBracketHtml = function (master) {
     }
   }
   var final_four_html = $('#final_four_games').html();
+  var final_four_games_results = $('#final_four_games_results').html();
   if (this.bracketData) {
     // all rounds after the first round
     round = 0;
@@ -299,9 +294,26 @@ Bracket.prototype.generateBracketHtml = function (master) {
     var finalist1 = this.getTeamFromData(round,division, spot);
     var finalist2 = this.getTeamFromData(round, division+2, spot);
     var winner = teamsbysid[this.winner];
+    shouldBeWinners = getShouldBeWinners(round+1, leftRight, spot);
     game = new Game(round, division, spot, blevel, finalist1, finalist2, "b"+blevel+"-"+spot+"-left");
     this.games[0].push(game);
-    html += swig.render(final_four_html, { locals: { finalist1: {name: finalist1.name, seed: finalist1.seed}, finalist2:{name: finalist2.name, seed: finalist2.seed}, winner: winner.name }});
+    
+    if (shouldBeWinners && (shouldBeWinners.team1 || shouldBeWinners.team2)) {
+      var winnerShouldBeSid = (this.bracketData[0][0][0])? this.bracketData[0][0][0] : "";
+      
+      html += swig.render(final_four_html, { 
+        locals: { 
+          finalist1: {name: finalist1.name, seed: finalist1.seed},
+          finalist1ShouldBe: {name:shouldBeWinners.team1.name, seed:shouldBeWinners.team1.seed},
+          finalist2:{name: finalist2.name, seed: finalist2.seed}, 
+          finalist2ShouldBe: {name:shouldBeWinners.team2.name, seed:shouldBeWinners.team2.seed},
+          winner: winner.name,
+          winnerShouldBe: teamsbysid[winnerShouldBeSid].name
+        }
+      });
+    } else {
+      html += swig.render(final_four_games_results, { locals: { finalist1: {name: finalist1.name, seed: finalist1.seed}, finalist2:{name: finalist2.name, seed: finalist2.seed}, winner: winner.name }});
+    }
   } else {
     html += swig.render(final_four_html, { locals: { finalist1: "", finalist2:"", winner: "" }});
   }

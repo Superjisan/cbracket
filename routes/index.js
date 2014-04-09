@@ -566,10 +566,11 @@ function objectIdWithTimestamp(timestamp) {
 exports.standings = function(req,res) {
   /*
   db.brackets.find({ _id: { $lt: objectIdWithTimestamp('2014/03/20 12:10') } }, {name:1,score:1, _id:0}).sort({score:-1}).limit(10)
+  find({ _id: { $lt: objectIdWithTimestamp('2014/03/20 12:16') } })
   */
   async.parallel({
     brackets: function(done) {
-      models.Bracket.find({ _id: { $lt: objectIdWithTimestamp('2014/03/20 12:16') } }).sort({score: -1}).populate("user_id").limit(100).exec(function(err, brackets) {
+      models.Bracket.find({ _id: { $lt: objectIdWithTimestamp('2014/03/20 16:16') } }).sort({score: -1}).populate("user_id").limit(100).exec(function(err, brackets) {
         done(null, brackets);
       })
     }

@@ -1,6 +1,6 @@
 
 {% raw %}
-<script id="bracket-box-results" type="text/x-handlebars-template">
+<script id="bracket_box_results" type="text/x-handlebars-template">
   <div class='b b{{side}} b{{blevel}}{% if blevel==4 %} first_round{%endif%}' id='b{{blevel}}-{{spot}}-{{side}}'>
       <div {% if team1 %}title="{{team1.seed}}. {{team1.name}}"{% endif %} class='team top {% if team1ShouldBe && team1 %} {% if team1ShouldBe.sid == team1.sid %} correctpick {%else%} wrongpick {% endif %} {% endif %}'>
         {% if team1 %}{{team1.seed}}. {{team1.name}}{%endif%}
